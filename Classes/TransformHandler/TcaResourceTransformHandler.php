@@ -5,11 +5,7 @@ namespace DFAU\ToujouApi\TransformHandler;
 
 use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
-use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
-use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaResourceTransformHandler implements TransformHandler
@@ -29,14 +25,12 @@ class TcaResourceTransformHandler implements TransformHandler
     {
         $this->tableName = $tableName;
 
-        $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
-        $formDataGroup->setProviderList([
-            InitializeProcessedTca::class,
-            DatabaseRecordTypeValue::class,
-            TcaColumnsProcessShowitem::class,
-            TcaTypesShowitem::class
-        ]);
-        $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
+        $orderedProviderList->setProviderList(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['toujouApiTcaResource']
+        );
+
+        $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $orderedProviderList);
     }
 
 
@@ -60,8 +54,8 @@ class TcaResourceTransformHandler implements TransformHandler
             return $columnName[0] !== '-';
         });
 
-        return array_combine($visibleColumns, array_map(function ($columnName) use ($resource) {
-            return $resource[$columnName];
+        return array_combine($visibleColumns, array_map(function ($columnName) use ($result) {
+            return $result['databaseRow'][$columnName];
         }, $visibleColumns));
 
     }
