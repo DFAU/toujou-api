@@ -9,11 +9,10 @@ use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use DFAU\ToujouApi\Controller\CollectionController;
 use DFAU\ToujouApi\Controller\ItemController;
 use FastRoute\RouteCollector;
-use function FastRoute\simpleDispatcher;
-use Psr\Http\Message\ServerRequestInterface;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
+use function FastRoute\simpleDispatcher;
 
 class RouterFactory
 {

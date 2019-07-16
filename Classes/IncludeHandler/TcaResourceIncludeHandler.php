@@ -6,12 +6,9 @@ namespace DFAU\ToujouApi\IncludeHandler;
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
-use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
 use DFAU\ToujouApi\Domain\Repository\PageRelationRepository;
-use DFAU\ToujouApi\Domain\Repository\PageRepository;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use League\Fractal\Resource\NullResource;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;
 use TYPO3\CMS\Core\Database\RelationHandler;

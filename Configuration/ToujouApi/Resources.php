@@ -38,10 +38,10 @@ return [
                     'tableName' => 'tt_content',
                     'tableNameToResourceMap' => ['sys_file_reference' => 'file-references']
                 ],
-                [
-                    '__class__' => \DFAU\ToujouApi\IncludeHandler\StaticDefaultIncludesIncludeHandler::class,
-                    'defaultIncludes' => ['assets', 'image', 'media']
-                ]
+//                [
+//                    '__class__' => \DFAU\ToujouApi\IncludeHandler\StaticDefaultIncludesIncludeHandler::class,
+//                    'defaultIncludes' => ['assets', 'image', 'media']
+//                ]
             ]
         ]
     ],
