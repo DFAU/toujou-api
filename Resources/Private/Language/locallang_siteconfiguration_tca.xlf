@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file t3:id="1563367767" source-language="en" datatype="plaintext" original="messages" date="2019-07-17T14:49:00Z" product-name="backend">
+        <header/>
+        <body>
+            <trans-unit id="site.toujouApiPathPrefix.label">
+                <source>Toujou API path prefix</source>
+            </trans-unit>
+            <trans-unit id="site.toujouApiPathPrefix.description">
+                <source>All API request URLs beginning with this path prefix will be handled by the toujou API router. This means no pages can use this prefix in their slugs.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -31,7 +32,10 @@ class ApiEntrypoint implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Route request through own middleware chain to the api request handler
-        if (GeneralUtility::isFirstPartOfStr($request->getUri()->getPath(), static::API_V1_ENDPOINT)) {
+        $site = $request ? $request->getAttribute('site') : null;
+        $apiPathPrefix = $site instanceof Site ? ltrim($site->getAttribute('toujouApiPathPrefix') ?? '', '/ ') : null;
+
+        if (!empty($apiPathPrefix) && GeneralUtility::isFirstPartOfStr($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
             $tsfe = $this->getTyposcriptFrontendController();
 
             if (!$tsfe->isBackendUserLoggedIn()) {
@@ -40,7 +44,7 @@ class ApiEntrypoint implements MiddlewareInterface
 
             $tsfe->determineId();
 
-            $request = $request->withUri($request->getUri()->withPath('/' . substr($request->getUri()->getPath(), strlen(static::API_V1_ENDPOINT))));
+            $request = $request->withUri($request->getUri()->withPath('/' . substr($request->getUri()->getPath(), strlen('/' . $apiPathPrefix))));
             $middlewareDispatcher = $this->createMiddlewareDispatcher();
             return $middlewareDispatcher->handle($request);
 
