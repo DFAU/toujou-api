@@ -34,7 +34,7 @@ class TcaResourceTransformHandler implements TransformHandler
     }
 
 
-    public function handleTransform($data, array $transformedData, \Closure $next): array
+    public function handleTransform($data, array $transformedData, callable $next): array
     {
         return $next($data, array_merge($transformedData, [
             'id' => (string)$data[AbstractDatabaseResourceRepository::DEFAULT_IDENTIFIER],

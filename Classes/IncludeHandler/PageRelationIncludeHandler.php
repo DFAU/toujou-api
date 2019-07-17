@@ -30,17 +30,17 @@ class PageRelationIncludeHandler implements IncludeHandler
         }, $includeToResourceMap));
     }
 
-    public function getAvailableIncludes(array $currentIncludes, \Closure $next): array
+    public function getAvailableIncludes(array $currentIncludes, callable $next): array
     {
         return $next(array_merge($currentIncludes, array_keys($this->allowedPageIncludes)));
     }
 
-    public function getDefaultIncludes(array $currentIncludes, \Closure $next): array
+    public function getDefaultIncludes(array $currentIncludes, callable $next): array
     {
         return $next($currentIncludes);
     }
 
-    public function handleInclude(Scope $scope, string $includeName, $data, \Closure $next): ?ResourceInterface
+    public function handleInclude(Scope $scope, string $includeName, $data, callable $next): ?ResourceInterface
     {
         if (!isset($this->allowedPageIncludes[$includeName])) {
             return $next($scope, $includeName, $data);

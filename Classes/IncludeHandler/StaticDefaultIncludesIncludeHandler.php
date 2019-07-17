@@ -19,17 +19,17 @@ class StaticDefaultIncludesIncludeHandler implements IncludeHandler
         $this->defaultIncludes = $defaultIncludes;
     }
 
-    public function getAvailableIncludes(array $currentIncludes, \Closure $next): array
+    public function getAvailableIncludes(array $currentIncludes, callable $next): array
     {
         return $next($currentIncludes);
     }
 
-    public function getDefaultIncludes(array $currentIncludes, \Closure $next): array
+    public function getDefaultIncludes(array $currentIncludes, callable $next): array
     {
         return $next(array_merge($currentIncludes, $this->defaultIncludes));
     }
 
-    public function handleInclude(Scope $scope, string $includeName, $data, \Closure $next): ?ResourceInterface
+    public function handleInclude(Scope $scope, string $includeName, $data, callable $next): ?ResourceInterface
     {
         return $next($scope, $includeName, $data);
     }

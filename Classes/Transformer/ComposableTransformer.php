@@ -71,28 +71,28 @@ class ComposableTransformer extends TransformerAbstract implements ResourceTrans
         return ($this->includeHandlerStack)($scope, $includeName, $data);
     }
 
-    protected function wrapTransformHandler(TransformHandler $handler, \Closure $next): \Closure
+    protected function wrapTransformHandler(TransformHandler $handler, callable $next): \Closure
     {
         return function($data, array $transformedData) use ($handler, $next): array {
             return $handler->handleTransform($data, $transformedData, $next);
         };
     }
 
-    protected function wrapAvailableIncludesHandler(IncludeHandler $handler, \Closure $next): \Closure
+    protected function wrapAvailableIncludesHandler(IncludeHandler $handler, callable $next): \Closure
     {
         return function(array $currentIncludes) use ($handler, $next): array {
             return $handler->getAvailableIncludes($currentIncludes, $next);
         };
     }
 
-    protected function wrapDefaultIncludesHandler(IncludeHandler $handler, \Closure $next): \Closure
+    protected function wrapDefaultIncludesHandler(IncludeHandler $handler, callable $next): \Closure
     {
         return function(array $currentIncludes) use ($handler, $next): array {
             return $handler->getDefaultIncludes($currentIncludes, $next);
         };
     }
 
-    protected function wrapIncludeHandler(IncludeHandler $handler, \Closure $next): \Closure
+    protected function wrapIncludeHandler(IncludeHandler $handler, callable $next): \Closure
     {
         return function($scope, $includeName, $data) use ($handler, $next): ?ResourceInterface {
             return $handler->handleInclude($scope, $includeName, $data, $next);

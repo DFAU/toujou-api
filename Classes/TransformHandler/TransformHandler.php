@@ -9,6 +9,6 @@ namespace DFAU\ToujouApi\TransformHandler;
 interface TransformHandler
 {
 
-    public function handleTransform($data, array $transformedData, \Closure $next): array;
+    public function handleTransform($data, array $transformedData, callable $next): array;
 
 }

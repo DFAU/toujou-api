@@ -11,10 +11,10 @@ use League\Fractal\Scope;
 interface IncludeHandler
 {
 
-    public function getAvailableIncludes(array $currentIncludes, \Closure $next): array;
+    public function getAvailableIncludes(array $currentIncludes, callable $next): array;
 
-    public function getDefaultIncludes(array $currentIncludes, \Closure $next): array;
+    public function getDefaultIncludes(array $currentIncludes, callable $next): array;
 
-    public function handleInclude(Scope $scope, string $includeName, $data, \Closure $next): ?ResourceInterface;
+    public function handleInclude(Scope $scope, string $includeName, $data, callable $next): ?ResourceInterface;
 
 }
