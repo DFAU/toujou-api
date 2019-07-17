@@ -32,7 +32,14 @@ class ApiEntrypoint implements MiddlewareInterface
     {
         // Route request through own middleware chain to the api request handler
         if (GeneralUtility::isFirstPartOfStr($request->getUri()->getPath(), static::API_V1_ENDPOINT)) {
-            $this->initTyposcriptFrontendController($GLOBALS['TSFE']);
+            $tsfe = $this->getTyposcriptFrontendController();
+
+            if (!$tsfe->isBackendUserLoggedIn()) {
+                return new \TYPO3\CMS\Core\Http\Response('php://temp', '401');
+            }
+
+            $tsfe->determineId();
+
             $request = $request->withUri($request->getUri()->withPath('/' . substr($request->getUri()->getPath(), strlen(static::API_V1_ENDPOINT))));
             $middlewareDispatcher = $this->createMiddlewareDispatcher();
             return $middlewareDispatcher->handle($request);
@@ -63,5 +70,10 @@ class ApiEntrypoint implements MiddlewareInterface
             GeneralUtility::makeInstance(RequestHandler::class),
             $resolver->resolve('toujou_api')
         );
+    }
+
+    protected function getTyposcriptFrontendController(): TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'];
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'toujou Template',
+    'title' => 'toujou API',
     'description' => '',
-    'category' => 'templates',
+    'category' => 'services',
     'version' => '0.0.1',
     'state' => 'beta',
     'uploadfolder' => 0,
     'clearcacheonload' => 1,
-    'author' => 'Peter Piechota',
-    'author_email' => 'ppiechota@dfau.de',
+    'author' => 'Thomas Maroschik',
+    'author_email' => 'tmaroschik@dfau.de',
     'author_company' => 'DFAU',
     'constraints' => [
         'depends' => [
@@ -20,4 +20,4 @@ $EM_CONF[$_EXTKEY] = [
     ]
 ];
 
-    
+

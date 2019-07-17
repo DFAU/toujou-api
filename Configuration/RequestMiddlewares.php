@@ -9,6 +9,7 @@ return [
         ],
     ],
     'toujou_api' => [
+
         'dfau/toujou-api/router' => [
             'target' => \DFAU\ToujouApi\Middleware\Router::class
         ]

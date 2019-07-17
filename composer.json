@@ -14,6 +14,9 @@
         "nikic/fast-route": "^1.3.0",
         "nikolaposa/cascader": "^1.2.0"
     },
+    "require-dev": {
+        "roave/security-advisories": "dev-master"
+    },
     "authors": [
         {
             "name": "Thomas Maroschik",
