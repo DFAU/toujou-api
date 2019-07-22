@@ -11,8 +11,10 @@
         "ext-json": "*",
         "typo3/cms-core": "^9.5",
         "league/fractal": "~0.18",
+        "league/tactician": "2.0.x-dev",
         "nikic/fast-route": "^1.3.0",
         "nikolaposa/cascader": "^1.2.0",
+        "middlewares/error-handler": "^2.0.0",
         "middlewares/payload": "^2.1.1"
     },
     "require-dev": {

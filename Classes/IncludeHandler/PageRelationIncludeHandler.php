@@ -20,10 +20,10 @@ class PageRelationIncludeHandler implements IncludeHandler
     public function __construct(array $includeToResourceMap = [])
     {
         $allResourceDefinitions = ConfigurationManager::getResourcesConfiguration();
-        $this->allowedPageIncludes = array_filter(array_map(function(string $resourceKey) use ($allResourceDefinitions):?array {
-            if (isset($allResourceDefinitions[$resourceKey])) {
-                $resourceDefinition = $allResourceDefinitions[$resourceKey];
-                $resourceDefinition['resourceKey'] = $resourceKey;
+        $this->allowedPageIncludes = array_filter(array_map(function(string $resourceType) use ($allResourceDefinitions):?array {
+            if (isset($allResourceDefinitions[$resourceType])) {
+                $resourceDefinition = $allResourceDefinitions[$resourceType];
+                $resourceDefinition['resourceType'] = $resourceType;
                 return $resourceDefinition;
             }
             return null;
@@ -60,7 +60,7 @@ class PageRelationIncludeHandler implements IncludeHandler
         return new Collection(
             $repository->findByPageIdentifier($data[PageRepository::DEFAULT_IDENTIFIER]),
             $transformer,
-            $resourceDefinition['resourceKey']
+            $resourceDefinition['resourceType']
         );
     }
 }

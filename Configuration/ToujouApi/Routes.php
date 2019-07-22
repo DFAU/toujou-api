@@ -1,24 +1,37 @@
 <?php
 
+use DFAU\ToujouApi\Resource\Numerus;
+use DFAU\ToujouApi\Resource\Operation;
+
 return [
     'GET:/pages/' => [
-        'resourceType' => \League\Fractal\Resource\Collection::class,
-        'resourceKey' => 'pages',
-        'serializer' => ['__class__' => \League\Fractal\Serializer\JsonApiSerializer::class]
+        'numerus' => Numerus::COLLECTION,
+        'operation' => Operation::READ,
+        'resourceType' => 'pages',
     ],
     'GET:/pages/{id:\d+}' => [
-        'resourceType' => \League\Fractal\Resource\Item::class,
-        'resourceKey' => 'pages',
-        'serializer' => ['__class__' => \League\Fractal\Serializer\JsonApiSerializer::class]
+        'numerus' => Numerus::ITEM,
+        'operation' => Operation::READ,
+        'resourceType' => 'pages',
+    ],
+    'PATCH:/pages/{id:\d+}' => [
+        'numerus' => Numerus::ITEM,
+        'operation' => Operation::UPDATE,
+        'resourceType' => 'pages',
+    ],
+    'PUT:/pages/{id:\d+}' => [
+        'numerus' => Numerus::ITEM,
+        'operation' => Operation::REPLACE,
+        'resourceType' => 'pages',
     ],
     'GET:/content-elements/' => [
-        'resourceType' => \League\Fractal\Resource\Collection::class,
-        'resourceKey' => 'content-elements',
-        'serializer' => ['__class__' => \League\Fractal\Serializer\JsonApiSerializer::class]
+        'numerus' => Numerus::COLLECTION,
+        'operation' => Operation::READ,
+        'resourceType' => 'content-elements',
     ],
     'GET:/content-elements/{id:\d+}' => [
-        'resourceType' => \League\Fractal\Resource\Item::class,
-        'resourceKey' => 'content-elements',
-        'serializer' => ['__class__' => \League\Fractal\Serializer\JsonApiSerializer::class]
+        'numerus' => Numerus::ITEM,
+        'operation' => Operation::READ,
+        'resourceType' => 'content-elements',
     ]
 ];

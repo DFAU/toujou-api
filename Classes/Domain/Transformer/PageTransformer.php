@@ -39,9 +39,9 @@ final class PageTransformer extends ComposableTransformer
         return parent::includeRelation($scope, $includeName, $data);
     }
 
-    protected function includePageRelation(Scope $scope, string $resourceKey, array $data): ResourceInterface
+    protected function includePageRelation(Scope $scope, string $resourceType, array $data): ResourceInterface
     {
-        $resourceDefinition = $this->allowedPageIncludes->getResourceDefinition($resourceKey);
+        $resourceDefinition = $this->allowedPageIncludes->getResourceDefinition($resourceType);
         $cascader = new Cascader();
 
         $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
@@ -55,7 +55,7 @@ final class PageTransformer extends ComposableTransformer
         return $this->collection(
             $repository->findByPageIdentifier($data[PageRepository::DEFAULT_IDENTIFIER]),
             $transformer,
-            $resourceKey
+            $resourceType
         );
     }
 

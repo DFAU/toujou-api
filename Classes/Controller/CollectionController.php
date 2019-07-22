@@ -3,34 +3,35 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Controller;
 
-use League\Fractal\ParamBag;
 use League\Fractal\Resource\Collection;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
-class CollectionController extends AbstractResourceController
+final class CollectionController extends AbstractResourceController
 {
 
-    public function get(ServerRequestInterface $request): ResponseInterface
+    public function read(ServerRequestInterface $request): ResponseInterface
     {
-        $queryParams = new ParamBag($request->getQueryParams());
-        if (isset($queryParams['include'])) {
-            $this->fractal->parseIncludes($queryParams['include']);
-        }
-        if (isset($queryParams['exclude'])) {
-            $this->fractal->parseIncludes($queryParams['exclude']);
-        }
+        $queryParams = $request->getQueryParams();
+        $this->parseIncludes($queryParams);
 
         $currentCursor = $queryParams['cursor'];
         $previousCursor = $queryParams['previous'];
         $limit = $queryParams['limit'] ? (int)$queryParams['limit'] : 10;
 
+        $data = $this->fetchAndTransform($limit, $currentCursor, $previousCursor);
+
+        return new JsonResponse($data);
+    }
+
+    protected function fetchAndTransform(int $limit, $currentCursor, $previousCursor): array
+    {
         [$resources, $cursor] = $this->repository->findWithCursor($limit, $currentCursor, $previousCursor);
 
-        $collection = new Collection($resources, $this->transformer, $this->resourceKey);
+        $collection = new Collection($resources, $this->transformer, $this->resourceType);
         $collection->setCursor($cursor);
 
-        return new JsonResponse($this->fractal->createData($collection)->toArray());
+        return $this->fractal->createData($collection)->toArray();
     }
 }

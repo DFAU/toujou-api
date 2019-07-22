@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace DFAU\ToujouApi\Middleware;
 
 
+use DFAU\ToujouApi\ErrorFormatter\JsonApiFormatter;
 use DFAU\ToujouApi\Http\RequestHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,6 +17,8 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use Middlewares\ErrorFormatter;
+use Middlewares\ErrorHandler;
 
 class ApiEntrypoint implements MiddlewareInterface
 {
@@ -70,9 +73,19 @@ class ApiEntrypoint implements MiddlewareInterface
             GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core')
         );
 
+        $middlewares = $resolver->resolve('toujou_api');
+
+        $errorHandler = new ErrorHandler([
+            new JsonApiFormatter(),
+            new ErrorFormatter\XmlFormatter(),
+        ]);
+        $errorHandler->defaultFormatter(new ErrorFormatter\PlainFormatter());
+
+        $middlewares[] = $errorHandler;
+
         return new MiddlewareDispatcher(
             GeneralUtility::makeInstance(RequestHandler::class),
-            $resolver->resolve('toujou_api')
+            $middlewares
         );
     }
 

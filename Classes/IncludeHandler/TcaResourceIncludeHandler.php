@@ -88,7 +88,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
             return new $resourceType(
                 $resourceType === Item::class ? $repository->findOneByIdentifier(reset($result)['id']) : $repository->findByIdentifiers(array_column($result, 'id')),
                 $transformer,
-                $resourceDefinition['resourceKey']
+                $resourceDefinition['resourceType']
             );
         }
 
@@ -126,10 +126,10 @@ class TcaResourceIncludeHandler implements IncludeHandler
     protected function buildResourceDefinitions(array $tableNameToResourceMap): array
     {
         $allResourceDefinitions = ConfigurationManager::getResourcesConfiguration();
-        return array_filter(array_map(function (string $resourceKey) use ($allResourceDefinitions): ?array {
-            if (isset($allResourceDefinitions[$resourceKey])) {
-                $resourceDefinition = $allResourceDefinitions[$resourceKey];
-                $resourceDefinition['resourceKey'] = $resourceKey;
+        return array_filter(array_map(function (string $resourceType) use ($allResourceDefinitions): ?array {
+            if (isset($allResourceDefinitions[$resourceType])) {
+                $resourceDefinition = $allResourceDefinitions[$resourceType];
+                $resourceDefinition['resourceType'] = $resourceType;
                 return $resourceDefinition;
             }
             return null;

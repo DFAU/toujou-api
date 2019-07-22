@@ -4,10 +4,16 @@
 namespace DFAU\ToujouApi\Controller;
 
 
+use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
 use DFAU\ToujouApi\Domain\Repository\ApiResourceRepository;
+use DFAU\ToujouApi\Resource\Operation;
 use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
 use League\Fractal\Manager;
-use League\Fractal\Serializer\SerializerAbstract;
+use League\Fractal\ParamBag;
+use League\Fractal\Serializer\JsonApiSerializer;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractResourceController
 {
@@ -18,6 +24,11 @@ abstract class AbstractResourceController
     protected $fractal;
 
     /**
+     * @var JsonApiDeserializer
+     */
+    protected $deserializer;
+
+    /**
      * @var ApiResourceRepository
      */
     protected $repository;
@@ -25,18 +36,43 @@ abstract class AbstractResourceController
     /**
      * @var string
      */
-    protected $resourceKey;
+    protected $resourceType;
 
-    public function __construct(ApiResourceRepository $repository, ResourceTransformerInterface $transformer, ?string $resourceKey, SerializerAbstract $serializer = null)
+    /**
+     * @var array
+     */
+    protected $operationToCommandMap = [];
+
+    public function __construct(
+        ?string $resourceType,
+        ApiResourceRepository $repository,
+        ResourceTransformerInterface $transformer,
+        array $operationToCommandMap = [])
     {
+        $this->resourceType = $resourceType;
         $this->repository = $repository;
         $this->transformer = $transformer;
-        $this->resourceKey = $resourceKey;
+        $this->operationToCommandMap = $operationToCommandMap;
 
         $this->fractal = new Manager();
-        if ($serializer) {
-            $this->fractal->setSerializer($serializer);
+        $this->fractal->setSerializer(new JsonApiSerializer());
+
+        $this->deserializer = GeneralUtility::makeInstance(JsonApiDeserializer::class);
+    }
+
+    protected function parseIncludes(array $queryParams): void
+    {
+        $queryParams = new ParamBag($queryParams);
+        if (isset($queryParams['include'])) {
+            $this->fractal->parseIncludes($queryParams['include']);
+        }
+        if (isset($queryParams['exclude'])) {
+            $this->fractal->parseIncludes($queryParams['exclude']);
         }
     }
+
+    abstract public function read(ServerRequestInterface $request): ResponseInterface;
+
+    abstract public function issueCommandForOperation(Operation $operation, ServerRequestInterface $request): ResponseInterface;
 
 }
