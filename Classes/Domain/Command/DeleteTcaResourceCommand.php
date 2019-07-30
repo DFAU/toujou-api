@@ -4,10 +4,18 @@
 namespace DFAU\ToujouApi\Domain\Command;
 
 
-use DFAU\ToujouApi\Command\ResourceReferencingCommand;
-use DFAU\ToujouApi\Command\ResourceReferencingTrait;
+use DFAU\ToujouApi\Command\TcaResourceCommand;
+use DFAU\ToujouApi\Command\Traits\TcaResourceTrait;
 
-class DeleteTcaResourceCommand implements ResourceReferencingCommand
+class DeleteTcaResourceCommand implements TcaResourceCommand
 {
-    use ResourceReferencingTrait;
+
+    use TcaResourceTrait;
+
+    public function __construct(string $resourceType, string $resourceIdentifier, string $tableName)
+    {
+        $this->resourceType = $resourceType;
+        $this->resourceIdentifier = $resourceIdentifier;
+        $this->tableName = $tableName;
+    }
 }

@@ -37,7 +37,7 @@ class RouterFactory
                 }
 
                 $handler = function (ServerRequestInterface $request) use ($routeIdentifier, $resourceRouteDefinition) {
-                    $controller = ResourceControllerFactory::createResourceControllerFromRouteDefintinion($routeIdentifier, $resourceRouteDefinition);
+                    $controller = ResourceControllerFactory::createFromRouteDefintinion($routeIdentifier, $resourceRouteDefinition);
 
                     if (empty($resourceRouteDefinition['operation'])) {
                         throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a "operation" definition.', 1563782786);
@@ -46,8 +46,9 @@ class RouterFactory
                     switch (strtolower($resourceRouteDefinition['operation'])) {
                         case Operation::READ:
                             return $controller->read($request);
-                        case Operation::CREATE:
                         case Operation::REPLACE:
+                            return $controller->replace($request);
+                        case Operation::CREATE:
                         case Operation::UPDATE:
                         case Operation::DELETE:
                             return $controller->issueCommandForOperation(new Operation($resourceRouteDefinition['operation']), $request);

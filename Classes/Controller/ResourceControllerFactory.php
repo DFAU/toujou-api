@@ -7,11 +7,12 @@ namespace DFAU\ToujouApi\Controller;
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use DFAU\ToujouApi\Resource\Numerus;
+use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
 
 class ResourceControllerFactory
 {
 
-    static public function createResourceControllerFromRouteDefintinion(string $routeIdentifier, array $routeDefinition) : AbstractResourceController
+    static public function createFromRouteDefintinion(string $routeIdentifier, array $routeDefinition) : AbstractResourceController
     {
         if (empty($routeDefinition['numerus'])) {
             throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a "numerus" definition.', 1562676185);
@@ -53,8 +54,8 @@ class ResourceControllerFactory
             'resourceType' => $resourceType,
             'repository' => $resourceDefinition['repository'],
             'transformer' => $resourceDefinition['transformer'],
-            'serializer' => $routeDefinition['serializer'] ?? null,
-            'operationToCommandMap' => $resourceDefinition['operationToCommandMap'] ?? [],
+            'operationToCommandMap' => ['__class__' => ResourceOperationToCommandMap::class],
+            'convergenceSchema' => $resourceDefinition['convergenceSchema'] ?? null,
         ];
 
         /** @var AbstractResourceController $controller */

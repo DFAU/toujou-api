@@ -3,12 +3,10 @@
 
 namespace DFAU\ToujouApi\Controller;
 
-use Cascader\Cascader;
-use DFAU\ToujouApi\Command\IncludedResourcesCommand;
-use DFAU\ToujouApi\Command\OriginalIncludedResourcesCommand;
-use DFAU\ToujouApi\Command\OriginalTcaResourceDataCommand;
 use DFAU\ToujouApi\Command\ResourceReferencingCommand;
-use DFAU\ToujouApi\Command\TcaResourceDataCommand;
+use DFAU\ToujouApi\Command\TcaResourceCommand;
+use DFAU\ToujouApi\Command\UnitOfWorkCommand;
+use DFAU\ToujouApi\CommandBus\CommandBusFactory;
 use DFAU\ToujouApi\Resource\Numerus;
 use DFAU\ToujouApi\Resource\Operation;
 use League\Fractal\Resource\Item;
@@ -28,36 +26,61 @@ final class ItemController extends AbstractResourceController
         return new JsonResponse($data, 200, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
-    public function issueCommandForOperation(Operation $operation, ServerRequestInterface $request): ResponseInterface
+    public function replace(ServerRequestInterface $request): ResponseInterface
     {
-        $operationName = (string) $operation;
-        if (!isset($this->operationToCommandMap[$operationName])) {
-            throw new \InvalidArgumentException('The given operation "' . $operationName . '" is not supported by the resource type "' . $this->resourceType . '"', 1563793877);
-        }
+        [$commandName, $commandArguments] = $this->getCommandConfigForResourceTypeAndOperation($this->resourceType, new Operation(Operation::REPLACE), [UnitOfWorkCommand::class]);
 
-        $commandInterfaces = array_fill_keys(class_implements($this->operationToCommandMap[$operationName]), true);
+        $this->parseIncludes($request->getQueryParams());
+        $commandArguments['unitOfWork'] = $this->compareRequestBodyToExistingResource($request);
 
-        if (!in_array(ResourceReferencingCommand::class, $commandInterfaces)) {
-            throw new \InvalidArgumentException('This numerus "' . Numerus::ITEM . '" only issues commands implementing at least "' . ResourceReferencingCommand::class . '". Command "'. $this->operationToCommandMap[$operationName] .'" has been given.',1563801127);
-        }
+        $command = $this->objectFactory->create($commandName, $commandArguments);
 
-        $resourceIdentifier = $request->getAttribute('variables')['id'] ?: '';
-        $commandArguments = [
-            'resourceIdentifier' => $resourceIdentifier,
-            'resourceType' => $this->resourceType,
-        ];
+        $this->commandBus->handle($command);
 
-        if (isset($commandInterfaces[TcaResourceDataCommand::class]) || isset($commandInterfaces[IncludedResourcesCommand::class])) {
-            [$commandArguments['resourceData'], $commandArguments['includedResources']] = $this->deserializeBody($request->getParsedBody());
-        }
-
-        if (isset($commandInterfaces[OriginalTcaResourceDataCommand::class]) || isset($commandInterfaces[OriginalIncludedResourcesCommand::class])) {
-            $this->parseIncludes($request->getQueryParams());
-            [$commandArguments['originalResourceData'], $commandArguments['originalIncludedResources']] = $this->deserializeBody($this->fetchAndTransformData($resourceIdentifier));
-        }
-
-        $command = (new Cascader())->create($this->operationToCommandMap[$operationName], $commandArguments);
+        return new JsonResponse([], 202, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
+
+//    public function issueCommandForOperation(Operation $operation, ServerRequestInterface $request): ResponseInterface
+//    {
+//        $operationName = (string) $operation;
+//        if (!isset($this->operationToCommandMap[$operationName])) {
+//            throw new \InvalidArgumentException('The given operation "' . $operationName . '" is not supported by the resource type "' . $this->resourceType . '"', 1563793877);
+//        }
+//
+//        $commandName = $this->operationToCommandMap[$operationName]['__class__'] ?? $this->operationToCommandMap[$operationName];
+//        $commandInterfaces = array_fill_keys(class_implements($commandName), true);
+//
+//        if (!in_array(ResourceReferencingCommand::class, $commandInterfaces)) {
+//            throw new \InvalidArgumentException('This numerus "' . Numerus::ITEM . '" only issues commands implementing at least "' . ResourceReferencingCommand::class . '". Command "'. $this->operationToCommandMap[$operationName] .'" has been given.',1563801127);
+//        }
+//
+//        $resourceIdentifier = $request->getAttribute('variables')['id'] ?: '';
+//        $commandArguments = [
+//            'resourceIdentifier' => $resourceIdentifier,
+//            'resourceType' => $this->resourceType,
+//        ];
+//
+//        if (isset($commandInterfaces[TcaResourceCommand::class]) || isset($commandInterfaces[IncludedResourcesCommand::class])) {
+//            [$commandArguments['resourceData'], $commandArguments['includedResources']] = $this->deserializeBody($request->getParsedBody());
+//        }
+//
+//        if (isset($commandInterfaces[OriginalTcaResourceDataCommand::class]) || isset($commandInterfaces[OriginalIncludedResourcesCommand::class])) {
+//            $this->parseIncludes($request->getQueryParams());
+//            [$commandArguments['originalResourceData'], $commandArguments['originalIncludedResources']] = $this->deserializeBody($this->fetchAndTransformData($resourceIdentifier));
+//        }
+//
+//
+//
+//        if (is_array($this->operationToCommandMap[$operationName]) && isset($this->operationToCommandMap[$operationName]['__class__'])) {
+//            $commandArguments = array_merge($this->operationToCommandMap[$operationName], $commandArguments);
+//            unset($commandArguments['__class__']);
+//        }
+//
+//        $command = $this->objectFactory->create($commandName, $commandArguments);
+//
+//        $commandBus = CommandBusFactory::createFromCommandConfiguration();
+//        $commandBus->handle($command);
+//    }
 
     protected function fetchAndTransformData(string $resourceIdentifier): array
     {
@@ -66,14 +89,5 @@ final class ItemController extends AbstractResourceController
         $item = new Item($resource, $this->transformer, $this->resourceType);
 
         return $this->fractal->createData($item)->toArray();
-    }
-
-    protected function deserializeBody(array $body): array
-    {
-        $data = $this->deserializer->item($body);
-        $resource = array_shift($data);
-        $includes = $data;
-
-        return [$resource, $includes];
     }
 }

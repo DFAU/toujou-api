@@ -3,22 +3,19 @@
 
 namespace DFAU\ToujouApi\Domain\Command;
 
+use DFAU\ToujouApi\Command\TcaResourceCommand;
+use DFAU\ToujouApi\Command\Traits\TcaResourceTrait;
 
-use DFAU\ToujouApi\Command\IncludedResourcesCommand;
-use DFAU\ToujouApi\Command\IncludedResourcesTrait;
-use DFAU\ToujouApi\Command\TcaResourceDataCommand;
-use DFAU\ToujouApi\Command\TcaResourceDataTrait;
-
-class CreateTcaResourceCommand implements TcaResourceDataCommand, IncludedResourcesCommand
+class CreateTcaResourceCommand implements TcaResourceCommand
 {
 
-    use TcaResourceDataTrait, IncludedResourcesTrait;
+    use TcaResourceTrait;
 
-    public function __construct(string $resourceType, string $resourceIdentifier, array $resourceData, array $includedResources = [])
+    public function __construct(string $resourceType, string $resourceIdentifier, string $tableName, array $resourceData)
     {
         $this->resourceType = $resourceType;
         $this->resourceIdentifier = $resourceIdentifier;
+        $this->tableName = $tableName;
         $this->resourceData = $resourceData;
-        $this->includedResources = $includedResources;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DFAU\ToujouApi\Command;
+namespace DFAU\ToujouApi\Command\Traits;
 
 
 trait ResourceReferencingTrait

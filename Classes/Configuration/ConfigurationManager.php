@@ -4,6 +4,7 @@
 namespace DFAU\ToujouApi\Configuration;
 
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -12,13 +13,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConfigurationManager
 {
 
+    protected const CONFIGURATION_TYPE_COMMAND_BUS = 'CommandBus';
+
     protected const CONFIGURATION_TYPE_RESOURCES = 'Resources';
 
     protected const CONFIGURATION_TYPE_ROUTES = 'Routes';
 
     public function __construct(FrontendInterface $cache = null)
     {
-        $this->cache = $cache ?? GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
+        $this->cache = $cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
     }
 
     protected function getConfigurationFromPackages(string $configType): array
@@ -43,6 +46,17 @@ class ConfigurationManager
         }
 
         return $configFromPackages;
+    }
+
+    static public function getCommandBusConfiguration(): array
+    {
+        static $configuration;
+
+        if ($configuration === null) {
+            $configuration = (new static())->getConfigurationFromPackages(static::CONFIGURATION_TYPE_COMMAND_BUS);
+        }
+
+        return $configuration;
     }
 
     static public function getResourcesConfiguration(): array

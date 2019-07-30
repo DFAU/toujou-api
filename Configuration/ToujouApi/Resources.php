@@ -2,10 +2,10 @@
 
 use DFAU\ToujouApi\Domain\Command;
 use DFAU\ToujouApi\Domain\Repository;
+use DFAU\ToujouApi\Domain\Transformer;
 use DFAU\ToujouApi\IncludeHandler;
 use DFAU\ToujouApi\Resource\Operation;
 use DFAU\ToujouApi\Transformer as GenericTranformer;
-use DFAU\ToujouApi\Domain\Transformer;
 use DFAU\ToujouApi\TransformHandler;
 
 return [
@@ -27,11 +27,14 @@ return [
                 ]
             ]
         ],
+        'convergenceSchema' => [
+            '__class__' => \DFAU\ToujouApi\Schema\PagesJsonApiSchema::class,
+        ],
         'operationToCommandMap' => [
-            Operation::CREATE => Command\CreateTcaResourceCommand::class,
-            Operation::REPLACE => Command\ReplaceTcaResourceCommand::class,
-            Operation::UPDATE => Command\UpdateTcaResourceCommand::class,
-            Operation::DELETE => Command\DeleteTcaResourceCommand::class
+            Operation::CREATE => ['__class__' => Command\CreateTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::UPDATE => ['__class__' => Command\UpdateTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::DELETE => ['__class__' => Command\DeleteTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::REPLACE => ['__class__' => Command\DataHandlerUnitOfWorkCommand::class, 'tableName' => 'pages']
         ]
     ],
     'content-elements' => [
@@ -47,11 +50,17 @@ return [
             ],
             'includeHandlers' => [
                 [
-                    '__class__' =>  IncludeHandler\TcaResourceIncludeHandler::class,
+                    '__class__' => IncludeHandler\TcaResourceIncludeHandler::class,
                     'tableName' => 'tt_content',
                     'tableNameToResourceMap' => ['sys_file_reference' => 'file-references']
                 ],
             ]
+        ],
+        'operationToCommandMap' => [
+            Operation::CREATE => ['__class__' => Command\CreateTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::UPDATE => ['__class__' => Command\UpdateTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::DELETE => ['__class__' => Command\DeleteTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::REPLACE => ['__class__' => Command\DataHandlerUnitOfWorkCommand::class, 'tableName' => 'tt_content']
         ]
     ],
     'file-references' => [
@@ -60,6 +69,12 @@ return [
         ],
         'transformer' => [
             '__class__' => Transformer\FileReferenceTransformer::class,
+        ],
+        'operationToCommandMap' => [
+            Operation::CREATE => ['__class__' => Command\CreateTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::UPDATE => ['__class__' => Command\UpdateTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::DELETE => ['__class__' => Command\DeleteTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::REPLACE => ['__class__' => Command\DataHandlerUnitOfWorkCommand::class, 'tableName' => 'sys_file_reference']
         ]
     ],
     'files' => [
@@ -68,6 +83,12 @@ return [
         ],
         'transformer' => [
             '__class__' => Transformer\FileReferenceTransformer::class
+        ],
+        'operationToCommandMap' => [
+            Operation::CREATE => ['__class__' => Command\CreateTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::UPDATE => ['__class__' => Command\UpdateTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::DELETE => ['__class__' => Command\DeleteTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::REPLACE => ['__class__' => Command\DataHandlerUnitOfWorkCommand::class, 'tableName' => 'sys_file']
         ]
     ]
 ];
