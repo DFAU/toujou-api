@@ -12,7 +12,7 @@ use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
 class ResourceControllerFactory
 {
 
-    static public function createFromRouteDefintinion(string $routeIdentifier, array $routeDefinition) : AbstractResourceController
+    static public function createFromRouteDefintinion(string $routeIdentifier, array $routeDefinition) : AbstractResourceCommandController
     {
         if (empty($routeDefinition['numerus'])) {
             throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a "numerus" definition.', 1562676185);
@@ -41,10 +41,10 @@ class ResourceControllerFactory
 
         switch ($routeDefinition['numerus']) {
             case Numerus::ITEM:
-                $controllerName = ItemController::class;
+                $controllerName = ItemCommandController::class;
                 break;
             case Numerus::COLLECTION:
-                $controllerName = CollectionController::class;
+                $controllerName = CollectionCommandController::class;
                 break;
             default:
                 throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does contain an invalid "numerus" definition "' . $routeDefinition['numerus'] . '" of type "' . Numerus::class . '".', 1562676282);
@@ -53,12 +53,10 @@ class ResourceControllerFactory
         $controllerOptions = [
             'resourceType' => $resourceType,
             'repository' => $resourceDefinition['repository'],
-            'transformer' => $resourceDefinition['transformer'],
-            'operationToCommandMap' => ['__class__' => ResourceOperationToCommandMap::class],
-            'convergenceSchema' => $resourceDefinition['convergenceSchema'] ?? null,
+            'transformer' => $resourceDefinition['transformer']
         ];
 
-        /** @var AbstractResourceController $controller */
+        /** @var AbstractResourceCommandController $controller */
         $controller = (new Cascader())->create($controllerName, $controllerOptions);
         return $controller;
     }

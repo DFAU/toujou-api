@@ -13,12 +13,33 @@ final class ResourceOperationToCommandMap
      */
     protected $commandsByResourceTypeAndOperation;
 
-    public function findCommandByResourceTypeAndOperation(string $resourceType, Operation $operation)
+    public function getCommandConfigForResourceTypeAndOperation(string $resourceType, Operation $operation, array $requiredInterfaces = []): array
+    {
+        $commandConfig = $this->findCommandConfigByResourceTypeAndOperation($resourceType, $operation);
+
+        if ($commandConfig === null) {
+            throw new \InvalidArgumentException('The given operation "' . $operation . '" is not supported by the resource type "' . $resourceType . '"', 1563793877);
+        }
+
+        $commandConfig = is_array($commandConfig) ? $commandConfig : ['__class__' => $commandConfig];
+        $commandInterfaces = class_implements($commandConfig['__class__']);
+
+        if ($missingInterfaces = array_diff($requiredInterfaces, $commandInterfaces)) {
+            throw new \InvalidArgumentException('The command "' . $commandConfig['__class__'] . '" needs to implement also these inferfaces "' . implode(', ', $missingInterfaces) . '" in order to be used for the resource type "' . $resourceType . '" and operation "' . $operation . '".', 1563801127);
+        }
+
+        $commandName = $commandConfig['__class__'];
+        $commandArguments = $commandConfig;
+        unset($commandArguments['__class__']);
+
+        return [$commandName, $commandArguments, $commandInterfaces];
+    }
+
+    protected function findCommandConfigByResourceTypeAndOperation(string $resourceType, Operation $operation)
     {
         $this->loadOperationsToCommandMapFromResourcesConfiguration();
         return $this->commandsByResourceTypeAndOperation[$resourceType][(string) $operation] ?? null;
     }
-
 
     protected function loadOperationsToCommandMapFromResourcesConfiguration(): void
     {

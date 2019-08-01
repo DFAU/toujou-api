@@ -1,21 +1,21 @@
 <?php
 
-use DFAU\ToujouApi\CommandBus\ConfigurationLocator;
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
-use DFAU\ToujouApi\Domain\Command\DataHandlerUnitOfWorkCommand;
+use DFAU\ToujouApi\Domain\Command\ReplaceTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
+use DFAU\ToujouApi\Domain\Command\UnitOfWorkTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UpdateTcaResourceCommand;
+use DFAU\ToujouApi\Domain\CommandHandler\ConvergenceCommandHandler;
 use DFAU\ToujouApi\Domain\CommandHandler\DataHandlerCommandHandler;
 use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleClassNameWithoutSuffixInflector;
 
 return [
     'commands' => [
-        CreateTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleCreateTcaResource'],
-        DataHandlerUnitOfWorkCommand::class => [DataHandlerCommandHandler::class, 'handleDataHandlerUnitOfWork'],
-        UpdateTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleUpdateTcaResource'],
-        DeleteTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleDeleteTcaResource'],
+        CreateTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleCreateTcaResourceCommand'],
+        UpdateTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleUpdateTcaResourceCommand'],
+        DeleteTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleDeleteTcaResourceCommand'],
+        UnitOfWorkTcaResourceCommand::class => [DataHandlerCommandHandler::class, 'handleDataHandlerUnitOfWorkCommand'],
+        ReplaceTcaResourceCommand::class => [ConvergenceCommandHandler::class, 'handleReplaceTcaResourceCommand'],
     ],
     'middlewares' => [
         'dfau/toujou-api/command-handler' => [

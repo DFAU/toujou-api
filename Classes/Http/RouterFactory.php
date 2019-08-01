@@ -6,9 +6,9 @@ namespace DFAU\ToujouApi\Http;
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
-use DFAU\ToujouApi\Controller\AbstractResourceController;
-use DFAU\ToujouApi\Controller\CollectionController;
-use DFAU\ToujouApi\Controller\ItemController;
+use DFAU\ToujouApi\Controller\AbstractResourceCommandController;
+use DFAU\ToujouApi\Controller\CollectionCommandController;
+use DFAU\ToujouApi\Controller\ItemCommandController;
 use DFAU\ToujouApi\Controller\ResourceControllerFactory;
 use DFAU\ToujouApi\Resource\Numerus;
 use DFAU\ToujouApi\Resource\Operation;
@@ -47,7 +47,6 @@ class RouterFactory
                         case Operation::READ:
                             return $controller->read($request);
                         case Operation::REPLACE:
-                            return $controller->replace($request);
                         case Operation::CREATE:
                         case Operation::UPDATE:
                         case Operation::DELETE:

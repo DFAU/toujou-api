@@ -4,7 +4,7 @@
 namespace DFAU\ToujouApi\Command\Traits;
 
 
-trait ResourceReferencingTrait
+trait ResourceReferencingCommandTrait
 {
 
     /**

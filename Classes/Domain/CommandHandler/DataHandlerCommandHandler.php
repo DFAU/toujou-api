@@ -4,11 +4,12 @@
 namespace DFAU\ToujouApi\Domain\CommandHandler;
 
 
-use DFAU\ToujouApi\Command\TcaResourceCommand;
+use DFAU\ToujouApi\Command\TcaRecordReferencingCommand;
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
-use DFAU\ToujouApi\Domain\Command\DataHandlerUnitOfWorkCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
+use DFAU\ToujouApi\Domain\Command\UnitOfWorkTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UpdateTcaResourceCommand;
+use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -18,39 +19,40 @@ class DataHandlerCommandHandler
     public function __construct()
     {
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $this->operationToCommandMap = GeneralUtility::makeInstance(ResourceOperationToCommandMap::class);
     }
 
-    public function handleCreateTcaResource(CreateTcaResourceCommand $createCommand): void
+    public function handleCreateTcaResourceCommand(CreateTcaResourceCommand $createCommand): void
     {
         $datamap = $commandmap = [];
         $this->addCommandToDataOrCommandMap($createCommand, $datamap, $commandmap);
         $this->process($datamap, $commandmap);
     }
 
-    public function handleDataHandlerUnitOfWork(DataHandlerUnitOfWorkCommand $dataHandlerUnitOfWorkCommand): void
+    public function handleDataHandlerUnitOfWorkCommand(UnitOfWorkTcaResourceCommand $unitOfWorkTcaResourceCommand): void
     {
         $datamap = $commandmap = [];
-        foreach ($dataHandlerUnitOfWorkCommand->getUnitOfWorkCommands() as $command) {
+        foreach ($unitOfWorkTcaResourceCommand->getUnitOfWorkCommands() as $command) {
             $this->addCommandToDataOrCommandMap($command, $datamap, $commandmap);
         }
         $this->process($datamap, $commandmap);
     }
 
-    public function handleUpdateTcaResource(UpdateTcaResourceCommand $updateCommand): void
+    public function handleUpdateTcaResourceCommand(UpdateTcaResourceCommand $updateCommand): void
     {
         $datamap = $commandmap = [];
         $this->addCommandToDataOrCommandMap($updateCommand, $datamap, $commandmap);
         $this->process($datamap, $commandmap);
     }
 
-    public function handleDeleteTcaResource(DeleteTcaResourceCommand $deleteCommand): void
+    public function handleDeleteTcaResourceCommand(DeleteTcaResourceCommand $deleteCommand): void
     {
         $datamap = $commandmap = [];
         $this->addCommandToDataOrCommandMap($deleteCommand, $datamap, $commandmap);
         $this->process($datamap, $commandmap);
     }
 
-    protected function addCommandToDataOrCommandMap(TcaResourceCommand $command, array &$datamap, array &$commandmap): void
+    protected function addCommandToDataOrCommandMap(TcaRecordReferencingCommand $command, array &$datamap, array &$commandmap): void
     {
         switch ($command) {
             case $command instanceof CreateTcaResourceCommand:

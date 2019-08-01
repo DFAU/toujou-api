@@ -4,19 +4,18 @@
 namespace DFAU\ToujouApi\Domain\Command;
 
 
-use DFAU\ToujouApi\Command\TcaResourceCommand;
-use DFAU\ToujouApi\Command\Traits\TcaResourceTrait;
+use DFAU\ToujouApi\Command\TcaRecordDataCommand;
+use DFAU\ToujouApi\Command\Traits\TcaRecordDataCommandTrait;
 
-class UpdateTcaResourceCommand implements TcaResourceCommand
+class UpdateTcaResourceCommand implements TcaRecordDataCommand
 {
 
-    use TcaResourceTrait;
+    use TcaRecordDataCommandTrait;
 
-    public function __construct(string $resourceType, string $resourceIdentifier, string $tableName, array $resourceData)
+    public function __construct(string $resourceIdentifier, string $tableName, array $resourceData)
     {
-        $this->resourceType = $resourceType;
-        $this->resourceIdentifier = $resourceIdentifier;
+        $this->uid = $resourceIdentifier;
         $this->tableName = $tableName;
-        $this->resourceData = $resourceData;
+        $this->recordData = $resourceData;
     }
 }
