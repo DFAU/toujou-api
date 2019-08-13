@@ -80,7 +80,9 @@ abstract class AbstractResourceCommandController
         $this->commandBus = CommandBusFactory::createFromCommandConfiguration();
         $this->deserializer = GeneralUtility::makeInstance(JsonApiDeserializer::class);
         $this->fractal = new Manager();
-        $this->fractal->setSerializer(new JsonApiSerializer());
+        $this->fractal->setSerializer(new class extends JsonApiSerializer {
+            public function getMandatoryFields() { return ['id', 'meta']; }
+        });
         $this->resourceOperationToCommandMap = GeneralUtility::makeInstance(ResourceOperationToCommandMap::class);
         $this->objectFactory = new Cascader();
     }
@@ -98,17 +100,18 @@ abstract class AbstractResourceCommandController
         $commandArguments['resourceIdentifier'] = $resourceIdentifier;
         $commandArguments['resourceType'] = $this->resourceType;
 
-        $this->parseIncludes($request->getQueryParams());
-        $includes = $this->fractal->getRequestedIncludes();
-
-
+        $queryParams = new ParamBag($request->getQueryParams());
+        $this->parseIncludes($queryParams);
+        $this->parseFieldsets($queryParams);
 
         if (in_array(AsIsResourceDataCommand::class, $commandInterfaces)) {
-            $commandArguments['asIsResourceData'] = $this->deserializeResourceData($this->fetchAndTransformData($resourceIdentifier));
+            $asIsResourceData = $this->fetchAndTransformData($resourceIdentifier);
+            $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
         }
 
         if (in_array(ResourceDataCommand::class, $commandInterfaces)) {
-            $commandArguments['resourceData'] = $this->deserializeResourceData($request->getParsedBody());
+            $resourceData = $request->getParsedBody();
+            $commandArguments['resourceData'] = $resourceData ? $this->deserializer->item($resourceData) : null;
         }
 
         $command = $this->objectFactory->create($commandName, $commandArguments);
@@ -117,9 +120,8 @@ abstract class AbstractResourceCommandController
         return new Response('php://temp', 202, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
-    protected function parseIncludes(array $queryParams): void
+    protected function parseIncludes(ParamBag $queryParams): void
     {
-        $queryParams = new ParamBag($queryParams);
         if (isset($queryParams['include'])) {
             $this->fractal->parseIncludes($queryParams['include']);
         }
@@ -128,9 +130,14 @@ abstract class AbstractResourceCommandController
         }
     }
 
-    abstract protected function deserializeResourceData(array $resourceData): array;
+    protected function parseFieldsets(ParamBag $queryParams): void
+    {
+        if (isset($queryParams['fields'])) {
+            $this->fractal->parseFieldsets($queryParams['fields']);
+        }
+    }
 
-    abstract protected function fetchAndTransformData(string $resourceIdentifier): array;
+    abstract protected function fetchAndTransformData(string $resourceIdentifier): ?array;
 
     abstract public function read(ServerRequestInterface $request): ResponseInterface;
 

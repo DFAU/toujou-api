@@ -12,7 +12,6 @@ class MetaTransformHandler implements TransformHandler
     public function handleTransform($data, array $transformedData, callable $next): array
     {
         return $next($data, array_merge($transformedData, [
-            'id' => (string)$data[AbstractDatabaseResourceRepository::DEFAULT_IDENTIFIER],
             'meta' => $data[AbstractDatabaseResourceRepository::META_ATTRIBUTE],
         ]));
     }

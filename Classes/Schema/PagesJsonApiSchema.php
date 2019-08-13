@@ -21,7 +21,8 @@ class PagesJsonApiSchema extends Schema
             ],
             [new Schema\ResourcePropertiesExtractor(
                 new Schema\ExpressionQualifier('resource["type"] && resource["id"]'),
-                new Schema\PropertyPathPropertyList('resource[attributes]')
+                new Schema\PropertyPathPropertyList('resource[attributes]'),
+                new Schema\ExpressionQualifier('key not in ["pid","sorting"]')
             )]
         );
     }

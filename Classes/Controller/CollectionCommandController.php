@@ -33,7 +33,7 @@ final class CollectionCommandController extends AbstractResourceCommandControlle
         return $this->deserializer->collection($resourceData);
     }
 
-    protected function fetchAndTransformData(int $limit, $currentCursor, $previousCursor): array
+    protected function fetchAndTransformData(int $limit, $currentCursor, $previousCursor): ?array
     {
         [$resources, $cursor] = $this->repository->findWithCursor($limit, $currentCursor, $previousCursor);
 

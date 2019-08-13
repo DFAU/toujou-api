@@ -40,11 +40,6 @@ class ApiEntrypoint implements MiddlewareInterface
 
         if (!empty($apiPathPrefix) && GeneralUtility::isFirstPartOfStr($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
             $tsfe = $this->getTyposcriptFrontendController();
-
-            if (!$tsfe->isBackendUserLoggedIn()) {
-                return new \TYPO3\CMS\Core\Http\Response('php://temp', '401');
-            }
-
             $tsfe->determineId();
 
             $request = $request->withUri($request->getUri()->withPath('/' . substr($request->getUri()->getPath(), strlen('/' . $apiPathPrefix))));

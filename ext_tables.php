@@ -1,5 +1,6 @@
 <?php
 
+use DFAU\ToujouApi\Form\DatabaseRowDateTimeFields;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
@@ -18,4 +19,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['toujouApiTcaR
     EvaluateDisplayConditions::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][EvaluateDisplayConditions::class],
     TcaColumnsProcessShowitem::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TcaColumnsProcessShowitem::class],
     TcaTypesShowitem::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TcaTypesShowitem::class],
+    DatabaseRowDateTimeFields::class => [
+        'depends' => [InitializeProcessedTca::class],
+    ],
 ];

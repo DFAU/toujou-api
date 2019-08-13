@@ -21,9 +21,21 @@ class TcaResourceTransformHandler implements TransformHandler
      */
     protected $tableName;
 
-    public function __construct(string $tableName)
+    /**
+     * @var string
+     */
+    protected $identifier;
+
+    /**
+     * @var array
+     */
+    protected $excludedColumns;
+
+    public function __construct(string $tableName, array $excludedColumns = [], string $identifier = AbstractDatabaseResourceRepository::DEFAULT_IDENTIFIER)
     {
         $this->tableName = $tableName;
+        $this->identifier = $identifier;
+        $this->excludedColumns = array_fill_keys($excludedColumns, true);
 
         $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
         $orderedProviderList->setProviderList(
@@ -37,8 +49,7 @@ class TcaResourceTransformHandler implements TransformHandler
     public function handleTransform($data, array $transformedData, callable $next): array
     {
         return $next($data, array_merge($transformedData, [
-            'id' => (string)$data[AbstractDatabaseResourceRepository::DEFAULT_IDENTIFIER],
-            'meta' => $data[AbstractDatabaseResourceRepository::META_ATTRIBUTE],
+            'id' => (string)$data[$this->identifier],
             AbstractDatabaseResourceRepository::DEFAULT_PARENT_PAGE_IDENTIFIER => $data[AbstractDatabaseResourceRepository::DEFAULT_PARENT_PAGE_IDENTIFIER],
         ], $this->getVisibleAttributesOfResource($data)));
     }
@@ -51,7 +62,7 @@ class TcaResourceTransformHandler implements TransformHandler
         ]);
 
         $visibleColumns = array_filter($result['columnsToProcess'], function ($columnName) {
-            return $columnName[0] !== '-';
+            return !isset($this->excludedColumns[$columnName]) && $columnName[0] !== '-';
         });
 
         return array_combine($visibleColumns, array_map(function ($columnName) use ($result) {

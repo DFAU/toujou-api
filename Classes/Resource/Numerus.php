@@ -11,5 +11,5 @@ class Numerus extends Enumeration
 
     const ITEM = 'item';
 
-    const COLLECTION = 'item';
+    const COLLECTION = 'collection';
 }

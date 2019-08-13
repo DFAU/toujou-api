@@ -6,6 +6,7 @@ namespace DFAU\ToujouApi\IncludeHandler;
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
+use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
 use DFAU\ToujouApi\Domain\Repository\PageRelationRepository;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
@@ -75,6 +76,10 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
         if (!empty($result)) {
             $resourceDefinition = $this->resourceDefinitionsByTableName[$allowedTableName];
+
+            // Override any custom Identifier here for our database record identifier
+            unset($resourceDefinition['repository']['identifier']);
+
             $cascader = new Cascader();
 
             $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);

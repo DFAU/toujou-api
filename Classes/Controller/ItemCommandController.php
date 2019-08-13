@@ -4,6 +4,7 @@
 namespace DFAU\ToujouApi\Controller;
 
 use DFAU\ToujouApi\Resource\Numerus;
+use League\Fractal\ParamBag;
 use League\Fractal\Resource\Item;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,21 +17,22 @@ final class ItemCommandController extends AbstractResourceCommandController
 
     public function read(ServerRequestInterface $request): ResponseInterface
     {
-        $this->parseIncludes($request->getQueryParams());
+        $queryParams = new ParamBag($request->getQueryParams());
+        $this->parseIncludes($queryParams);
+        $this->parseFieldsets($queryParams);
 
         $data = $this->fetchAndTransformData($request->getAttribute('variables')['id']);
 
         return new JsonResponse($data, 200, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
-    protected function deserializeResourceData(array $resourceData): array
-    {
-        return $this->deserializer->item($resourceData);
-    }
-
-    protected function fetchAndTransformData(string $resourceIdentifier): array
+    protected function fetchAndTransformData(string $resourceIdentifier): ?array
     {
         $resource = $this->repository->findOneByIdentifier($resourceIdentifier);
+
+        if ($resource === null) {
+            return null;
+        }
 
         $item = new Item($resource, $this->transformer, $this->resourceType);
 

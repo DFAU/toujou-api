@@ -48,8 +48,8 @@ class ConvergenceCommandHandler
     public function handleReplaceTcaResourceCommand(ReplaceTcaResourceCommand $replaceTcaResourceCommand): void
     {
         $schema = $this->getSchemaForResourceType($replaceTcaResourceCommand->getResourceType());
-        $toBeResources = $replaceTcaResourceCommand->getResourceData();
-        $asIsResources = $replaceTcaResourceCommand->getAsIsResourceData();
+        $toBeResources = $replaceTcaResourceCommand->getResourceData() ?? [];
+        $asIsResources = $replaceTcaResourceCommand->getAsIsResourceData() ?? [];
 
         $operations = GeneralUtility::makeInstance(OperationsFactory::class)->buildFromSchemaAndResources($schema, $toBeResources, $asIsResources);
 

@@ -69,10 +69,10 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $result = $query->execute()->fetch();
 
         if ($result) {
-            $result = $this->createMetaMapper()($result);
+            return $this->createMetaMapper()($result);
         }
 
-        return $result;
+        return null;
     }
 
     public function findByIdentifiers(array $identifiers): array
@@ -103,7 +103,9 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     {
         $tableName = $this->tableName;
         return function (array $resource) use ($tableName): array {
-            $resource[static::META_ATTRIBUTE] = [];
+            $resource[static::META_ATTRIBUTE] = [
+                static::META_UID => $resource[static::DEFAULT_IDENTIFIER]
+            ];
             if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['crdate']) && !empty($resource[$GLOBALS['TCA'][$tableName]['ctrl']['crdate']])) {
                 $resource[static::META_ATTRIBUTE][static::META_CREATED] = ZuluDate::fromTimestamp($resource[$GLOBALS['TCA'][$tableName]['ctrl']['crdate']]);
             }

@@ -18,7 +18,7 @@ class ReplaceTcaResourceCommand implements TcaRecordReferencingCommand, Resource
 
     use TcaRecordReferencingCommandTrait, ResourceReferencingCommandTrait, ResourceDataCommandTrait, AsIsResourceDataCommandTrait;
 
-    public function __construct(string $resourceType, string $resourceIdentifier, string $tableName, array $resourceData, array $asIsResourceData)
+    public function __construct(string $resourceType, string $resourceIdentifier, string $tableName, array $resourceData, ?array $asIsResourceData)
     {
         $this->resourceType = $resourceType;
         $this->resourceIdentifier = $this->uid = $resourceIdentifier;

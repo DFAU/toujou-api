@@ -12,7 +12,7 @@ trait AsIsResourceDataCommandTrait
      */
     protected $asIsResourceData;
 
-    public function getAsIsResourceData(): array
+    public function getAsIsResourceData():?array
     {
         return $this->asIsResourceData;
     }

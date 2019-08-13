@@ -56,13 +56,13 @@ class DataHandlerCommandHandler
     {
         switch ($command) {
             case $command instanceof CreateTcaResourceCommand:
-                $datamap[$command->getTableName()][$command->getResourceIdentifier()] = $command->getResourceData();
+                $datamap[$command->getTableName()][$command->getUid()] = $command->getRecordData();
                 break;
             case $command instanceof UpdateTcaResourceCommand:
-                $datamap[$command->getTableName()][$command->getResourceIdentifier()] = $command->getResourceData();
+                $datamap[$command->getTableName()][$command->getUid()] = $command->getRecordData();
                 break;
             case $command instanceof DeleteTcaResourceCommand:
-                $commandmap[$command->getTableName()][$command->getResourceIdentifier()]['delete'] = 1;
+                $commandmap[$command->getTableName()][$command->getUid()]['delete'] = 1;
                 break;
             default:
                 throw new \BadMethodCallException('The given command "' . get_class($command) . '" is not supported yet', 1564476754);
@@ -77,6 +77,9 @@ class DataHandlerCommandHandler
             return [];
         }
 
+        // We simulate a call from import/export module so things like sorting get imported aswell
+        $this->dataHandler->callFromImpExp = true;
+        $this->dataHandler->reverseOrder = true;
         $this->dataHandler->start($datamap, $commandmap);
         $this->dataHandler->process_datamap();
         $this->dataHandler->process_cmdmap();

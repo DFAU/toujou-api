@@ -15,8 +15,16 @@ return [
         ],
     ],
     'toujou_api' => [
+        'dfau/toujou-api/resource-server' => [
+            'target' => \DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware::class,
+        ],
+        'dfau/toujou-api/check-be-user-authorization' => [
+            'target' => \DFAU\ToujouApi\Middleware\CheckBeUserAuthorization::class,
+            'after' => ['dfau/toujou-api/resource-server']
+        ],
         'dfau/toujou-api/parsed-body-reset' => [
-            'target' => ParsedBodyReset::class
+            'target' => ParsedBodyReset::class,
+            'after' => ['dfau/toujou-api/check-be-user-authorization']
         ],
         'middlewares/payload/jsonapi-payload' => [
             'target' => JsonApiPayload::class,
