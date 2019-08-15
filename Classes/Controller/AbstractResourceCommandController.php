@@ -14,11 +14,13 @@ use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
 use DFAU\ToujouApi\Domain\Repository\ApiResourceRepository;
 use DFAU\ToujouApi\Resource\Operation;
 use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
+use DFAU\ToujouApi\Resource\UnsupportedOperationException;
 use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
 use League\Fractal\Manager;
 use League\Fractal\ParamBag;
 use League\Fractal\Serializer\JsonApiSerializer;
 use League\Tactician\CommandBus;
+use Middlewares\Utils\HttpErrorException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
@@ -90,32 +92,36 @@ abstract class AbstractResourceCommandController
 
     public function issueCommandForOperation(Operation $operation, ServerRequestInterface $request): ResponseInterface
     {
-        [$commandName, $commandArguments, $commandInterfaces] = $this->resourceOperationToCommandMap->getCommandConfigForResourceTypeAndOperation(
-            $this->resourceType,
-            $operation,
-            [ResourceReferencingCommand::class]
-        );
+        try {
+            [$commandName, $commandArguments, $commandInterfaces] = $this->resourceOperationToCommandMap->getCommandConfigForResourceTypeAndOperation(
+                $this->resourceType,
+                $operation,
+                [ResourceReferencingCommand::class]
+            );
 
-        $resourceIdentifier = $request->getAttribute('variables')['id'] ?: '';
-        $commandArguments['resourceIdentifier'] = $resourceIdentifier;
-        $commandArguments['resourceType'] = $this->resourceType;
+            $resourceIdentifier = $request->getAttribute('variables')['id'] ?: '';
+            $commandArguments['resourceIdentifier'] = $resourceIdentifier;
+            $commandArguments['resourceType'] = $this->resourceType;
 
-        $queryParams = new ParamBag($request->getQueryParams());
-        $this->parseIncludes($queryParams);
-        $this->parseFieldsets($queryParams);
+            $queryParams = new ParamBag($request->getQueryParams());
+            $this->parseIncludes($queryParams);
+            $this->parseFieldsets($queryParams);
 
-        if (in_array(AsIsResourceDataCommand::class, $commandInterfaces)) {
-            $asIsResourceData = $this->fetchAndTransformData($resourceIdentifier);
-            $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
+            if (in_array(AsIsResourceDataCommand::class, $commandInterfaces)) {
+                $asIsResourceData = $this->fetchAndTransformData($resourceIdentifier);
+                $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
+            }
+
+            if (in_array(ResourceDataCommand::class, $commandInterfaces)) {
+                $resourceData = $request->getParsedBody();
+                $commandArguments['resourceData'] = $resourceData ? $this->deserializer->item($resourceData) : null;
+            }
+
+            $command = $this->objectFactory->create($commandName, $commandArguments);
+            $this->commandBus->handle($command);
+        } catch(UnsupportedOperationException $exception) {
+            throw HttpErrorException::create(405, [], $exception);
         }
-
-        if (in_array(ResourceDataCommand::class, $commandInterfaces)) {
-            $resourceData = $request->getParsedBody();
-            $commandArguments['resourceData'] = $resourceData ? $this->deserializer->item($resourceData) : null;
-        }
-
-        $command = $this->objectFactory->create($commandName, $commandArguments);
-        $this->commandBus->handle($command);
 
         return new Response('php://temp', 202, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }

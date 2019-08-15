@@ -80,6 +80,7 @@ class DataHandlerCommandHandler
         // We simulate a call from import/export module so things like sorting get imported aswell
         $this->dataHandler->callFromImpExp = true;
         $this->dataHandler->reverseOrder = true;
+        $this->dataHandler->dontProcessTransformations = true;
         $this->dataHandler->start($datamap, $commandmap);
         $this->dataHandler->process_datamap();
         $this->dataHandler->process_cmdmap();

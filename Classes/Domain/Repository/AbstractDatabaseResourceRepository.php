@@ -4,10 +4,12 @@
 namespace DFAU\ToujouApi\Domain\Repository;
 
 
+use DFAU\ToujouApi\Database\Query\Restriction\ApiRestrictionContainer;
 use DFAU\ToujouApi\Domain\Value\ZuluDate;
 use League\Fractal\Pagination\Cursor;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository
@@ -39,10 +41,12 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     protected function createQuery(): QueryBuilder
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
+        $querybuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->select('*')
             ->from($this->tableName);
+        $querybuilder->setRestrictions(GeneralUtility::makeInstance(ApiRestrictionContainer::class));
+        return $querybuilder;
     }
 
     public function findWithCursor(int $limit, ?int $currentCursor, ?int $previousCursor) : array

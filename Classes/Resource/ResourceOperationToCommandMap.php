@@ -18,7 +18,7 @@ final class ResourceOperationToCommandMap
         $commandConfig = $this->findCommandConfigByResourceTypeAndOperation($resourceType, $operation);
 
         if ($commandConfig === null) {
-            throw new \InvalidArgumentException('The given operation "' . $operation . '" is not supported by the resource type "' . $resourceType . '"', 1563793877);
+            throw new UnsupportedOperationException('The given operation "' . $operation . '" is not supported by the resource type "' . $resourceType . '"', 1563793877);
         }
 
         $commandConfig = is_array($commandConfig) ? $commandConfig : ['__class__' => $commandConfig];

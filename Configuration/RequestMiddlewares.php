@@ -10,7 +10,7 @@ return [
     'frontend' => [
         'dfau/toujou-api/api-entrypoint' => [
             'target' => ApiEntrypoint::class,
-            'after' => ['typo3/cms-frontend/site', 'dfau/toujou-oauth2-server/resource-server'],
+            'after' => ['typo3/cms-frontend/site', 'dfau/toujou-oauth2-server/authorization-server'],
             'before' => ['typo3/cms-frontend/base-redirect-resolver']
         ],
     ],
