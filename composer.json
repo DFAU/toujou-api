@@ -9,7 +9,7 @@
     "require": {
         "php": ">=7.2 <7.3",
         "ext-json": "*",
-        "dfau/convergence": "dev-master",
+        "dfau/convergence": "^0.1.0",
         "typo3/cms-core": "^9.5",
         "league/fractal": "~0.18",
         "league/tactician": "2.0.x-dev",
