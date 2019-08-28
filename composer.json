@@ -2,7 +2,7 @@
     "name": "dfau/toujou-api",
     "description": "TYPO3 REST API Framework",
     "type": "typo3-cms-extension",
-    "license": "GPLv3",
+    "license": "GPL-3.0-or-later",
     "replace": {
         "toujou_api": "self.version"
     },
