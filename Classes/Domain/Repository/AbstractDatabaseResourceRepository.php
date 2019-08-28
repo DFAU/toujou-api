@@ -49,7 +49,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return $querybuilder;
     }
 
-    public function findWithCursor(int $limit, ?int $currentCursor, ?int $previousCursor) : array
+    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor) : array
     {
         $query = $this->createQuery()->setMaxResults($limit);
 

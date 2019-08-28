@@ -7,7 +7,6 @@ namespace DFAU\ToujouApi\Controller;
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use DFAU\ToujouApi\Resource\Numerus;
-use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
 
 class ResourceControllerFactory
 {
@@ -39,12 +38,13 @@ class ResourceControllerFactory
             throw new \InvalidArgumentException('The resource definition "' . $resourceType . '" does not contain a "transformer" definition.', 1563206747);
         }
 
+        // TODO currently JSON API is the only supported controller type, but other serialization formats should be supported
         switch ($routeDefinition['numerus']) {
             case Numerus::ITEM:
-                $controllerName = ItemCommandController::class;
+                $controllerName = JsonApiItemCommandController::class;
                 break;
             case Numerus::COLLECTION:
-                $controllerName = CollectionCommandController::class;
+                $controllerName = JsonApiCollectionCommandController::class;
                 break;
             default:
                 throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does contain an invalid "numerus" definition "' . $routeDefinition['numerus'] . '" of type "' . Numerus::class . '".', 1562676282);

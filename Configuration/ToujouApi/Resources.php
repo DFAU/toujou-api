@@ -5,7 +5,7 @@ use DFAU\ToujouApi\Domain\Repository;
 use DFAU\ToujouApi\Domain\Transformer;
 use DFAU\ToujouApi\IncludeHandler;
 use DFAU\ToujouApi\Resource\Operation;
-use DFAU\ToujouApi\Transformer as GenericTranformer;
+use DFAU\ToujouApi\Transformer as GenericTransformer;
 use DFAU\ToujouApi\TransformHandler;
 
 return [
@@ -15,7 +15,7 @@ return [
             'tableName' => 'pages'
         ],
         'transformer' => [
-            '__class__' => GenericTranformer\ComposableTransformer::class,
+            '__class__' => GenericTransformer\ComposableTransformer::class,
             'transformHandlers' => [
                 ['__class__' => TransformHandler\MetaTransformHandler::class],
                 ['__class__' => TransformHandler\TcaResourceTransformHandler::class, 'tableName' => 'pages']
@@ -40,7 +40,7 @@ return [
     'content-elements' => [
         'repository' => ['__class__' => Repository\TcaResourceRepository::class, 'tableName' => 'tt_content'],
         'transformer' => [
-            '__class__' => GenericTranformer\ComposableTransformer::class,
+            '__class__' => GenericTransformer\ComposableTransformer::class,
             'transformHandlers' => [
                 ['__class__' => TransformHandler\MetaTransformHandler::class],
                 ['__class__' => TransformHandler\TcaResourceTransformHandler::class, 'tableName' => 'tt_content']

@@ -1,6 +1,6 @@
 {
     "name": "dfau/toujou-api",
-    "description": "API Extension for toujou",
+    "description": "TYPO3 REST API Framework",
     "type": "typo3-cms-extension",
     "license": "GPLv3",
     "replace": {

@@ -5,12 +5,8 @@ namespace DFAU\ToujouApi\Controller;
 
 
 use Cascader\Cascader;
-use DFAU\Convergence\Schema;
-use DFAU\ToujouApi\Command\AsIsResourceDataCommand;
-use DFAU\ToujouApi\Command\ResourceDataCommand;
 use DFAU\ToujouApi\Command\ResourceReferencingCommand;
 use DFAU\ToujouApi\CommandBus\CommandBusFactory;
-use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
 use DFAU\ToujouApi\Domain\Repository\ApiResourceRepository;
 use DFAU\ToujouApi\Resource\Operation;
 use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
@@ -18,7 +14,6 @@ use DFAU\ToujouApi\Resource\UnsupportedOperationException;
 use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
 use League\Fractal\Manager;
 use League\Fractal\ParamBag;
-use League\Fractal\Serializer\JsonApiSerializer;
 use League\Tactician\CommandBus;
 use Middlewares\Utils\HttpErrorException;
 use Psr\Http\Message\ResponseInterface;
@@ -40,19 +35,9 @@ abstract class AbstractResourceCommandController
     protected $commandBus;
 
     /**
-     * @var Schema
-     */
-    protected $convergenceSchema;
-
-    /**
      * @var Manager
      */
     protected $fractal;
-
-    /**
-     * @var JsonApiDeserializer
-     */
-    protected $deserializer;
 
     /**
      * @var ApiResourceRepository
@@ -80,15 +65,16 @@ abstract class AbstractResourceCommandController
         $this->transformer = $transformer;
 
         $this->commandBus = CommandBusFactory::createFromCommandConfiguration();
-        $this->deserializer = GeneralUtility::makeInstance(JsonApiDeserializer::class);
         $this->fractal = new Manager();
-        $this->fractal->setSerializer(new class extends JsonApiSerializer {
-            public function getMandatoryFields() { return ['id', 'meta']; }
-        });
         $this->resourceOperationToCommandMap = GeneralUtility::makeInstance(ResourceOperationToCommandMap::class);
         $this->objectFactory = new Cascader();
     }
 
+    abstract public function canHandleOperation(Operation $operation): bool;
+
+    abstract public function read(ServerRequestInterface $request): ResponseInterface;
+
+    abstract protected function fillInCommandArguments(ServerRequestInterface $request, string $commandName, array $commandArguments, array $commandInterfaces): array;
 
     public function issueCommandForOperation(Operation $operation, ServerRequestInterface $request): ResponseInterface
     {
@@ -99,23 +85,11 @@ abstract class AbstractResourceCommandController
                 [ResourceReferencingCommand::class]
             );
 
-            $resourceIdentifier = $request->getAttribute('variables')['id'] ?: '';
-            $commandArguments['resourceIdentifier'] = $resourceIdentifier;
-            $commandArguments['resourceType'] = $this->resourceType;
-
             $queryParams = new ParamBag($request->getQueryParams());
             $this->parseIncludes($queryParams);
             $this->parseFieldsets($queryParams);
 
-            if (in_array(AsIsResourceDataCommand::class, $commandInterfaces)) {
-                $asIsResourceData = $this->fetchAndTransformData($resourceIdentifier);
-                $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
-            }
-
-            if (in_array(ResourceDataCommand::class, $commandInterfaces)) {
-                $resourceData = $request->getParsedBody();
-                $commandArguments['resourceData'] = $resourceData ? $this->deserializer->item($resourceData) : null;
-            }
+            $commandArguments = $this->fillInCommandArguments($request, $commandName, $commandArguments, $commandInterfaces);
 
             $command = $this->objectFactory->create($commandName, $commandArguments);
             $this->commandBus->handle($command);
@@ -142,9 +116,5 @@ abstract class AbstractResourceCommandController
             $this->fractal->parseFieldsets($queryParams['fields']);
         }
     }
-
-    abstract protected function fetchAndTransformData(string $resourceIdentifier): ?array;
-
-    abstract public function read(ServerRequestInterface $request): ResponseInterface;
 
 }

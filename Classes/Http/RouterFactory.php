@@ -1,20 +1,13 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
+
 
 namespace DFAU\ToujouApi\Http;
 
 
-use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
-use DFAU\ToujouApi\Controller\AbstractResourceCommandController;
-use DFAU\ToujouApi\Controller\CollectionCommandController;
-use DFAU\ToujouApi\Controller\ItemCommandController;
 use DFAU\ToujouApi\Controller\ResourceControllerFactory;
-use DFAU\ToujouApi\Resource\Numerus;
 use DFAU\ToujouApi\Resource\Operation;
 use FastRoute\RouteCollector;
-use League\Fractal\Resource\Collection;
-use League\Fractal\Resource\Item;
 use Psr\Http\Message\ServerRequestInterface;
 use function FastRoute\simpleDispatcher;
 
