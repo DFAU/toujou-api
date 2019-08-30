@@ -8,4 +8,6 @@ interface UnitOfWorkCommand
 {
 
     public function getUnitOfWorkCommands(): array;
+
+    public function withUnitOfWorkCommands(array $unitOfWorkCommands): self;
 }

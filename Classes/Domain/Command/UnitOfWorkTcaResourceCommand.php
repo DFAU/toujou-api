@@ -23,4 +23,11 @@ class UnitOfWorkTcaResourceCommand implements UnitOfWorkCommand
     {
         return $this->unitOfWorkCommands;
     }
+
+    public function withUnitOfWorkCommands(array $unitOfWorkCommands): UnitOfWorkCommand
+    {
+        $target = clone $this;
+        $target->unitOfWorkCommands = array_map(function(TcaRecordReferencingCommand $command) { return $command; }, $unitOfWorkCommands);;
+        return $target;
+    }
 }
