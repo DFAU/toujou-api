@@ -9,6 +9,7 @@ use DFAU\ToujouApi\Command\ResourceReferencingCommand;
 use DFAU\ToujouApi\CommandBus\CommandBusFactory;
 use DFAU\ToujouApi\Domain\Repository\ApiResourceRepository;
 use DFAU\ToujouApi\Resource\Operation;
+use DFAU\ToujouApi\Resource\OperationNotAllowedException;
 use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
 use DFAU\ToujouApi\Resource\UnsupportedOperationException;
 use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
@@ -95,6 +96,8 @@ abstract class AbstractResourceCommandController
             $this->commandBus->handle($command);
         } catch(UnsupportedOperationException $exception) {
             throw HttpErrorException::create(405, [], $exception);
+        } catch(OperationNotAllowedException $exception) {
+            throw HttpErrorException::create(403, [], $exception);
         }
 
         return new Response('php://temp', 202, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
