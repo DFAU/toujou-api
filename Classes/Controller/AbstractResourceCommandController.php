@@ -109,7 +109,7 @@ abstract class AbstractResourceCommandController
             $this->fractal->parseIncludes($queryParams['include']);
         }
         if (isset($queryParams['exclude'])) {
-            $this->fractal->parseIncludes($queryParams['exclude']);
+            $this->fractal->parseExcludes($queryParams['exclude']);
         }
     }
 

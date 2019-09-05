@@ -17,7 +17,12 @@ class PagesJsonApiSchema extends Schema
                     new Schema\ExpressionQualifier('resource["type"] != "pages"'),
                     new Schema\StringPropertyPathReferenceList('resource[attributes][pid]'),
                     new Schema\ExpressionIdentifier('resource["type"] == "pages" ? resource["id"] : ""')
-                )
+                ),
+                new Schema\IntraGraphResourceRelation(
+                    new Schema\ExpressionQualifier('resource["relationships"]'),
+                    new JsonApiResourceRelationReferenceList(new Schema\ExpressionIdentifier('resource["type"]~"_"~resource["id"]')),
+                    new Schema\ExpressionIdentifier('resource["type"]~"_"~resource["id"]')
+                ),
             ],
             [new Schema\ResourcePropertiesExtractor(
                 new Schema\ExpressionQualifier('resource["type"] && resource["id"]'),

@@ -41,12 +41,12 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     protected function createQuery(): QueryBuilder
     {
-        $querybuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->select('*')
             ->from($this->tableName);
-        $querybuilder->setRestrictions(GeneralUtility::makeInstance(ApiRestrictionContainer::class));
-        return $querybuilder;
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(ApiRestrictionContainer::class));
+        return $queryBuilder;
     }
 
     public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor) : array

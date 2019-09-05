@@ -10,6 +10,7 @@ use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
 use DFAU\ToujouApi\Domain\Repository\PageRelationRepository;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use League\Fractal\Resource\NullResource;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -72,7 +73,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
           return $item['table'] === $allowedTableName;
         });
 
-        $resourceType = (isset($columnConfig['maxitems']) && $columnConfig['maxitems'] == 1) ? Item::class : Collection::class;
+        $resourceType = (isset($columnConfig['maxitems']) && $columnConfig['maxitems'] == 1) || (isset($columnConfig["renderType"]) && $columnConfig["renderType"] === 'selectSingle') ? Item::class : Collection::class;
 
         if (!empty($result)) {
             $resourceDefinition = $this->resourceDefinitionsByTableName[$allowedTableName];
@@ -82,16 +83,29 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
             $cascader = new Cascader();
 
-            $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
-            if (!$repository instanceof PageRelationRepository) {
-                throw new \InvalidArgumentException('The given repository "' . get_class($repository) . '" has to implement the "' . \DFAU\ToujouApi\Domain\Repository\PageRelationRepository::class .'".', 1563210118);
+            if (!empty($columnConfig['foreign_sortby'])) {
+                // Some tca fields might override the sorting
+                $resourceDefinition['repository']['orderBy'] = $columnConfig['foreign_sortby'];
             }
+
+            $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
 
             /** @var ResourceInterface $transformer */
             $transformer = $cascader->create($resourceDefinition['transformer'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
+            if ($resourceType === Item::class) {
+                if ($data = $repository->findOneByIdentifier(reset($result)['id'])) {
+                    return new $resourceType(
+                        $data,
+                        $transformer,
+                        $resourceDefinition['resourceType']
+                    );
+                }
+                return null;
+            }
+
             return new $resourceType(
-                $resourceType === Item::class ? $repository->findOneByIdentifier(reset($result)['id']) : $repository->findByIdentifiers(array_column($result, 'id')),
+                $repository->findByIdentifiers(array_column($result, 'id')),
                 $transformer,
                 $resourceDefinition['resourceType']
             );

@@ -7,6 +7,7 @@ namespace DFAU\ToujouApi\Domain\Transformer;
 use DFAU\ToujouApi\Domain\Repository\FileReferenceRepository;
 use DFAU\ToujouApi\Domain\Repository\FileRepository;
 use League\Fractal\Resource\Item;
+use League\Fractal\Resource\ResourceAbstract;
 use League\Fractal\TransformerAbstract;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,9 +32,13 @@ class FileReferenceTransformer extends TransformerAbstract
         ];
     }
 
-    protected function includeFile(array $fileReference) : Item
+    protected function includeFile(array $fileReference) : ResourceAbstract
     {
-        $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);
+        try {
+            $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);
+        } catch (\InvalidArgumentException $exception) {
+            return $this->null();
+        }
 
         return $this->item($file, new FileTransformer(), 'files');
     }
