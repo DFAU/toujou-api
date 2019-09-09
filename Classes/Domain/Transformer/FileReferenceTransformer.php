@@ -16,10 +16,21 @@ class FileReferenceTransformer extends TransformerAbstract
 
     protected $defaultIncludes = ['file'];
 
+    /**
+     * @var string
+     */
+    protected $identifier;
+
+    public function __construct(string $identifier = FileReferenceRepository::DEFAULT_IDENTIFIER)
+    {
+        $this->identifier = $identifier;
+    }
+
+
     public function transform(array $fileReference): array
     {
         return [
-            'id' => (string)$fileReference[FileReferenceRepository::DEFAULT_IDENTIFIER],
+            'id' => (string)$fileReference[$this->identifier],
             'meta' => $fileReference[FileReferenceRepository::META_ATTRIBUTE],
             'hidden' => (bool)$fileReference['hidden'],
             'title' => $fileReference['title'],

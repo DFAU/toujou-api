@@ -20,7 +20,7 @@ final class TcaResourceRepository extends AbstractDatabaseResourceRepository
         $this->tableName = $tableName;
         $this->identifier = $identifier;
         if ($orderBy === null && (isset($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby']) || isset($GLOBALS['TCA'][$this->tableName]['ctrl']['default_sortby']))) {
-            $orderBy = $GLOBALS['TCA'][$this->tableName]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$this->tableName]['ctrl']['default_sortby'];
+            $orderBy = $GLOBALS['TCA'][$this->tableName]['ctrl']['sortby'] ?? $GLOBALS['TCA'][$this->tableName]['ctrl']['default_sortby'];
         }
         $this->orderBy = QueryHelper::parseOrderBy((string)$orderBy);
     }
