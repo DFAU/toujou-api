@@ -38,6 +38,8 @@ class FileReferenceTransformer extends TransformerAbstract
             $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);
         } catch (\InvalidArgumentException $exception) {
             return $this->null();
+        } catch (\RuntimeException $exception) {
+            return $this->null();
         }
 
         return $this->item($file, new FileTransformer(), 'files');

@@ -77,6 +77,7 @@ class DataHandlerCommandHandler
             return [];
         }
 
+        $this->dataHandler->isImporting = true;
         $this->dataHandler->dontProcessTransformations = true;
         $this->dataHandler->start($datamap, $commandmap);
         $this->dataHandler->process_datamap();

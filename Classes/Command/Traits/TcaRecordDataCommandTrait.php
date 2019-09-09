@@ -3,6 +3,8 @@
 
 namespace DFAU\ToujouApi\Command\Traits;
 
+use DFAU\ToujouApi\Command\TcaRecordDataCommand;
+
 trait TcaRecordDataCommandTrait
 {
     use TcaRecordReferencingCommandTrait;
@@ -15,5 +17,12 @@ trait TcaRecordDataCommandTrait
     public function getRecordData(): ?array
     {
         return $this->recordData;
+    }
+
+    public function withRecordData(array $recordData): TcaRecordDataCommand
+    {
+        $target = clone $this;
+        $target->recordData = $recordData;
+        return $target;
     }
 }
