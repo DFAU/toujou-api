@@ -21,7 +21,6 @@ class FileTransformer extends TransformerAbstract
             'mime_type' => $file['mime_type'],
             'checksum' => $file['checksum'],
             'sha1' => $file['sha1'],
-            'publicUrl' => $file['publicUrl']
         ];
     }
 
