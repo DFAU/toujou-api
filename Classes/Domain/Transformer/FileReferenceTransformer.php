@@ -37,7 +37,6 @@ class FileReferenceTransformer extends TransformerAbstract
             'description' => $fileReference['description'],
             'alternative' => $fileReference['alternative'],
             'link' => $fileReference['link'],
-            'downloadname' => $fileReference['downloadname'],
             'crop' => $fileReference['crop'] ? json_decode($fileReference['crop'], true) : null,
             'autoplay' => (bool)$fileReference['autoplay'],
         ];
