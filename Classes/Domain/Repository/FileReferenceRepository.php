@@ -12,8 +12,6 @@ class FileReferenceRepository extends AbstractDatabaseResourceRepository
 {
     const TABLE_NAME = 'sys_file_reference';
 
-    const OBJECT_FILE = '_file';
-
     /**
      * @var FileRepository
      */
