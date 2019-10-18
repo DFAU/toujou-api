@@ -4,6 +4,8 @@
 namespace DFAU\ToujouApi\Command\Traits;
 
 
+use DFAU\ToujouApi\Command\AsIsResourceDataCommand;
+
 trait AsIsResourceDataCommandTrait
 {
 
@@ -15,5 +17,12 @@ trait AsIsResourceDataCommandTrait
     public function getAsIsResourceData():?array
     {
         return $this->asIsResourceData;
+    }
+
+    public function withAsIsResourceData(array $asIsResourceData): AsIsResourceDataCommand
+    {
+        $target = clone $this;
+        $target->asIsResourceData = $asIsResourceData;
+        return $target;
     }
 }

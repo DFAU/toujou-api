@@ -9,4 +9,6 @@ interface AsIsResourceDataCommand
 
     public function getAsIsResourceData(): ?array;
 
+    public function withAsIsResourceData(array $asIsResourceData): self;
+
 }

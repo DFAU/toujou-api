@@ -4,6 +4,8 @@
 namespace DFAU\ToujouApi\Command\Traits;
 
 
+use DFAU\ToujouApi\Command\ResourceDataCommand;
+
 trait ResourceDataCommandTrait
 {
 
@@ -15,6 +17,13 @@ trait ResourceDataCommandTrait
     public function getResourceData(): array
     {
         return $this->resourceData;
+    }
+
+    public function withResourceData(array $resourceData): ResourceDataCommand
+    {
+        $target = clone $this;
+        $target->resourceData = $resourceData;
+        return $target;
     }
 
 }

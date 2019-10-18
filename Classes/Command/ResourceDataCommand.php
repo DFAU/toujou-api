@@ -9,4 +9,6 @@ interface ResourceDataCommand
 
     public function getResourceData(): array;
 
+    public function withResourceData(array $resourceData): self;
+
 }
