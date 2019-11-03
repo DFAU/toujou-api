@@ -3,9 +3,6 @@
     "description": "TYPO3 REST API Framework",
     "type": "typo3-cms-extension",
     "license": "GPL-3.0-or-later",
-    "replace": {
-        "toujou_api": "self.version"
-    },
     "require": {
         "php": ">=7.2 <7.3",
         "ext-json": "*",
@@ -30,6 +27,11 @@
     "autoload": {
         "psr-4": {
             "DFAU\\ToujouApi\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "toujou_api"
         }
     }
 }
