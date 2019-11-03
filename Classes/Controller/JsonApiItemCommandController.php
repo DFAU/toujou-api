@@ -4,6 +4,7 @@
 namespace DFAU\ToujouApi\Controller;
 
 use DFAU\ToujouApi\Command\AsIsResourceDataCommand;
+use DFAU\ToujouApi\Command\IncludedResourcesDataCommand;
 use DFAU\ToujouApi\Command\ResourceDataCommand;
 use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
 use DFAU\ToujouApi\Domain\Repository\ApiResourceRepository;
@@ -79,10 +80,20 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
             $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
         }
 
-        if (in_array(ResourceDataCommand::class, $commandInterfaces)) {
+        if (($needsResourceData = in_array(ResourceDataCommand::class, $commandInterfaces))
+            || ($needsIncludesResourceData = in_array(IncludedResourcesDataCommand::class, $commandInterfaces))) {
             $resourceData = $request->getParsedBody();
-            $commandArguments['resourceData'] = $resourceData ? $this->deserializer->item($resourceData) : null;
+            $resourceData = $resourceData ? $this->deserializer->item($resourceData) : null;
+
+            if ($needsResourceData && isset($resourceData[0]['attributes'])) {
+                $commandArguments['resourceData'] = array_shift($resourceData)['attributes'];
+            }
+
+            if ($needsIncludesResourceData && !empty($resourceData)) {
+                $commandArguments['includedResourcesData'] = $resourceData;
+            }
         }
+
         return $commandArguments;
     }
 }

@@ -9,7 +9,7 @@
         "dfau/convergence": "^0.3.0",
         "typo3/cms-core": "^9.5",
         "league/fractal": "~0.18",
-        "league/tactician": "2.0.x-dev",
+        "league/tactician": "^2.0-rc1",
         "nikic/fast-route": "^1.3.0",
         "nikolaposa/cascader": "^1.2.0",
         "middlewares/error-handler": "^2.0.0",

@@ -9,5 +9,5 @@ interface TcaRecordDataCommand extends TcaRecordReferencingCommand
 
     public function getRecordData(): ?array;
 
-    public function withRecordData(array $recordData): self;
+    public function withRecordData(array $recordData): TcaRecordDataCommand;
 }
