@@ -9,6 +9,6 @@ interface IncludedResourcesDataCommand
 
     public function getIncludedResourcesData(): array;
 
-    public function withIncludedResourcesData(array $resourceData): self;
+    public function withIncludedResourcesData(array $resourceData): IncludedResourcesDataCommand;
 
 }

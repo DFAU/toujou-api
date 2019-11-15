@@ -6,6 +6,7 @@ namespace DFAU\ToujouApi\Controller;
 use DFAU\ToujouApi\Command\AsIsResourceDataCommand;
 use DFAU\ToujouApi\Command\IncludedResourcesDataCommand;
 use DFAU\ToujouApi\Command\ResourceDataCommand;
+use DFAU\ToujouApi\Command\ResourceRelationsCommand;
 use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
 use DFAU\ToujouApi\Domain\Repository\ApiResourceRepository;
 use DFAU\ToujouApi\Resource\Operation;
@@ -80,13 +81,23 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
             $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
         }
 
-        if (($needsResourceData = in_array(ResourceDataCommand::class, $commandInterfaces))
-            || ($needsIncludesResourceData = in_array(IncludedResourcesDataCommand::class, $commandInterfaces))) {
+        $needsResourceData = in_array(ResourceDataCommand::class, $commandInterfaces);
+        $needsResourceRelations = in_array(ResourceRelationsCommand::class, $commandInterfaces);
+        $needsIncludesResourceData = in_array(IncludedResourcesDataCommand::class, $commandInterfaces);
+
+        if ($needsResourceData || $needsIncludesResourceData) {
             $resourceData = $request->getParsedBody();
             $resourceData = $resourceData ? $this->deserializer->item($resourceData) : null;
 
-            if ($needsResourceData && isset($resourceData[0]['attributes'])) {
-                $commandArguments['resourceData'] = array_shift($resourceData)['attributes'];
+            if ($needsResourceData || $needsResourceRelations) {
+                $primaryResource = array_shift($resourceData);
+
+                if ($needsResourceData && isset($primaryResource['attributes'])) {
+                    $commandArguments['resourceData'] = $primaryResource['attributes'];
+                }
+                if ($needsResourceData && isset($primaryResource['relationships'])) {
+                    $commandArguments['resourceRelations'] = $primaryResource['relationships'];
+                }
             }
 
             if ($needsIncludesResourceData && !empty($resourceData)) {

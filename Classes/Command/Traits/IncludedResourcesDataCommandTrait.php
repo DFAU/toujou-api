@@ -12,17 +12,17 @@ trait IncludedResourcesDataCommandTrait
     /**
      * @var array
      */
-    protected $includedResourceData;
+    protected $includedResourcesData = array();
 
     public function getIncludedResourcesData(): array
     {
-        return $this->includedResourceData;
+        return $this->includedResourcesData;
     }
 
     public function withIncludedResourcesData(array $includedResourceData): IncludedResourcesDataCommand
     {
         $target = clone $this;
-        $target->includedResourceData = $includedResourceData;
+        $target->includedResourcesData = $includedResourceData;
         return $target;
     }
 

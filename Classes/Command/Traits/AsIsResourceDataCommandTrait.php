@@ -19,7 +19,7 @@ trait AsIsResourceDataCommandTrait
         return $this->asIsResourceData;
     }
 
-    public function withAsIsResourceData(array $asIsResourceData): AsIsResourceDataCommand
+    public function withAsIsResourceData(?array $asIsResourceData): AsIsResourceDataCommand
     {
         $target = clone $this;
         $target->asIsResourceData = $asIsResourceData;
