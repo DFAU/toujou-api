@@ -8,6 +8,7 @@ $GLOBALS['SiteConfiguration']['site']['columns']['toujouApiPathPrefix'] = [
     'config' => [
         'type' => 'input',
         'eval' => 'trim',
+        'default' => '_api/',
         'valuePicker' => [
             'items' => [
                 ['_api/', '_api/'],
