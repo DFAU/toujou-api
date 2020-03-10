@@ -28,8 +28,7 @@ class FileReferenceRepository extends AbstractDatabaseResourceRepository
         $fileReferences = $this->coreFileRepository->findByRelation($foreignTableName, $foreignField, $foreignIdentifier);
 
         $fileReferences = array_map(function(FileReference $fileReference) { return $fileReference->getReferenceProperties(); }, $fileReferences);
-        $fileReferences = array_map($this->createMetaMapper(), $fileReferences);
 
-        return $fileReferences;
+        return array_map($this->createMetaMapper(), $fileReferences);
     }
 }

@@ -22,7 +22,7 @@ class JsonApiDeserializer implements Deserializer
     {
         $result = [];
         if (isset($data['data']['type'], $data['data']['id'])) {
-            if (!static::OPTION_KEEP_META & $options) {
+            if ((!static::OPTION_KEEP_META & $options) !== 0) {
                 unset($data['data']['meta']);
             }
             $result[] = $data['data'];

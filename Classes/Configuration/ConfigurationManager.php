@@ -12,6 +12,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager
 {
+    /**
+     * @var mixed
+     */
+    public $cache;
 
     protected const CONFIGURATION_TYPE_COMMAND_BUS = 'CommandBus';
 
@@ -26,7 +30,7 @@ class ConfigurationManager
 
     protected function getConfigurationFromPackages(string $configType): array
     {
-        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1(TYPO3_version . Environment::getProjectPath());
+        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1(\TYPO3_VERSION . Environment::getProjectPath());
 
         if ($this->cache->has($cacheIdentifier)) {
             $configFromPackages = unserialize(substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
@@ -80,5 +84,4 @@ class ConfigurationManager
 
         return $configuration;
     }
-
 }

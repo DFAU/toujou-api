@@ -24,7 +24,7 @@ final class ResourceOperationToCommandMap
         $commandConfig = is_array($commandConfig) ? $commandConfig : ['__class__' => $commandConfig];
         $commandInterfaces = class_implements($commandConfig['__class__']);
 
-        if ($missingInterfaces = array_diff($requiredInterfaces, $commandInterfaces)) {
+        if (($missingInterfaces = array_diff($requiredInterfaces, $commandInterfaces)) !== []) {
             throw new \InvalidArgumentException('The command "' . $commandConfig['__class__'] . '" needs to implement also these inferfaces "' . implode(', ', $missingInterfaces) . '" in order to be used for the resource type "' . $resourceType . '" and operation "' . $operation . '".', 1563801127);
         }
 
