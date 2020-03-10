@@ -30,7 +30,7 @@ class ConfigurationManager
 
     protected function getConfigurationFromPackages(string $configType): array
     {
-        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1(\TYPO3_VERSION . Environment::getProjectPath());
+        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1(TYPO3_version . Environment::getProjectPath());
 
         if ($this->cache->has($cacheIdentifier)) {
             $configFromPackages = unserialize(substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
