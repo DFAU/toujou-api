@@ -12,6 +12,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager
 {
+    /**
+     * @var mixed
+     */
+    protected $cache;
 
     protected const CONFIGURATION_TYPE_COMMAND_BUS = 'CommandBus';
 
@@ -80,5 +84,4 @@ class ConfigurationManager
 
         return $configuration;
     }
-
 }

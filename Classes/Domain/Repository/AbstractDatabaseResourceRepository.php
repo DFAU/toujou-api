@@ -86,9 +86,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         $result = $query->execute()->fetchAll();
 
-        $result = array_map($this->createMetaMapper(), $result);
-
-        return $result;
+        return array_map($this->createMetaMapper(), $result);
     }
 
     public function findByPageIdentifier($pageIdentifier): array
@@ -98,9 +96,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         $result = $query->execute()->fetchAll();
 
-        $result = array_map($this->createMetaMapper(), $result);
-
-        return $result;
+        return array_map($this->createMetaMapper(), $result);
     }
 
     protected function createMetaMapper(): \Closure

@@ -16,6 +16,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DataHandlerCommandHandler
 {
 
+    /**
+     * @var object|mixed
+     */
+    protected $dataHandler;
+
+    /**
+     * @var object
+     */
+    protected $operationToCommandMap;
+
     public function __construct()
     {
         $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -85,5 +95,4 @@ class DataHandlerCommandHandler
 
         return $this->dataHandler->substNEWwithIDs;
     }
-
 }
