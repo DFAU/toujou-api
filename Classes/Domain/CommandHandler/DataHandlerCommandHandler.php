@@ -19,12 +19,12 @@ class DataHandlerCommandHandler
     /**
      * @var object|mixed
      */
-    public $dataHandler;
+    protected $dataHandler;
 
     /**
      * @var object
      */
-    public $operationToCommandMap;
+    protected $operationToCommandMap;
 
     public function __construct()
     {

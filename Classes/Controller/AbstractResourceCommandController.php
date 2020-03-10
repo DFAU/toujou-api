@@ -28,7 +28,7 @@ abstract class AbstractResourceCommandController
     /**
      * @var \DFAU\ToujouApi\Transformer\ResourceTransformerInterface
      */
-    public $transformer;
+    protected $transformer;
 
     /**
      * @var Cascader

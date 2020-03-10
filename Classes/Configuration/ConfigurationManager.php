@@ -15,7 +15,7 @@ class ConfigurationManager
     /**
      * @var mixed
      */
-    public $cache;
+    protected $cache;
 
     protected const CONFIGURATION_TYPE_COMMAND_BUS = 'CommandBus';
 
