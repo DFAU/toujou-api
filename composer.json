@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.2 <7.5",
         "ext-json": "*",
-        "dfau/convergence": "^0.3.0",
+        "dfau/convergence": "^0.4.0",
         "typo3/cms-core": "^9.5",
         "league/fractal": "~0.18",
         "league/tactician": "^2.0-rc1",
