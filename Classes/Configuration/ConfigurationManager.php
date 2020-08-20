@@ -7,7 +7,9 @@ namespace DFAU\ToujouApi\Configuration;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager
@@ -30,12 +32,13 @@ class ConfigurationManager
 
     protected function getConfigurationFromPackages(string $configType): array
     {
-        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1(TYPO3_version . Environment::getProjectPath());
+        $t3Version = GeneralUtility::makeInstance(Typo3Version::class);
+        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1($t3Version->getVersion() . Environment::getProjectPath());
 
         if ($this->cache->has($cacheIdentifier)) {
             $configFromPackages = unserialize(substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
         } else {
-            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class, GeneralUtility::makeInstance(DependencyOrderingService::class));
             $packages = $packageManager->getActivePackages();
 
             $configFromPackages = array_replace_recursive(...array_map(function(PackageInterface $package) use ($configType) {

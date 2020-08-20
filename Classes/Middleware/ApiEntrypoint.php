@@ -63,9 +63,10 @@ class ApiEntrypoint implements MiddlewareInterface
      */
     protected function createMiddlewareDispatcher(): MiddlewareDispatcher
     {
+        $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
         $resolver = new MiddlewareStackResolver(
-            GeneralUtility::makeInstance(PackageManager::class),
-            GeneralUtility::makeInstance(DependencyOrderingService::class),
+            GeneralUtility::makeInstance(PackageManager::class, $dependencyOrderingService),
+            $dependencyOrderingService,
             GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core')
         );
 
