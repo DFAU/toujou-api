@@ -10,10 +10,17 @@ return [
     'frontend' => [
         'dfau/toujou-api/api-entrypoint' => [
             'target' => ApiEntrypoint::class,
-            'after' => ['typo3/cms-frontend/site', 'dfau/toujou-oauth2-server/authorization-server'],
+            'after' => ['typo3/cms-frontend/authentication', 'dfau/toujou-oauth2-server/authorization-server'],
             'before' => ['typo3/cms-frontend/base-redirect-resolver']
         ],
     ],
+//    'frontend' => [
+//        'dfau/toujou-api/api-entrypoint' => [
+//            'target' => ApiEntrypoint::class,
+//            'after' => ['dfau/toujou-oauth2-server/authorization-server', 'typo3/cms-frontend/tsfe'],
+//            'before' => ['typo3/cms-adminpanel/renderer']
+//        ],
+//    ],
     'toujou_api' => [
         'dfau/toujou-api/resource-server' => [
             'target' => \DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware::class,
