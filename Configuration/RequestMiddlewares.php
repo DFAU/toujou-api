@@ -4,7 +4,6 @@ use DFAU\ToujouApi\Middleware\ApiEntrypoint;
 use DFAU\ToujouApi\Middleware\JsonApiPayload;
 use DFAU\ToujouApi\Middleware\ParsedBodyReset;
 use DFAU\ToujouApi\Middleware\Router;
-use Middlewares\JsonPayload;
 
 return [
     'frontend' => [
@@ -14,13 +13,6 @@ return [
             'before' => ['typo3/cms-frontend/base-redirect-resolver']
         ],
     ],
-//    'frontend' => [
-//        'dfau/toujou-api/api-entrypoint' => [
-//            'target' => ApiEntrypoint::class,
-//            'after' => ['dfau/toujou-oauth2-server/authorization-server', 'typo3/cms-frontend/tsfe'],
-//            'before' => ['typo3/cms-adminpanel/renderer']
-//        ],
-//    ],
     'toujou_api' => [
         'dfau/toujou-api/resource-server' => [
             'target' => \DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware::class,
