@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\CommandHandler;
-
 
 use Cascader\Cascader;
 use DFAU\Convergence\Operations\AbstractResourceOperation;
@@ -43,7 +43,6 @@ class ConvergenceCommandHandler
         $this->resourceOperationToCommandMap = GeneralUtility::makeInstance(ResourceOperationToCommandMap::class);
         $this->objectFactory = new Cascader();
     }
-
 
     public function handleReplaceTcaResourceCommand(ReplaceTcaResourceCommand $replaceTcaResourceCommand): void
     {
@@ -91,7 +90,7 @@ class ConvergenceCommandHandler
 
     protected function getSchemaForResourceType(string $resourceType): Schema
     {
-        $resourceConfiguration = ConfigurationManager::getResourcesConfiguration();;
+        $resourceConfiguration = ConfigurationManager::getResourcesConfiguration();
         if (!isset($resourceConfiguration[$resourceType]['convergenceSchema'])) {
             throw new \InvalidArgumentException('No convergenceSchema is specified for resource type "' . $resourceType . '"', 1564648569);
         }

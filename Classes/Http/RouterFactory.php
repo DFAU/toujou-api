@@ -1,26 +1,25 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Http;
-
 
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use DFAU\ToujouApi\Controller\ResourceControllerFactory;
 use DFAU\ToujouApi\Resource\Operation;
 use FastRoute\RouteCollector;
-use Psr\Http\Message\ServerRequestInterface;
 use function FastRoute\simpleDispatcher;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RouterFactory
 {
-
-    static public function createToujouApiRouter()
+    public static function createToujouApiRouter()
     {
         $routesFromPackages = ConfigurationManager::getRoutesConfiguration();
 
         // Build Route objects from the data
         $router = simpleDispatcher(function (RouteCollector $routeCollector) use ($routesFromPackages) {
-            forEach ($routesFromPackages as $routeIdentifier => $resourceRouteDefinition) {
+            foreach ($routesFromPackages as $routeIdentifier => $resourceRouteDefinition) {
                 [$method, $path] = explode(':', $routeIdentifier, 2);
                 if (empty($method)) {
                     throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a HTTP method definition like "GET:/xyz/".', 1562676017);
@@ -55,5 +54,4 @@ class RouterFactory
 
         return $router;
     }
-
 }

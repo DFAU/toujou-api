@@ -1,16 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\IncludeHandler;
 
-
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
-use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
-use DFAU\ToujouApi\Domain\Repository\PageRelationRepository;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use League\Fractal\Resource\NullResource;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -18,7 +15,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaResourceIncludeHandler implements IncludeHandler
 {
-
     protected const REFERENCE_TABLE_NAME = '__referenceTableName__';
 
     /**
@@ -69,11 +65,11 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->start($fieldValue, $allowedTableName, $mmTableName, $uid, $this->tableName, $columnConfig);
-        $result = array_filter($relationHandler->itemArray, function($item) use($allowedTableName) {
-          return $item['table'] === $allowedTableName;
+        $result = array_filter($relationHandler->itemArray, function ($item) use ($allowedTableName) {
+            return $item['table'] === $allowedTableName;
         });
 
-        $resourceType = (isset($columnConfig['maxitems']) && $columnConfig['maxitems'] == 1) || (isset($columnConfig["renderType"]) && $columnConfig["renderType"] === 'selectSingle') ? Item::class : Collection::class;
+        $resourceType = (isset($columnConfig['maxitems']) && $columnConfig['maxitems'] == 1) || (isset($columnConfig['renderType']) && $columnConfig['renderType'] === 'selectSingle') ? Item::class : Collection::class;
 
         if (!empty($result)) {
             $resourceDefinition = $this->resourceDefinitionsByTableName[$allowedTableName];

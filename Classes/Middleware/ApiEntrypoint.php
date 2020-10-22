@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Middleware;
 
-
 use DFAU\ToujouApi\ErrorFormatter\JsonApiFormatter;
 use DFAU\ToujouApi\Http\RequestHandler;
+use Middlewares\ErrorFormatter;
+use Middlewares\ErrorHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,12 +20,9 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use Middlewares\ErrorFormatter;
-use Middlewares\ErrorHandler;
 
 class ApiEntrypoint implements MiddlewareInterface
 {
-
     const API_V1_ENDPOINT = '/_api/v1/';
 
     /**
@@ -74,7 +73,6 @@ class ApiEntrypoint implements MiddlewareInterface
             $request = $request->withUri($request->getUri()->withPath('/' . substr($request->getUri()->getPath(), strlen('/' . $apiPathPrefix))));
             $middlewareDispatcher = $this->createMiddlewareDispatcher();
             return $middlewareDispatcher->handle($request);
-
         }
 
         return $handler->handle($request);
@@ -84,7 +82,6 @@ class ApiEntrypoint implements MiddlewareInterface
     {
         $tsfe->determineId();
     }
-
 
     /**
      * @return MiddlewareDispatcher

@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\CommandBus;
-
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
@@ -12,8 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CommandBusFactory
 {
-
-    static public function createFromCommandConfiguration(): CommandBus
+    public static function createFromCommandConfiguration(): CommandBus
     {
         static $commandBus;
 
@@ -38,7 +37,7 @@ class CommandBusFactory
         return $commandBus;
     }
 
-    static protected function sanitizeMiddlewares(array $commandBusMiddlewares): array
+    protected static function sanitizeMiddlewares(array $commandBusMiddlewares): array
     {
         $orderedMiddlewares = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($commandBusMiddlewares);
 
@@ -53,5 +52,4 @@ class CommandBusFactory
 
         return $sanitizedMiddlewares;
     }
-
 }

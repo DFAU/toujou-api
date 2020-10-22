@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Controller;
-
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
@@ -10,8 +10,7 @@ use DFAU\ToujouApi\Resource\Numerus;
 
 class ResourceControllerFactory
 {
-
-    static public function createFromRouteDefintinion(string $routeIdentifier, array $routeDefinition) : AbstractResourceCommandController
+    public static function createFromRouteDefintinion(string $routeIdentifier, array $routeDefinition): AbstractResourceCommandController
     {
         if (empty($routeDefinition['numerus'])) {
             throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a "numerus" definition.', 1562676185);

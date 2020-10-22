@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\IncludeHandler;
-
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
@@ -14,13 +14,12 @@ use League\Fractal\Scope;
 
 class PageRelationIncludeHandler implements IncludeHandler
 {
-
     protected $allowedPageIncludes = [];
 
     public function __construct(array $includeToResourceMap = [])
     {
         $allResourceDefinitions = ConfigurationManager::getResourcesConfiguration();
-        $this->allowedPageIncludes = array_filter(array_map(function(string $resourceType) use ($allResourceDefinitions):?array {
+        $this->allowedPageIncludes = array_filter(array_map(function (string $resourceType) use ($allResourceDefinitions): ?array {
             if (isset($allResourceDefinitions[$resourceType])) {
                 $resourceDefinition = $allResourceDefinitions[$resourceType];
                 $resourceDefinition['resourceType'] = $resourceType;
@@ -51,7 +50,7 @@ class PageRelationIncludeHandler implements IncludeHandler
 
         $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
         if (!$repository instanceof PageRelationRepository) {
-            throw new \InvalidArgumentException('The given repository "' . get_class($repository) . '" has to implement the "' . \DFAU\ToujouApi\Domain\Repository\PageRelationRepository::class .'".', 1563210118);
+            throw new \InvalidArgumentException('The given repository "' . get_class($repository) . '" has to implement the "' . \DFAU\ToujouApi\Domain\Repository\PageRelationRepository::class . '".', 1563210118);
         }
 
         /** @var ResourceInterface $transformer */

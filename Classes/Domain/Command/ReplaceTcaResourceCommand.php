@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Command;
-
 
 use DFAU\ToujouApi\Command\AsIsResourceDataCommand;
 use DFAU\ToujouApi\Command\ResourceDataCommand;
@@ -15,8 +15,10 @@ use DFAU\ToujouApi\Command\Traits\TcaRecordReferencingCommandTrait;
 
 class ReplaceTcaResourceCommand implements TcaRecordReferencingCommand, ResourceReferencingCommand, ResourceDataCommand, AsIsResourceDataCommand
 {
-
-    use TcaRecordReferencingCommandTrait, ResourceReferencingCommandTrait, ResourceDataCommandTrait, AsIsResourceDataCommandTrait;
+    use TcaRecordReferencingCommandTrait;
+    use ResourceReferencingCommandTrait;
+    use ResourceDataCommandTrait;
+    use AsIsResourceDataCommandTrait;
 
     public function __construct(string $resourceType, string $resourceIdentifier, string $tableName, array $resourceData, ?array $asIsResourceData)
     {

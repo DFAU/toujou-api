@@ -1,8 +1,8 @@
 <?php
 
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
-use DFAU\ToujouApi\Domain\Command\ReplaceTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
+use DFAU\ToujouApi\Domain\Command\ReplaceTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UnitOfWorkTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UpdateTcaResourceCommand;
 use DFAU\ToujouApi\Domain\CommandHandler\ConvergenceCommandHandler;

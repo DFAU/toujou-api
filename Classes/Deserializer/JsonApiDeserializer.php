@@ -1,18 +1,17 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Deserializer;
 
-
 class JsonApiDeserializer implements Deserializer
 {
-
     const OPTION_KEEP_META = 1;
 
     public function collection(array $data, int $options = 0): array
     {
         if (isset($data['data']) && is_array($data['data'])) {
-            return array_merge(...array_map(function($data) use ($options) {
+            return array_merge(...array_map(function ($data) use ($options) {
                 return $this->item(['data' => $data], $options);
             }, $data['data']));
         }

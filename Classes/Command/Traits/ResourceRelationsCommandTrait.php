@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Command\Traits;
-
 
 use DFAU\ToujouApi\Command\ResourceRelationsCommand;
 
@@ -12,7 +12,7 @@ trait ResourceRelationsCommandTrait
     /**
      * @var array
      */
-    protected $resourceRelations = array();
+    protected $resourceRelations = [];
 
     public function getResourceRelations(): array
     {
@@ -25,5 +25,4 @@ trait ResourceRelationsCommandTrait
         $target->resourceRelations = $resourceRelations;
         return $target;
     }
-
 }

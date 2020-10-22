@@ -31,7 +31,7 @@ return [
             Operation::CREATE => ['__class__' => Command\CreateTcaResourceCommand::class, 'tableName' => 'pages'],
             Operation::UPDATE => ['__class__' => Command\UpdateTcaResourceCommand::class, 'tableName' => 'pages'],
             Operation::DELETE => ['__class__' => Command\DeleteTcaResourceCommand::class, 'tableName' => 'pages'],
-            Operation::REPLACE => ['__class__' => Command\ReplaceTcaResourceCommand::class, 'tableName' => 'pages',]
+            Operation::REPLACE => ['__class__' => Command\ReplaceTcaResourceCommand::class, 'tableName' => 'pages']
         ],
         'convergenceSchema' => [
             '__class__' => \DFAU\ToujouApi\Schema\PagesJsonApiSchema::class,

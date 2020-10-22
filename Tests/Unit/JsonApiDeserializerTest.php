@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Unit;
-
 
 use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
 use PHPUnit\Framework\TestCase;
@@ -90,7 +91,6 @@ final class JsonApiDeserializerTest extends TestCase
                         ],
                     ],
 
-
                 ],
                 [
                     [
@@ -162,7 +162,6 @@ final class JsonApiDeserializerTest extends TestCase
                     ],
                 ],
             ],
-
 
             'included' => [
                 [

@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Command;
 
@@ -12,7 +13,6 @@ use DFAU\ToujouApi\Command\Traits\TcaRecordDataCommandTrait;
 
 class UpdateTcaResourceCommand implements TcaRecordDataCommand, ResourceDataCommand, ResourceReferencingCommand
 {
-
     use TcaRecordDataCommandTrait;
     use ResourceReferencingCommandTrait;
     use ResourceDataCommandTrait;

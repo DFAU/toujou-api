@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\TransformHandler;
 
@@ -45,7 +46,6 @@ class TcaResourceTransformHandler implements TransformHandler
         $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $orderedProviderList);
     }
 
-
     public function handleTransform($data, array $transformedData, callable $next): array
     {
         return $next($data, array_merge($transformedData, [
@@ -68,6 +68,5 @@ class TcaResourceTransformHandler implements TransformHandler
         return array_combine($visibleColumns, array_map(function ($columnName) use ($result) {
             return $result['databaseRow'][$columnName];
         }, $visibleColumns));
-
     }
 }

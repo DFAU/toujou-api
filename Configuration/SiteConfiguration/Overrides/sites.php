@@ -1,6 +1,5 @@
 <?php
 
-
 // Configure a new simple required input field to site
 $GLOBALS['SiteConfiguration']['site']['columns']['toujouApiPathPrefix'] = [
     'label' => 'LLL:EXT:toujou_api/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.toujouApiPathPrefix.label',

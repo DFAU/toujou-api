@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Schema;
-
 
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
@@ -32,15 +32,14 @@ class VisibleColumnsProvider
         $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
     }
 
-    public function getVisibleColumnsForResource(string $tableName, array $resource) : array
+    public function getVisibleColumnsForResource(string $tableName, array $resource): array
     {
         $result = $this->formDataCompiler->compile([
             'tableName' => $tableName,
             'databaseRow' => $resource,
         ]);
-        return array_filter($result['columnsToProcess'], function($columnName) {
-           return $columnName[0] !== '-';
+        return array_filter($result['columnsToProcess'], function ($columnName) {
+            return $columnName[0] !== '-';
         });
     }
-
 }

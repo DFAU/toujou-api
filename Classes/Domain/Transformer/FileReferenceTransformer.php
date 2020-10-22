@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Transformer;
-
 
 use DFAU\ToujouApi\Domain\Repository\FileReferenceRepository;
 use DFAU\ToujouApi\Domain\Repository\FileRepository;
@@ -12,7 +12,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FileReferenceTransformer extends TransformerAbstract
 {
-
     protected $defaultIncludes = [];
 
     /**
@@ -24,7 +23,6 @@ class FileReferenceTransformer extends TransformerAbstract
     {
         $this->identifier = $identifier;
     }
-
 
     public function transform(array $fileReference): array
     {
@@ -44,7 +42,7 @@ class FileReferenceTransformer extends TransformerAbstract
         ];
     }
 
-    protected function includeFile(array $fileReference) : ResourceAbstract
+    protected function includeFile(array $fileReference): ResourceAbstract
     {
         try {
             $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);

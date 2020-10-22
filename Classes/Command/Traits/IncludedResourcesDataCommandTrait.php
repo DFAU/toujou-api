@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Command\Traits;
-
 
 use DFAU\ToujouApi\Command\IncludedResourcesDataCommand;
 
@@ -12,7 +12,7 @@ trait IncludedResourcesDataCommandTrait
     /**
      * @var array
      */
-    protected $includedResourcesData = array();
+    protected $includedResourcesData = [];
 
     public function getIncludedResourcesData(): array
     {
@@ -25,5 +25,4 @@ trait IncludedResourcesDataCommandTrait
         $target->includedResourcesData = $includedResourceData;
         return $target;
     }
-
 }

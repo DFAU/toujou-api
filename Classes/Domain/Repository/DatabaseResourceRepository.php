@@ -1,13 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Repository;
-
 
 interface DatabaseResourceRepository
 {
     const META_UID = 'uid';
 
     public function getTableName(): string;
-
 }
