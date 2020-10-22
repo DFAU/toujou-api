@@ -1,20 +1,18 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Repository;
-
 
 use DFAU\ToujouApi\Database\Query\Restriction\ApiRestrictionContainer;
 use DFAU\ToujouApi\Domain\Value\ZuluDate;
 use League\Fractal\Pagination\Cursor;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository
 {
-
     const DEFAULT_IDENTIFIER = 'uid';
 
     const DEFAULT_PARENT_PAGE_IDENTIFIER = 'pid';
@@ -49,7 +47,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return $queryBuilder;
     }
 
-    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor) : array
+    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor): array
     {
         $query = $this->createQuery()->setMaxResults($limit);
 
@@ -117,6 +115,4 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
             return $resource;
         };
     }
-
-
 }

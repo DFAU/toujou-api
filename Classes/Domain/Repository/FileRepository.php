@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Repository;
 
@@ -18,7 +19,6 @@ class FileRepository extends AbstractDatabaseResourceRepository
      * @var CoreFileRepository
      */
     protected $coreFileRepository;
-
 
     public function __construct(string $tableName = self::TABLE_NAME)
     {
@@ -43,7 +43,7 @@ class FileRepository extends AbstractDatabaseResourceRepository
     {
         $parentMapper = parent::createMetaMapper();
 
-        return function(array $resource) use ($parentMapper): array {
+        return function (array $resource) use ($parentMapper): array {
             $resource = $parentMapper($resource);
 
             if (!empty($resource['creation_date'])) {
@@ -57,6 +57,4 @@ class FileRepository extends AbstractDatabaseResourceRepository
             return $resource;
         };
     }
-
-
 }

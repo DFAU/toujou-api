@@ -1,11 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Repository;
 
-
 interface ApiResourceRepository
 {
-
     const META_ATTRIBUTE = '_meta';
     const META_CREATED = 'created';
     const META_LAST_UPDATED = 'lastUpdated';
@@ -15,5 +15,4 @@ interface ApiResourceRepository
     public function findOneByIdentifier($identifier): ?array;
 
     public function findByIdentifiers(array $identifiers): array;
-
 }

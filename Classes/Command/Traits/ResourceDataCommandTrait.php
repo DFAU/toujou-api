@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Command\Traits;
-
 
 use DFAU\ToujouApi\Command\ResourceDataCommand;
 
@@ -25,5 +25,4 @@ trait ResourceDataCommandTrait
         $target->resourceData = $resourceData;
         return $target;
     }
-
 }

@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Controller;
 
@@ -30,12 +31,14 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
     public function __construct(?string $resourceType, ApiResourceRepository $repository, ResourceTransformerInterface $transformer)
     {
         parent::__construct($resourceType, $repository, $transformer);
-        $this->fractal->setSerializer(new class extends JsonApiSerializer {
-            public function getMandatoryFields() { return ['id', 'meta']; }
+        $this->fractal->setSerializer(new class() extends JsonApiSerializer {
+            public function getMandatoryFields()
+            {
+                return ['id', 'meta'];
+            }
         });
         $this->deserializer = GeneralUtility::makeInstance(JsonApiDeserializer::class);
     }
-
 
     public function canHandleOperation(Operation $operation): bool
     {

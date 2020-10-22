@@ -1,15 +1,14 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Transformer;
-
 
 use DFAU\ToujouApi\Domain\Repository\FileRepository;
 use League\Fractal\TransformerAbstract;
 
 class FileTransformer extends TransformerAbstract
 {
-
     public function transform(array $file): array
     {
         return [
@@ -23,5 +22,4 @@ class FileTransformer extends TransformerAbstract
             'sha1' => $file['sha1'],
         ];
     }
-
 }

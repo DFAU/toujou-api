@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Controller;
-
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Command\ResourceReferencingCommand;
@@ -64,8 +64,7 @@ abstract class AbstractResourceCommandController
         ?string $resourceType,
         ApiResourceRepository $repository,
         ResourceTransformerInterface $transformer
-    )
-    {
+    ) {
         $this->resourceType = $resourceType;
         $this->repository = $repository;
         $this->transformer = $transformer;
@@ -99,9 +98,9 @@ abstract class AbstractResourceCommandController
 
             $command = $this->objectFactory->create($commandName, $commandArguments);
             $this->commandBus->handle($command);
-        } catch(UnsupportedOperationException $exception) {
+        } catch (UnsupportedOperationException $exception) {
             throw HttpErrorException::create(405, [], $exception);
-        } catch(OperationNotAllowedException $exception) {
+        } catch (OperationNotAllowedException $exception) {
             throw HttpErrorException::create(403, [], $exception);
         }
 
@@ -124,5 +123,4 @@ abstract class AbstractResourceCommandController
             $this->fractal->parseFieldsets($queryParams['fields']);
         }
     }
-
 }

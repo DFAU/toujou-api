@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Command\Traits;
-
 
 trait TcaRecordReferencingCommandTrait
 {
@@ -26,5 +26,4 @@ trait TcaRecordReferencingCommandTrait
     {
         return $this->tableName;
     }
-
 }

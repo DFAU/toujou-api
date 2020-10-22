@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\TransformHandler;
 
@@ -8,7 +9,5 @@ namespace DFAU\ToujouApi\TransformHandler;
  */
 interface TransformHandler
 {
-
     public function handleTransform($data, array $transformedData, callable $next): array;
-
 }

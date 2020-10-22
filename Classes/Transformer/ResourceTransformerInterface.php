@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Transformer;
 
@@ -11,7 +12,6 @@ use League\Fractal\Scope;
  */
 interface ResourceTransformerInterface
 {
-
     public function getAvailableIncludes();
 
     public function getDefaultIncludes();
@@ -27,5 +27,4 @@ interface ResourceTransformerInterface
     public function setDefaultIncludes(array $defaultIncludes);
 
     public function setCurrentScope($currentScope);
-
 }

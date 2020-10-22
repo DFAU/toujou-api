@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Controller;
 
@@ -14,19 +16,21 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 
 final class JsonApiCollectionCommandController extends AbstractResourceCommandController
 {
-
     public function __construct(?string $resourceType, ApiResourceRepository $repository, ResourceTransformerInterface $transformer)
     {
         parent::__construct($resourceType, $repository, $transformer);
-        $this->fractal->setSerializer(new class extends JsonApiSerializer {
-            public function getMandatoryFields() { return ['id', 'meta']; }
+        $this->fractal->setSerializer(new class() extends JsonApiSerializer {
+            public function getMandatoryFields()
+            {
+                return ['id', 'meta'];
+            }
         });
     }
 
     public function canHandleOperation(Operation $operation): bool
     {
         return $operation->equals(Operation::READ);
-         // TODO implement creation on collection without given identifier
+        // TODO implement creation on collection without given identifier
          //   || $operation->equals(Operation::CREATE);
     }
 
@@ -55,7 +59,6 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
 
         return $this->fractal->createData($collection)->toArray();
     }
-
 
     protected function fillInCommandArguments(ServerRequestInterface $request, string $commandName, array $commandArguments, array $commandInterfaces): array
     {

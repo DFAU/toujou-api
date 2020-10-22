@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\IncludeHandler;
-
 
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;

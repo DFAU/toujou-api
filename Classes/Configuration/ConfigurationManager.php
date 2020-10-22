@@ -1,15 +1,14 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Configuration;
-
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager
@@ -41,7 +40,7 @@ class ConfigurationManager
             $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             $packages = $packageManager->getActivePackages();
 
-            $configFromPackages = array_replace_recursive(...array_map(function(PackageInterface $package) use ($configType) {
+            $configFromPackages = array_replace_recursive(...array_map(function (PackageInterface $package) use ($configType) {
                 $resourcesFileNameForPackage = $package->getPackagePath() . 'Configuration/ToujouApi/' . $configType . '.php';
                 if (file_exists($resourcesFileNameForPackage)) {
                     return require $resourcesFileNameForPackage;
@@ -55,7 +54,7 @@ class ConfigurationManager
         return $configFromPackages;
     }
 
-    static public function getCommandBusConfiguration(): array
+    public static function getCommandBusConfiguration(): array
     {
         static $configuration;
 
@@ -66,7 +65,7 @@ class ConfigurationManager
         return $configuration;
     }
 
-    static public function getResourcesConfiguration(): array
+    public static function getResourcesConfiguration(): array
     {
         static $configuration;
 
@@ -77,7 +76,7 @@ class ConfigurationManager
         return $configuration;
     }
 
-    static public function getRoutesConfiguration(): array
+    public static function getRoutesConfiguration(): array
     {
         static $configuration;
 

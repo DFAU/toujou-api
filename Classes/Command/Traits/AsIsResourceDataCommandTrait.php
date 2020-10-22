@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Command\Traits;
-
 
 use DFAU\ToujouApi\Command\AsIsResourceDataCommand;
 
@@ -14,7 +14,7 @@ trait AsIsResourceDataCommandTrait
      */
     protected $asIsResourceData;
 
-    public function getAsIsResourceData():?array
+    public function getAsIsResourceData(): ?array
     {
         return $this->asIsResourceData;
     }

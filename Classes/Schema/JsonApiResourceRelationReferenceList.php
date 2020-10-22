@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Schema;
-
 
 use DFAU\Convergence\Schema\Identifier;
 use DFAU\Convergence\Schema\ReferenceList;
@@ -33,11 +33,11 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
 
     public function getAvailablePredicates(array $resource): array
     {
-        if (empty($resource["relationships"])) {
+        if (empty($resource['relationships'])) {
             return [];
         }
         $predicates = [];
-        foreach ($resource["relationships"] as $predicate => $data) {
+        foreach ($resource['relationships'] as $predicate => $data) {
             $predicates[] = ($data['data'] === null || isset($data['data']['id']) ? static::PREDICATE_CARDINALITY_ITEM : static::PREDICATE_CARDINALITY_COLLECTION) . ':' . $predicate;
         }
         return $predicates;
@@ -47,21 +47,21 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
     {
         [$cardinality, $predicate] = explode(static::PREDICATE_DELIMITER, $predicate, 2);
 
-        if (empty($resource["relationships"][$predicate]['data'])) {
+        if (empty($resource['relationships'][$predicate]['data'])) {
             return [];
         }
 
         switch ($cardinality) {
             case static::PREDICATE_CARDINALITY_ITEM:
-                $identifier = $this->resourceIdentifier->determineIdentity($resource["relationships"][$predicate]['data'], $predicate);
-                $this->identifierToRelationMap[$identifier] = $resource["relationships"][$predicate]['data'];
+                $identifier = $this->resourceIdentifier->determineIdentity($resource['relationships'][$predicate]['data'], $predicate);
+                $this->identifierToRelationMap[$identifier] = $resource['relationships'][$predicate]['data'];
                 return [$identifier];
             case static::PREDICATE_CARDINALITY_COLLECTION:
         return array_map(function ($relationship) use ($predicate) {
-            $identifier = $this->resourceIdentifier->determineIdentity($relationship, $predicate);;
+            $identifier = $this->resourceIdentifier->determineIdentity($relationship, $predicate);
             $this->identifierToRelationMap[$identifier] = $relationship;
             return $identifier;
-        }, $resource["relationships"][$predicate]['data']);
+        }, $resource['relationships'][$predicate]['data']);
             default:
                 throw new \InvalidArgumentException('Unknown cardinality "' . $cardinality . '" has been given. Only constants PREDICATE_CARDINALITY_ITEM and PREDICATE_CARDINALITY_COLLECTION are allowed.', 1567686753);
         }

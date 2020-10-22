@@ -1,6 +1,7 @@
-<?php declare(strict_types = 1);
-namespace DFAU\ToujouApi\Http;
+<?php
 
+declare(strict_types=1);
+namespace DFAU\ToujouApi\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\CommandBus;
 
@@ -18,7 +19,6 @@ class MapByConfiguration implements CommandToHandlerMapping
      * @var array<string, array<string>>
      */
     protected $commandHandlerMap;
-
 
     public function getClassName(string $commandClassName): string
     {

@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\CommandHandler;
-
 
 use DFAU\ToujouApi\Command\TcaRecordReferencingCommand;
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
@@ -79,7 +79,6 @@ class DataHandlerCommandHandler
                 break;
         }
     }
-
 
     protected function process(array $datamap = [], array $commandmap = []): array
     {

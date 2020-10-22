@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Resource;
-
 
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
 
@@ -38,7 +38,7 @@ final class ResourceOperationToCommandMap
     protected function findCommandConfigByResourceTypeAndOperation(string $resourceType, Operation $operation)
     {
         $this->loadOperationsToCommandMapFromResourcesConfiguration();
-        return $this->commandsByResourceTypeAndOperation[$resourceType][(string) $operation] ?? null;
+        return $this->commandsByResourceTypeAndOperation[$resourceType][(string)$operation] ?? null;
     }
 
     protected function loadOperationsToCommandMapFromResourcesConfiguration(): void
