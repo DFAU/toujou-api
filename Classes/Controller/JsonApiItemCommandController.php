@@ -17,8 +17,10 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\JsonApiSerializer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Command\CheckIntegrityCommand;
 
 final class JsonApiItemCommandController extends AbstractResourceCommandController
 {
@@ -55,14 +57,14 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
         $this->parseIncludes($queryParams);
         $this->parseFieldsets($queryParams);
 
-        $data = $this->fetchAndTransformData($request->getAttribute('variables')['id']);
+        $data = $this->fetchAndTransformData($request->getAttribute('variables')['id'], $request->getAttributes()['context']);
 
         return new JsonResponse($data, 200, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
-    protected function fetchAndTransformData(string $resourceIdentifier): ?array
+    protected function fetchAndTransformData(string $resourceIdentifier, Context $context): ?array
     {
-        $resource = $this->repository->findOneByIdentifier($resourceIdentifier);
+        $resource = $this->repository->findOneByIdentifier($resourceIdentifier, $context);
 
         if ($resource === null) {
             return null;

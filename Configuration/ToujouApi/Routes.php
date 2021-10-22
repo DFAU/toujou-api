@@ -6,10 +6,10 @@ use DFAU\ToujouApi\Resource\Operation;
 return [
 // Example routes
 //    'GET:/pages/' => [
-////        'numerus' => Numerus::COLLECTION,
-////        'operation' => Operation::READ,
-////        'resourceType' => 'pages',
-////    ],
+//        'numerus' => Numerus::COLLECTION,
+//        'operation' => Operation::READ,
+//        'resourceType' => 'pages',
+//    ],
 //    'GET:/pages/{id:\d+}' => [
 //        'numerus' => Numerus::ITEM,
 //        'operation' => Operation::READ,

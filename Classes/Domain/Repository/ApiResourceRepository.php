@@ -12,7 +12,7 @@ interface ApiResourceRepository
 
     public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor): array;
 
-    public function findOneByIdentifier($identifier): ?array;
+    public function findOneByIdentifier($identifier, $context = null): ?array;
 
     public function findByIdentifiers(array $identifiers): array;
 }

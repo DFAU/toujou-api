@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Middleware;
 
+use DFAU\ToujouApi\Controller\ResourceControllerFactory;
 use DFAU\ToujouApi\ErrorFormatter\JsonApiFormatter;
 use DFAU\ToujouApi\Http\RequestHandler;
 use Middlewares\ErrorFormatter;
@@ -14,9 +15,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -67,6 +71,24 @@ class ApiEntrypoint implements MiddlewareInterface
         $apiPathPrefix = $site instanceof Site ? ltrim($site->getAttribute('toujouApiPathPrefix') ?? '', '/ ') : null;
 
         if (!empty($apiPathPrefix) && GeneralUtility::isFirstPartOfStr($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
+
+
+
+            // @TODO
+            // add lang handling
+            // PageRouter l:246
+            // request neu setzen withAttribute()
+            // vllt: SiteResolver l:60 -- Locales::
+
+            // ResourceControllerFactory:: --> context object mitgeben
+            // createToujouApiRouter
+
+            // request->withAttribute(context -> $context)
+
+
+            $request = $this->generateContext($request, $site);
+
+
             $tsfe = $this->getTyposcriptFrontendController($request);
             $tsfe->determineId();
 
@@ -76,6 +98,33 @@ class ApiEntrypoint implements MiddlewareInterface
         }
 
         return $handler->handle($request);
+    }
+
+    protected function generateContext(ServerRequestInterface $request, SiteInterface $site): ?ServerRequestInterface
+    {
+        $lang = $request->getHeader('accept-language') ?? null;
+        if ($lang === null) {
+            return null;
+        }
+
+        $lang = reset($lang);
+        $usedSiteLanguage = null;
+        foreach ($site->getAllLanguages() as $language) {
+            if ($language->getHreflang() === $lang) {
+                $usedSiteLanguage = $language;
+            } elseif ($language->getTwoLetterIsoCode() === $lang) {
+                $usedSiteLanguage = $language;
+            }
+        }
+        if ($usedSiteLanguage === null) {
+            return null;
+        }
+
+        $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', LanguageAspectFactory::createFromSiteLanguage($usedSiteLanguage));
+        return $request
+            ->withAttribute('context', $context)
+            ->withAttribute('language', $usedSiteLanguage);
     }
 
     protected function initTyposcriptFrontendController(TypoScriptFrontendController $tsfe)

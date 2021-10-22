@@ -10,6 +10,7 @@ use League\Fractal\Pagination\Cursor;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository
 {
@@ -39,6 +40,13 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     protected function createQuery(): QueryBuilder
     {
+
+        // @todo
+        // getLanguageOverlay (PageRepo);
+        // getLanguageRestrictions (ContentObjectRenderer)
+
+        // $languageField = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->select('*')
@@ -55,7 +63,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
             $query->where($query->expr()->gt($this->identifier, $currentCursor));
         }
 
-        $result = $query->execute()->fetchAll();
+        $result = $query->execute()->fetchAllAssociative();
         $nextCursor = !empty($result) ? end($result)[$this->identifier] : null;
 
         $result = array_map($this->createMetaMapper(), $result);
@@ -63,12 +71,12 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return [$result, new Cursor($currentCursor, $previousCursor, $nextCursor, count($result))];
     }
 
-    public function findOneByIdentifier($identifier): ?array
+    public function findOneByIdentifier($identifier, $context): ?array
     {
         $query = $this->createQuery()->setMaxResults(1);
         $query->where($query->expr()->eq($this->identifier, $query->quote($identifier)));
 
-        $result = $query->execute()->fetch();
+        $result = $query->execute()->fetchAssociative();
 
         if ($result) {
             return $this->createMetaMapper()($result);
@@ -82,7 +90,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query = $this->createQuery();
         $query->where($query->expr()->in($this->identifier, array_map([$query, 'quote'], $identifiers)));
 
-        $result = $query->execute()->fetchAll();
+        $result = $query->execute()->fetchAllAssociative();
 
         return array_map($this->createMetaMapper(), $result);
     }
@@ -92,7 +100,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query = $this->createQuery();
         $query->where($query->expr()->eq($this->parentPageIdentifier, $query->quote($pageIdentifier)));
 
-        $result = $query->execute()->fetchAll();
+        $result = $query->execute()->fetchAllAssociative();
 
         return array_map($this->createMetaMapper(), $result);
     }
