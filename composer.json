@@ -17,7 +17,7 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "dfau/coding-standard": "dev-master",
+    "dfau/coding-standard": "1.0.0",
     "typo3/testing-framework": "^6.4.0"
   },
   "authors": [
@@ -46,15 +46,5 @@
       "web-dir": ".Build/Web",
       "extension-key": "toujou_api"
     }
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://composer.typo3.org/"
-    },
-    {
-      "type": "vcs",
-      "url": "git@git.dfau.de:dfau/coding-standard.git"
-    }
-  ]
+  }
 }
