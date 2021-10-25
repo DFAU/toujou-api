@@ -100,11 +100,11 @@ class ApiEntrypoint implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    protected function generateContext(ServerRequestInterface $request, SiteInterface $site): ?ServerRequestInterface
+    protected function generateContext(ServerRequestInterface $request, SiteInterface $site): ServerRequestInterface
     {
         $lang = $request->getHeader('accept-language') ?? null;
         if ($lang === null) {
-            return null;
+            return $request;
         }
 
         $lang = reset($lang);
@@ -117,7 +117,7 @@ class ApiEntrypoint implements MiddlewareInterface
             }
         }
         if ($usedSiteLanguage === null) {
-            return null;
+            return $request;
         }
 
         $context = GeneralUtility::makeInstance(Context::class);

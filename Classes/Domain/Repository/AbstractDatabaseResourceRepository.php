@@ -7,10 +7,10 @@ namespace DFAU\ToujouApi\Domain\Repository;
 use DFAU\ToujouApi\Database\Query\Restriction\ApiRestrictionContainer;
 use DFAU\ToujouApi\Domain\Value\ZuluDate;
 use League\Fractal\Pagination\Cursor;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository
 {
@@ -18,19 +18,13 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     const DEFAULT_PARENT_PAGE_IDENTIFIER = 'pid';
 
-    /**
-     * @var
-     */
+    /** @var string */
     protected $identifier = self::DEFAULT_IDENTIFIER;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $parentPageIdentifier = self::DEFAULT_PARENT_PAGE_IDENTIFIER;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $tableName;
 
     public function getTableName(): string
@@ -40,11 +34,8 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     protected function createQuery(): QueryBuilder
     {
-
-        // @todo
-        // getLanguageOverlay (PageRepo);
-        // getLanguageRestrictions (ContentObjectRenderer)
-
+        // @todo check for following:
+        // getLanguageRestriction (ContentObjectRenderer)
         // $languageField = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -52,10 +43,11 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
             ->select('*')
             ->from($this->tableName);
         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(ApiRestrictionContainer::class));
+
         return $queryBuilder;
     }
 
-    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor): array
+    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor, $context = null): array
     {
         $query = $this->createQuery()->setMaxResults($limit);
 
@@ -64,6 +56,9 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         }
 
         $result = $query->execute()->fetchAllAssociative();
+
+        $result = $this->resolveOverlay($context, $result);
+
         $nextCursor = !empty($result) ? end($result)[$this->identifier] : null;
 
         $result = array_map($this->createMetaMapper(), $result);
@@ -71,12 +66,14 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return [$result, new Cursor($currentCursor, $previousCursor, $nextCursor, count($result))];
     }
 
-    public function findOneByIdentifier($identifier, $context): ?array
+    public function findOneByIdentifier($identifier, $context = null): ?array
     {
         $query = $this->createQuery()->setMaxResults(1);
         $query->where($query->expr()->eq($this->identifier, $query->quote($identifier)));
 
-        $result = $query->execute()->fetchAssociative();
+        $result = $query->execute()->fetchAssociative() ?: [];
+
+        $result = $this->resolveOverlay($context, $result);
 
         if ($result) {
             return $this->createMetaMapper()($result);
@@ -85,12 +82,14 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return null;
     }
 
-    public function findByIdentifiers(array $identifiers): array
+    public function findByIdentifiers(array $identifiers, $context = null): array
     {
         $query = $this->createQuery();
         $query->where($query->expr()->in($this->identifier, array_map([$query, 'quote'], $identifiers)));
 
         $result = $query->execute()->fetchAllAssociative();
+
+        $result = $this->resolveOverlay($context, $result);
 
         return array_map($this->createMetaMapper(), $result);
     }
@@ -101,6 +100,8 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query->where($query->expr()->eq($this->parentPageIdentifier, $query->quote($pageIdentifier)));
 
         $result = $query->execute()->fetchAllAssociative();
+
+        // TODO: add overlay?
 
         return array_map($this->createMetaMapper(), $result);
     }
@@ -122,5 +123,17 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
             return $resource;
         };
+    }
+
+    protected function resolveOverlay(?Context $context, array $result): array
+    {
+        if (null !== $context && $result) {
+            $pageRepository = GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Domain\Repository\PageRepository::class,
+                $context
+            );
+            $overlayResult = $pageRepository->getLanguageOverlay($this->tableName, $result);
+        }
+        return $overlayResult ?? $result;
     }
 }

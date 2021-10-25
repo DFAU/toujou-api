@@ -26,7 +26,7 @@ class FileRepository extends AbstractDatabaseResourceRepository
         $this->coreFileRepository = GeneralUtility::makeInstance(CoreFileRepository::class);
     }
 
-    public function findOneByIdentifier($identifier): ?array
+    public function findOneByIdentifier($identifier, $context = null): ?array
     {
         /** @var File $file */
         $file = $this->coreFileRepository->findByIdentifier($identifier);

@@ -62,7 +62,7 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
         return new JsonResponse($data, 200, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
-    protected function fetchAndTransformData(string $resourceIdentifier, Context $context): ?array
+    protected function fetchAndTransformData(string $resourceIdentifier, ?Context $context = null): ?array
     {
         $resource = $this->repository->findOneByIdentifier($resourceIdentifier, $context);
 
