@@ -18,6 +18,8 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     const DEFAULT_PARENT_PAGE_IDENTIFIER = 'pid';
 
+    const ALLOWED_FILTER_OPERATORS = ['eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'in'];
+
     /** @var string */
     protected $identifier = self::DEFAULT_IDENTIFIER;
 
@@ -47,13 +49,43 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return $queryBuilder;
     }
 
-    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor, $context = null): array
+    public function addFiltersToQuery(array $filters, QueryBuilder $queryBuilder): QueryBuilder
+    {
+        $constraints = [];
+        foreach ($filters as $key => $value) {
+            if (!is_array($value)) {
+                $constraints[] = $queryBuilder->expr()->in($key, $queryBuilder->createNamedParameter($value));
+                continue;
+            }
+
+            $operator = key($value);
+            if (!in_array($operator, self::ALLOWED_FILTER_OPERATORS)) {
+                continue;
+            }
+
+            $filterValue = reset($value);
+            $constraints[] = $queryBuilder->expr()->$operator($key, $queryBuilder->createNamedParameter($filterValue));
+        }
+
+        $queryBuilder->andWhere(...$constraints);
+        return $queryBuilder;
+    }
+
+    public function findByFiltersWithCursor(array $filters, int $limit, ?string $currentCursor, ?string $previousCursor, $context = null): array
     {
         $query = $this->createQuery()->setMaxResults($limit);
 
         if ($currentCursor) {
             $query->where($query->expr()->gt($this->identifier, $currentCursor));
         }
+
+        if ([] !== $filters) {
+            $query = $this->addFiltersToQuery($filters, $query);
+        }
+
+
+        // TODO maybe: sort / orderBy
+
 
         $result = $query->execute()->fetchAllAssociative();
 
@@ -82,7 +114,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return null;
     }
 
-    public function findByIdentifiers(array $identifiers, $context = null): array
+    public function findByIdentifiers(array $identifiers, $context = null, array $filters = []): array
     {
         $query = $this->createQuery();
         $query->where($query->expr()->in($this->identifier, array_map([$query, 'quote'], $identifiers)));

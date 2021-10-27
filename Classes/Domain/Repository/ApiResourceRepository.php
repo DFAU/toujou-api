@@ -10,7 +10,7 @@ interface ApiResourceRepository
     const META_CREATED = 'created';
     const META_LAST_UPDATED = 'lastUpdated';
 
-    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor): array;
+    public function findByFiltersWithCursor(array $filters, int $limit, ?string $currentCursor, ?string $previousCursor): array;
 
     public function findOneByIdentifier($identifier, $context = null): ?array;
 
