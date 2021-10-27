@@ -35,6 +35,11 @@ class RouterFactory
                         throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a "operation" definition.', 1563782786);
                     }
 
+                    if (!empty($resourceRouteDefinition['defaultParams'])) {
+                        $queryParams = array_replace_recursive($resourceRouteDefinition['defaultParams'], $request->getQueryParams());
+                        $request = $request->withQueryParams($queryParams);
+                    }
+
                     switch (strtolower($resourceRouteDefinition['operation'])) {
                         case Operation::READ:
                             return $controller->read($request);
