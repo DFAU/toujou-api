@@ -1,4 +1,13 @@
+/.idea/
 .DS_Store
-/.idea
-/vendor
+/*.dump
+/*.sql.gz
 .phpunit.result.cache
+/.php_cs.cache
+/*.patch
+.Build/
+/public/
+/vendor/
+composer.lock
+/etc/testing-docker/.env
+/var/
