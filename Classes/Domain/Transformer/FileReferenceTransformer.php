@@ -6,6 +6,7 @@ namespace DFAU\ToujouApi\Domain\Transformer;
 
 use DFAU\ToujouApi\Domain\Repository\FileReferenceRepository;
 use DFAU\ToujouApi\Domain\Repository\FileRepository;
+use DFAU\ToujouApi\Utility\AbsoluteFileUrBuilder;
 use League\Fractal\Resource\ResourceAbstract;
 use League\Fractal\TransformerAbstract;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +39,8 @@ class FileReferenceTransformer extends TransformerAbstract
             'link' => $fileReference['link'],
             'crop' => $fileReference['crop'] ? json_decode($fileReference['crop'], true) : null,
             'autoplay' => (bool)$fileReference['autoplay'],
-            'file' => $file !== [] ? $file['id'] : null
+            'file' => $file !== [] ? $file['id'] : null,
+            'url' => $this->getAbsoluteFileUrl($file)
         ];
     }
 
@@ -53,5 +55,19 @@ class FileReferenceTransformer extends TransformerAbstract
         }
 
         return $this->item($file, new FileTransformer(), 'files');
+    }
+
+    private function getAbsoluteFileUrl(array $file = null): ?string
+    {
+        $url = $file['url'] ?? null;
+
+        if (null === $url) {
+            return null;
+        }
+
+        /** @var AbsoluteFileUrBuilder $absoluteFileUrlBuilder */
+        $absoluteFileUrlBuilder = GeneralUtility::makeInstance(AbsoluteFileUrBuilder::class);
+
+        return $absoluteFileUrlBuilder->getAbsoluteUrl($url);
     }
 }

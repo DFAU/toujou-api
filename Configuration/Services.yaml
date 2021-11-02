@@ -6,3 +6,6 @@ services:
 
   DFAU\ToujouApi\:
     resource: '../Classes/*'
+
+  DFAU\ToujouApi\Utility\AbsoluteFileUrBuilder:
+    public: true
