@@ -46,5 +46,10 @@
       "web-dir": ".Build/Web",
       "extension-key": "toujou_api"
     }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ]
   }
 }
