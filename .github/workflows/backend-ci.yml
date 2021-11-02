@@ -33,9 +33,13 @@ jobs:
       - name: Install dependencies
         run: |
           composer install
+
       - name: Info
         run: composer info
 
-      - name: Unit Tests
-        run: ./vendor/bin/phpunit Tests
+      - name: Check coding standards
+        run: ./etc/scripts/checkCodingStandards.sh
+
+      - name: Run unit tests
+        run: ./etc/scripts/runTests.sh -s unit
 
