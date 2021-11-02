@@ -8,10 +8,7 @@ use DFAU\ToujouApi\Command\ResourceRelationsCommand;
 
 trait ResourceRelationsCommandTrait
 {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $resourceRelations = [];
 
     public function getResourceRelations(): array

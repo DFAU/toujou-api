@@ -20,7 +20,7 @@ class RouterFactory
         // Build Route objects from the data
         $router = simpleDispatcher(function (RouteCollector $routeCollector) use ($routesFromPackages) {
             foreach ($routesFromPackages as $routeIdentifier => $resourceRouteDefinition) {
-                [$method, $path] = explode(':', $routeIdentifier, 2);
+                [$method, $path] = \explode(':', $routeIdentifier, 2);
                 if (empty($method)) {
                     throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does not contain a HTTP method definition like "GET:/xyz/".', 1562676017);
                 }
@@ -36,11 +36,11 @@ class RouterFactory
                     }
 
                     if (!empty($resourceRouteDefinition['defaultParams'])) {
-                        $queryParams = array_replace_recursive($resourceRouteDefinition['defaultParams'], $request->getQueryParams());
+                        $queryParams = \array_replace_recursive($resourceRouteDefinition['defaultParams'], $request->getQueryParams());
                         $request = $request->withQueryParams($queryParams);
                     }
 
-                    switch (strtolower($resourceRouteDefinition['operation'])) {
+                    switch (\strtolower($resourceRouteDefinition['operation'])) {
                         case Operation::READ:
                             return $controller->read($request);
                         case Operation::REPLACE:

@@ -8,9 +8,6 @@ use Middlewares\JsonPayload;
 
 class JsonApiPayload extends JsonPayload
 {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $contentType = ['application/json', 'application/vnd.api+json'];
 }

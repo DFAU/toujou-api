@@ -15,15 +15,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DataHandlerCommandHandler
 {
-
-    /**
-     * @var object|mixed
-     */
+    /** @var object|mixed */
     protected $dataHandler;
 
-    /**
-     * @var object
-     */
+    /** @var object */
     protected $operationToCommandMap;
 
     public function __construct()
@@ -75,7 +70,7 @@ class DataHandlerCommandHandler
                 $commandmap[$command->getTableName()][$command->getUid()]['delete'] = 1;
                 break;
             default:
-                throw new \BadMethodCallException('The given command "' . get_class($command) . '" is not supported yet', 1564476754);
+                throw new \BadMethodCallException('The given command "' . \get_class($command) . '" is not supported yet', 1564476754);
                 break;
         }
     }

@@ -15,7 +15,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Router implements MiddlewareInterface
 {
-
     /**
      * Process an incoming server request.
      *
@@ -35,7 +34,7 @@ class Router implements MiddlewareInterface
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
                 $response = GeneralUtility::makeInstance(Response::class)->withStatus(405);
-                return $response->withStatus(405, $response->getReasonPhrase() . '. Allowed Methods: ' . implode(',', $allowedMethods));
+                return $response->withStatus(405, $response->getReasonPhrase() . '. Allowed Methods: ' . \implode(',', $allowedMethods));
                 break;
             case Dispatcher::FOUND:
                 $request = $request->withAttribute('handler', $routeInfo[1])->withAttribute('variables', $routeInfo[2]);

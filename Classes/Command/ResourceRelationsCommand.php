@@ -8,5 +8,5 @@ interface ResourceRelationsCommand
 {
     public function getResourceRelations(): array;
 
-    public function withResourceRelations(array $resourceRelations): ResourceRelationsCommand;
+    public function withResourceRelations(array $resourceRelations): self;
 }

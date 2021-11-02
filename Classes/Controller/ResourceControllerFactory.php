@@ -52,7 +52,7 @@ class ResourceControllerFactory
         $controllerOptions = [
             'resourceType' => $resourceType,
             'repository' => $resourceDefinition['repository'],
-            'transformer' => $resourceDefinition['transformer']
+            'transformer' => $resourceDefinition['transformer'],
         ];
 
         /** @var AbstractResourceCommandController $controller */

@@ -6,7 +6,7 @@ namespace DFAU\ToujouApi\Domain\Value;
 
 class ZuluDate
 {
-    const FORMAT = 'Y-m-d\TH:i:s\Z';
+    public const FORMAT = 'Y-m-d\TH:i:s\Z';
 
     public static function fromTimestamp(int $timestamp): string
     {

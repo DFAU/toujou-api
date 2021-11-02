@@ -13,13 +13,13 @@ class JsonApiFormatter extends AbstractFormatter
 
     protected function format(Throwable $error): string
     {
-        return (string)json_encode($this->serializeError($error));
+        return (string) \json_encode($this->serializeError($error));
     }
 
     protected function serializeError(Throwable $error)
     {
         $data = [
-            'type' => get_class($error),
+            'type' => \get_class($error),
             'code' => $error->getCode(),
             'message' => $error->getMessage(),
         ];

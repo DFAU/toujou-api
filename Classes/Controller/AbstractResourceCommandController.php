@@ -24,40 +24,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractResourceCommandController
 {
-
-    /**
-     * @var \DFAU\ToujouApi\Transformer\ResourceTransformerInterface
-     */
+    /** @var \DFAU\ToujouApi\Transformer\ResourceTransformerInterface */
     protected $transformer;
 
-    /**
-     * @var Cascader
-     */
+    /** @var Cascader */
     protected $objectFactory;
 
-    /**
-     * @var CommandBus
-     */
+    /** @var CommandBus */
     protected $commandBus;
 
-    /**
-     * @var Manager
-     */
+    /** @var Manager */
     protected $fractal;
 
-    /**
-     * @var ApiResourceRepository
-     */
+    /** @var ApiResourceRepository */
     protected $repository;
 
-    /**
-     * @var ResourceOperationToCommandMap
-     */
+    /** @var ResourceOperationToCommandMap */
     protected $resourceOperationToCommandMap;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $resourceType;
 
     public function __construct(

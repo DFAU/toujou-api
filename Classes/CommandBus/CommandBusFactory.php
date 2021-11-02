@@ -16,17 +16,17 @@ class CommandBusFactory
     {
         static $commandBus;
 
-        if ($commandBus === null) {
+        if (null === $commandBus) {
             $commandBusConfiguration = ConfigurationManager::getCommandBusConfiguration();
 
-            $middlewares = array_map(function ($target) {
-                if (is_array($target) && isset($target['__class__'])) {
+            $middlewares = \array_map(function ($target) {
+                if (\is_array($target) && isset($target['__class__'])) {
                     $constructorArgs = $target;
                     unset($constructorArgs['__class__']);
                     return (new Cascader())->create($target['__class__'], $constructorArgs);
                 }
 
-                if (is_string($target)) {
+                if (\is_string($target)) {
                     return GeneralUtility::makeInstance($target);
                 }
             }, static::sanitizeMiddlewares($commandBusConfiguration['middlewares']));
@@ -43,7 +43,7 @@ class CommandBusFactory
 
         $sanitizedMiddlewares = [];
         foreach ($orderedMiddlewares as $name => $middleware) {
-            if (isset($middleware['disabled']) && $middleware['disabled'] === true) {
+            if (isset($middleware['disabled']) && true === $middleware['disabled']) {
                 // Skip this middleware if disabled by configuration
                 continue;
             }

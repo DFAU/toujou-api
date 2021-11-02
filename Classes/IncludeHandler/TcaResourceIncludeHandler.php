@@ -17,14 +17,10 @@ class TcaResourceIncludeHandler implements IncludeHandler
 {
     protected const REFERENCE_TABLE_NAME = '__referenceTableName__';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $tableName;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $tcaIncludes;
 
     protected $resourceDefinitionsByTableName;
@@ -38,7 +34,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
     public function getAvailableIncludes(array $currentIncludes, callable $next): array
     {
-        return $next(array_merge($currentIncludes, array_keys($this->tcaIncludes)));
+        return $next(\array_merge($currentIncludes, \array_keys($this->tcaIncludes)));
     }
 
     public function getDefaultIncludes(array $currentIncludes, callable $next): array
@@ -57,7 +53,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
         $uid = $data['uid'];
 
         // TODO elaborate whether a guard against multi table "allowed" configurations actually are a problem
-        $allowedTableName = $columnConfig['type'] === 'group' ? $columnConfig['allowed'] : $columnConfig['foreign_table'];
+        $allowedTableName = 'group' === $columnConfig['type'] ? $columnConfig['allowed'] : $columnConfig['foreign_table'];
         if (!isset($this->resourceDefinitionsByTableName[$allowedTableName])) {
             return $next($scope, $includeName, $data);
         }
@@ -65,11 +61,11 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->start($fieldValue, $allowedTableName, $mmTableName, $uid, $this->tableName, $columnConfig);
-        $result = array_filter($relationHandler->itemArray, function ($item) use ($allowedTableName) {
+        $result = \array_filter($relationHandler->itemArray, function ($item) use ($allowedTableName) {
             return $item['table'] === $allowedTableName;
         });
 
-        $resourceType = (isset($columnConfig['maxitems']) && $columnConfig['maxitems'] == 1) || (isset($columnConfig['renderType']) && $columnConfig['renderType'] === 'selectSingle') ? Item::class : Collection::class;
+        $resourceType = (isset($columnConfig['maxitems']) && 1 == $columnConfig['maxitems']) || (isset($columnConfig['renderType']) && 'selectSingle' === $columnConfig['renderType']) ? Item::class : Collection::class;
 
         if (!empty($result)) {
             $resourceDefinition = $this->resourceDefinitionsByTableName[$allowedTableName];
@@ -89,8 +85,8 @@ class TcaResourceIncludeHandler implements IncludeHandler
             /** @var ResourceInterface $transformer */
             $transformer = $cascader->create($resourceDefinition['transformer'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
-            if ($resourceType === Item::class) {
-                if ($data = $repository->findOneByIdentifier(reset($result)['id'])) {
+            if (Item::class === $resourceType) {
+                if ($data = $repository->findOneByIdentifier(\reset($result)['id'])) {
                     return new $resourceType(
                         $data,
                         $transformer,
@@ -101,7 +97,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
             }
 
             return new $resourceType(
-                $repository->findByIdentifiers(array_column($result, 'id')),
+                $repository->findByIdentifiers(\array_column($result, 'id')),
                 $transformer,
                 $resourceDefinition['resourceType']
             );
@@ -112,7 +108,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
     protected function buildTcaIncludes($tableName): array
     {
-        return array_filter(array_map(function ($columnDefinition) {
+        return \array_filter(\array_map(function ($columnDefinition) {
             $columnConfig = $columnDefinition['config'];
 
             if (isset($columnConfig['type'])) {
@@ -120,12 +116,12 @@ class TcaResourceIncludeHandler implements IncludeHandler
                     case 'select':
                     case 'inline':
                         if (!empty($columnConfig['foreign_table'])) {
-                            return array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
+                            return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
                         }
                         break;
                     case 'group':
-                        if ($columnConfig['internal_type'] === 'db' && !empty($columnConfig['allowed']) && strpos($columnConfig['allowed'], ',') === false) {
-                            return array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => GeneralUtility::trimExplode(',', $columnConfig['allowed'], true)]);
+                        if ('db' === $columnConfig['internal_type'] && !empty($columnConfig['allowed']) && false === \strpos($columnConfig['allowed'], ',')) {
+                            return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => GeneralUtility::trimExplode(',', $columnConfig['allowed'], true)]);
                         }
                         break;
                 }
@@ -135,13 +131,10 @@ class TcaResourceIncludeHandler implements IncludeHandler
         }, $GLOBALS['TCA'][$tableName]['columns'] ?? []));
     }
 
-    /**
-     * @param array $tableNameToResourceMap
-     */
     protected function buildResourceDefinitions(array $tableNameToResourceMap): array
     {
         $allResourceDefinitions = ConfigurationManager::getResourcesConfiguration();
-        return array_filter(array_map(function (string $resourceType) use ($allResourceDefinitions): ?array {
+        return \array_filter(\array_map(function (string $resourceType) use ($allResourceDefinitions): ?array {
             if (isset($allResourceDefinitions[$resourceType])) {
                 $resourceDefinition = $allResourceDefinitions[$resourceType];
                 $resourceDefinition['resourceType'] = $resourceType;

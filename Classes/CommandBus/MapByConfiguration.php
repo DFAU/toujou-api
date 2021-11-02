@@ -10,20 +10,16 @@ use League\Tactician\Handler\Mapping\FailedToMapCommand;
 
 class MapByConfiguration implements CommandToHandlerMapping
 {
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $configurationLoaded = false;
 
-    /**
-     * @var array<string, array<string>>
-     */
+    /** @var array<string, array<string>> */
     protected $commandHandlerMap;
 
     public function getClassName(string $commandClassName): string
     {
         $this->loadConfiguration();
-        if (! array_key_exists($commandClassName, $this->commandHandlerMap)) {
+        if (!\array_key_exists($commandClassName, $this->commandHandlerMap)) {
             throw FailedToMapCommand::className($commandClassName);
         }
 
@@ -33,7 +29,7 @@ class MapByConfiguration implements CommandToHandlerMapping
     public function getMethodName(string $commandClassName): string
     {
         $this->loadConfiguration();
-        if (! array_key_exists($commandClassName, $this->commandHandlerMap)) {
+        if (!\array_key_exists($commandClassName, $this->commandHandlerMap)) {
             throw FailedToMapCommand::methodName($commandClassName);
         }
 

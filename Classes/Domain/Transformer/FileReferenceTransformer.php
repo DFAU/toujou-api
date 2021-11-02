@@ -15,9 +15,7 @@ class FileReferenceTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = [];
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $identifier;
 
     public function __construct(string $identifier = FileReferenceRepository::DEFAULT_IDENTIFIER)
@@ -30,17 +28,17 @@ class FileReferenceTransformer extends TransformerAbstract
         /** @var array $file */
         $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);
         return [
-            'id' => (string)$fileReference[$this->identifier],
+            'id' => (string) $fileReference[$this->identifier],
             'meta' => $fileReference[FileReferenceRepository::META_ATTRIBUTE],
-            'hidden' => (bool)$fileReference['hidden'],
+            'hidden' => (bool) $fileReference['hidden'],
             'title' => $fileReference['title'],
             'description' => $fileReference['description'],
             'alternative' => $fileReference['alternative'],
             'link' => $fileReference['link'],
-            'crop' => $fileReference['crop'] ? json_decode($fileReference['crop'], true) : null,
-            'autoplay' => (bool)$fileReference['autoplay'],
-            'file' => $file !== [] ? $file['id'] : null,
-            'url' => $this->getAbsoluteFileUrl($file)
+            'crop' => $fileReference['crop'] ? \json_decode($fileReference['crop'], true) : null,
+            'autoplay' => (bool) $fileReference['autoplay'],
+            'file' => [] !== $file ? $file['id'] : null,
+            'url' => $this->getAbsoluteFileUrl($file),
         ];
     }
 

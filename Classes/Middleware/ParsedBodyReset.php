@@ -17,9 +17,9 @@ class ParsedBodyReset implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!empty($request->getParsedBody()) && in_array($request->getMethod(), ['PUT', 'PATCH', 'DELETE'])) {
+        if (!empty($request->getParsedBody()) && \in_array($request->getMethod(), ['PUT', 'PATCH', 'DELETE'])) {
             $contentType = $request->hasHeader('content-type') ? $request->getHeader('content-type')[0] : 'application/x-www-form-urlencoded';
-            if (!in_array($contentType, ['application/x-www-form-urlencoded', 'multipart/form-data'])) {
+            if (!\in_array($contentType, ['application/x-www-form-urlencoded', 'multipart/form-data'])) {
                 $request = $request->withParsedBody(null);
             }
         }

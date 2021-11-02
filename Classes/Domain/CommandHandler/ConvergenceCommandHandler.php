@@ -21,20 +21,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConvergenceCommandHandler
 {
-
-    /**
-     * @var \League\Tactician\CommandBus
-     */
+    /** @var \League\Tactician\CommandBus */
     protected $commandBus;
 
-    /**
-     * @var ResourceOperationToCommandMap
-     */
+    /** @var ResourceOperationToCommandMap */
     protected $resourceOperationToCommandMap;
 
-    /**
-     * @var Cascader
-     */
+    /** @var Cascader */
     protected $objectFactory;
 
     public function __construct()
@@ -58,7 +51,7 @@ class ConvergenceCommandHandler
             RemoveResource::class => new Operation(Operation::DELETE),
         ];
 
-        $unitOfWorkCommands = array_map(function (AbstractResourceOperation $operation) use ($convergenceOperationsToApiOperationsMap) {
+        $unitOfWorkCommands = \array_map(function (AbstractResourceOperation $operation) use ($convergenceOperationsToApiOperationsMap) {
             $resource = $operation->getResource();
             switch ($operation) {
                 case $operation instanceof AddResource:
@@ -74,7 +67,7 @@ class ConvergenceCommandHandler
                     $commandArguments['resourceData'] = $resource['attributes'];
                     break;
                 default:
-                    throw new \BadMethodCallException('The given operation "' . get_class($operation) . '" is not supported yet', 1564062825);
+                    throw new \BadMethodCallException('The given operation "' . \get_class($operation) . '" is not supported yet', 1564062825);
                     break;
             }
 
@@ -95,7 +88,7 @@ class ConvergenceCommandHandler
             throw new \InvalidArgumentException('No convergenceSchema is specified for resource type "' . $resourceType . '"', 1564648569);
         }
 
-        $schemaConfig = is_array($resourceConfiguration[$resourceType]['convergenceSchema']) ? $resourceConfiguration[$resourceType]['convergenceSchema'] : ['__class__' => $resourceConfiguration[$resourceType]['convergenceSchema']];
+        $schemaConfig = \is_array($resourceConfiguration[$resourceType]['convergenceSchema']) ? $resourceConfiguration[$resourceType]['convergenceSchema'] : ['__class__' => $resourceConfiguration[$resourceType]['convergenceSchema']];
 
         $schemaClassName = $schemaConfig['__class__'];
         $schemaArguments = $schemaConfig;
