@@ -29,13 +29,7 @@ class ApiAccessCest
 
     public function testGetAccessTokenWithValidCredentials(ApiTester $I): void
     {
-        $data = [
-            'grant_type' => 'client_credentials',
-            'client_id' => '12fc7d65-0177-48be-9c3c-e7d8b2a1',
-            'client_secret' => '1312',
-        ];
-
-        $I->sendPOST('token', $data);
+        $I->sendPOST('token', $I->grabValidCredentials());
         $I->seeResponseCodeIs(HttpCode::OK); // 200
         $I->seeResponseMatchesJsonType([
             'token_type' => 'string',
