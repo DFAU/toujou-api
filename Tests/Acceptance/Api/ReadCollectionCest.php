@@ -21,15 +21,7 @@ class ReadCollectionCest
         $I->wantToBeBearerAuthenticated();
         $I->sendGET('pages/');
         $I->seeResponseCodeIs(HttpCode::OK);
-        $I->seeResponseContainsJson([
-            'data' => [
-                'type' => 'pages',
-                'id' => 1,
-            ],
-            'meta' => [
-                'count' => 2,
-            ],
-        ]);
+        $I->seeResponseIsJson();
     }
 
     /**
@@ -42,8 +34,10 @@ class ReadCollectionCest
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseContainsJson([
             'data' => [
-                'type' => 'pages',
-                'id' => $example['expectedPageId'],
+                [
+                    'type' => 'pages',
+                    'id' => $example['expectedPageId'],
+                ],
             ],
             'meta' => [
                 'count' => 1,
@@ -54,9 +48,9 @@ class ReadCollectionCest
     protected function provideCollectionFilter(): array
     {
         return [
-            ['expectedPageId' => 2, 'filter' => '?filter[uid][gt]=1'],
+            ['expectedPageId' => 3, 'filter' => '?filter[uid][gt]=2'],
             ['expectedPageId' => 1, 'filter' => '?filter[uid][lt]=2'],
-            ['expectedPageId' => 1, 'filter' => '?filter[uid]=1'],
+            ['expectedPageId' => 2, 'filter' => '?filter[uid]=2'],
         ];
     }
 }

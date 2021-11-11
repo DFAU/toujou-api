@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acceptance\Api;
+namespace DFAU\ToujouApi\Tests\Acceptance\Api;
 
 use Codeception\Util\HttpCode;
 use DFAU\ToujouApi\Tests\Acceptance\Support\ApiTester;
