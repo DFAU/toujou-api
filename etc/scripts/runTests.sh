@@ -202,6 +202,15 @@ shift $((OPTIND - 1))
 TEST_FILE=${1}
 if [ -n "${1}" ]; then
     TEST_FILE="Web/typo3conf/ext/toujou_api/${1}"
+else
+    case ${TEST_SUITE} in
+        unit)
+            TEST_FILE="Web/typo3conf/ext/toujou_api/Tests/Unit"
+            ;;
+        functional)
+            TEST_FILE="Web/typo3conf/ext/toujou_api/Tests/Functional"
+            ;;
+    esac
 fi
 
 if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
