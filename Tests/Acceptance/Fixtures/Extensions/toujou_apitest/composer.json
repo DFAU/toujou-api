@@ -1,0 +1,12 @@
+{
+  "name": "toujou/apitest",
+  "type": "typo3-cms-extension",
+  "description": "",
+  "license": "GPLv3",
+  "require": {},
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "apitest"
+    }
+  }
+}

@@ -33,7 +33,7 @@ setUpDockerComposeDotEnv() {
 
 # Load help text into $HELP
 read -r -d '' HELP <<EOF
-styleguide test runner. Execute unit test suite and some other details.
+toujou_api test runner. Execute unit test suite and some other details.
 Also used by travis-ci for test execution.
 
 Successfully tested with docker version 18.06.1-ce and docker-compose 1.21.2.
@@ -201,7 +201,7 @@ DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
 shift $((OPTIND - 1))
 TEST_FILE=${1}
 if [ -n "${1}" ]; then
-    TEST_FILE="Web/typo3conf/ext/styleguide/${1}"
+    TEST_FILE="Web/typo3conf/ext/toujou_api/${1}"
 fi
 
 if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
