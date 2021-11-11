@@ -12,3 +12,5 @@ extensions:
 
 groups:
   AcceptanceTests-Job-*: AcceptanceTests-Job-*
+params:
+  - .env

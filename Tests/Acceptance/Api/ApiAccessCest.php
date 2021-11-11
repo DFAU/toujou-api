@@ -11,19 +11,17 @@ class ApiAccessCest
 {
     public function testUnauthorizedAccess(ApiTester $I): void
     {
-        $I->markTestSkipped('todo: register api routes');
-
         $I->sendGET('pages');
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED); // 401
     }
 
     public function testGetAccessTokenWithInvalidCredentials(ApiTester $I): void
     {
-        $data = \json_encode([
+        $data = [
             'grant_type' => 'client_credentials',
             'client_id' => 'invalid',
             'client_secret' => 'invalid',
-        ], JSON_THROW_ON_ERROR);
+        ];
 
         $I->sendPOST('token', $data);
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED); // 401
@@ -31,13 +29,18 @@ class ApiAccessCest
 
     public function testGetAccessTokenWithValidCredentials(ApiTester $I): void
     {
-        $data = \json_encode([
+        $data = [
             'grant_type' => 'client_credentials',
-            'client_id' => '1234',
-            'client_secret' => '567',
-        ], JSON_THROW_ON_ERROR);
+            'client_id' => '12fc7d65-0177-48be-9c3c-e7d8b2a1',
+            'client_secret' => '1312',
+        ];
 
         $I->sendPOST('token', $data);
         $I->seeResponseCodeIs(HttpCode::OK); // 200
+        $I->seeResponseMatchesJsonType([
+            'token_type' => 'string',
+            'expires_in' => 'integer',
+            'access_token' => 'string',
+        ]);
     }
 }

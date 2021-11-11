@@ -36,6 +36,9 @@ services:
     environment:
       TYPO3_PATH_ROOT: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance
       TYPO3_PATH_APP: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance
+      TYPO3_OAUTH2_PRIVATE_KEY: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance/typo3conf/ext/toujou_api/Tests/Acceptance/_data/private.key
+      TYPO3_OAUTH2_PUBLIC_KEY: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance/typo3conf/ext/toujou_api/Tests/Acceptance/_data/public.key
+      TYPO3_OAUTH2_ENCRYPTION_KEY: def000003cde1910c7bdd30ad21d949a2d7e2c9d330b4cfcabd43d146c22fb2c4d5e66dd9d1ca33b06c3c101dce34de019c21fe48ec3f5a924f27e05717bddd5f6c6cdf5
     command: php -dxdebug.mode=off -S web:8000 -t ${ROOT_DIR}/.Build/Web
 
   acceptance_backend_mariadb10:

@@ -8,7 +8,7 @@ use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
 
 class ToujouApiEnvironment extends BackendEnvironment
 {
-    /** @var \string[][]  */
+    /** @var \string[][] */
     protected $localConfig = [
         'coreExtensionsToLoad' => [
             'core',
@@ -21,10 +21,14 @@ class ToujouApiEnvironment extends BackendEnvironment
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/toujou_api',
+            'typo3conf/ext/toujou_oauth2_server',
         ],
         'xmlDatabaseFixtures' => [
-            'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_users.xml',
-            'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_groups.xml',
+            'typo3conf/ext/toujou_api/Tests/Acceptance/Fixtures/be_users.xml',
+            'typo3conf/ext/toujou_api/Tests/Acceptance/Fixtures/tx_toujou_oauth2_server_client.xml',
+        ],
+        'pathsToLinkInTestInstance' => [
+            'typo3conf/ext/toujou_api/Tests/Acceptance/_data/sites' => 'typo3conf/sites',
         ],
     ];
 }
