@@ -1,0 +1,19 @@
+class_name: ApiTester
+modules:
+  enabled:
+    - Asserts
+    - REST:
+        depends: PhpBrowser
+        url: http://web:8000/typo3temp/var/tests/acceptance/_api/
+    - \DFAU\ToujouApi\Tests\Acceptance\Support\Helper\ApiAccess:
+        grant_type: 'client_credentials'
+        client_id: '12fc7d65-0177-48be-9c3c-e7d8b2a1'
+        client_secret: '1312'
+extensions:
+    enabled:
+        - DFAU\ToujouApi\Tests\Acceptance\Support\Extension\ToujouApiEnvironment
+
+groups:
+  AcceptanceTests-Job-*: AcceptanceTests-Job-*
+params:
+  - .env

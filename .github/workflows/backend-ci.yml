@@ -43,3 +43,5 @@ jobs:
       - name: Run unit tests
         run: ./etc/scripts/runTests.sh -s unit
 
+      - name: Run acceptance tests
+        run: ./etc/scripts/runTests.sh -s acceptance

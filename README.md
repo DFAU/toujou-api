@@ -76,6 +76,10 @@ Install php dependencies using composer:
 
     $ etc/scripts/runTests.sh -s functional
 
+#### [Codeception](https://codeception.com/) Acceptance tests
+
+    $ etc/scripts/runTests.sh -s acceptance
+
 
 #### [Easy-Coding-Standard](https://github.com/Symplify/EasyCodingStandard)
 
