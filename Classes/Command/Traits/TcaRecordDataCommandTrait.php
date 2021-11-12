@@ -10,9 +10,7 @@ trait TcaRecordDataCommandTrait
 {
     use TcaRecordReferencingCommandTrait;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $recordData;
 
     public function getRecordData(): ?array

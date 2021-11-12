@@ -6,7 +6,7 @@ namespace DFAU\ToujouApi\Domain\Repository;
 
 interface DatabaseResourceRepository
 {
-    const META_UID = 'uid';
+    public const META_UID = 'uid';
 
     public function getTableName(): string;
 }

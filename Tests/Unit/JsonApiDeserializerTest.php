@@ -90,7 +90,6 @@ final class JsonApiDeserializerTest extends TestCase
                             ],
                         ],
                     ],
-
                 ],
                 [
                     [
@@ -108,7 +107,7 @@ final class JsonApiDeserializerTest extends TestCase
                                 ],
                             ],
                         ],
-                    ]
+                    ],
                 ],
             ],
 

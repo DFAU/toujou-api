@@ -12,7 +12,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class CheckBeUserAuthorization implements MiddlewareInterface
 {
-
     /**
      * Process an incoming server request.
      *

@@ -6,13 +6,15 @@ namespace DFAU\ToujouApi\Domain\Repository;
 
 interface ApiResourceRepository
 {
-    const META_ATTRIBUTE = '_meta';
-    const META_CREATED = 'created';
-    const META_LAST_UPDATED = 'lastUpdated';
+    public const META_ATTRIBUTE = '_meta';
 
-    public function findWithCursor(int $limit, ?string $currentCursor, ?string $previousCursor): array;
+    public const META_CREATED = 'created';
 
-    public function findOneByIdentifier($identifier): ?array;
+    public const META_LAST_UPDATED = 'lastUpdated';
+
+    public function findByFiltersWithCursor(array $filters, int $limit, ?string $currentCursor, ?string $previousCursor): array;
+
+    public function findOneByIdentifier($identifier, $context = null): ?array;
 
     public function findByIdentifiers(array $identifiers): array;
 }

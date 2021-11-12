@@ -43,16 +43,18 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
         $pageParams = $queryParams['page'] ?? [];
         $currentCursor = $pageParams['cursor'];
         $previousCursor = $pageParams['previous'];
-        $limit = $pageParams['limit'] ? (int)$pageParams['limit'] : 10;
+        $limit = $pageParams['limit'] ? (int) $pageParams['limit'] : 10;
 
-        $data = $this->fetchAndTransformData($limit, $currentCursor, $previousCursor);
+        $filters = isset($queryParams['filter']) && \is_array($queryParams['filter']) ? $queryParams['filter'] : [];
+
+        $data = $this->fetchAndTransformData($filters, $limit, $currentCursor, $previousCursor);
 
         return new JsonResponse($data);
     }
 
-    protected function fetchAndTransformData(int $limit, $currentCursor, $previousCursor): ?array
+    protected function fetchAndTransformData(array $filters, int $limit, $currentCursor, $previousCursor): ?array
     {
-        [$resources, $cursor] = $this->repository->findWithCursor($limit, $currentCursor, $previousCursor);
+        [$resources, $cursor] = $this->repository->findByFiltersWithCursor($filters, $limit, $currentCursor, $previousCursor);
 
         $collection = new Collection($resources, $this->transformer, $this->resourceType);
         $collection->setCursor($cursor);
@@ -62,7 +64,6 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
 
     protected function fillInCommandArguments(ServerRequestInterface $request, string $commandName, array $commandArguments, array $commandInterfaces): array
     {
-        // TODO: Implement fillInCommandArguments() method.
         return $commandArguments;
     }
 }

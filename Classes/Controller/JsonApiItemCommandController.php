@@ -17,15 +17,13 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\JsonApiSerializer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class JsonApiItemCommandController extends AbstractResourceCommandController
 {
-
-    /**
-     * @var JsonApiDeserializer
-     */
+    /** @var JsonApiDeserializer */
     protected $deserializer;
 
     public function __construct(?string $resourceType, ApiResourceRepository $repository, ResourceTransformerInterface $transformer)
@@ -55,16 +53,16 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
         $this->parseIncludes($queryParams);
         $this->parseFieldsets($queryParams);
 
-        $data = $this->fetchAndTransformData($request->getAttribute('variables')['id']);
+        $data = $this->fetchAndTransformData($request->getAttribute('variables')['id'], $request->getAttributes()['context']);
 
         return new JsonResponse($data, 200, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
-    protected function fetchAndTransformData(string $resourceIdentifier): ?array
+    protected function fetchAndTransformData(string $resourceIdentifier, ?Context $context = null): ?array
     {
-        $resource = $this->repository->findOneByIdentifier($resourceIdentifier);
+        $resource = $this->repository->findOneByIdentifier($resourceIdentifier, $context);
 
-        if ($resource === null) {
+        if (null === $resource) {
             return null;
         }
 
@@ -79,21 +77,21 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
         $commandArguments['resourceIdentifier'] = $resourceIdentifier;
         $commandArguments['resourceType'] = $this->resourceType;
 
-        if (in_array(AsIsResourceDataCommand::class, $commandInterfaces)) {
+        if (\in_array(AsIsResourceDataCommand::class, $commandInterfaces)) {
             $asIsResourceData = $this->fetchAndTransformData($resourceIdentifier);
             $commandArguments['asIsResourceData'] = $asIsResourceData ? $this->deserializer->item($asIsResourceData, $this->deserializer::OPTION_KEEP_META) : null;
         }
 
-        $needsResourceData = in_array(ResourceDataCommand::class, $commandInterfaces);
-        $needsResourceRelations = in_array(ResourceRelationsCommand::class, $commandInterfaces);
-        $needsIncludesResourceData = in_array(IncludedResourcesDataCommand::class, $commandInterfaces);
+        $needsResourceData = \in_array(ResourceDataCommand::class, $commandInterfaces);
+        $needsResourceRelations = \in_array(ResourceRelationsCommand::class, $commandInterfaces);
+        $needsIncludesResourceData = \in_array(IncludedResourcesDataCommand::class, $commandInterfaces);
 
         if ($needsResourceData || $needsIncludesResourceData) {
             $resourceData = $request->getParsedBody();
             $resourceData = $resourceData ? $this->deserializer->item($resourceData) : null;
 
             if ($needsResourceData || $needsResourceRelations) {
-                $primaryResource = array_shift($resourceData);
+                $primaryResource = \array_shift($resourceData);
 
                 if ($needsResourceData && isset($primaryResource['attributes'])) {
                     $commandArguments['resourceData'] = $primaryResource['attributes'];

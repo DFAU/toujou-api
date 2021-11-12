@@ -8,10 +8,7 @@ use DFAU\ToujouApi\Command\ResourceDataCommand;
 
 trait ResourceDataCommandTrait
 {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $resourceData;
 
     public function getResourceData(): array

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Unit\Utility;
@@ -9,7 +10,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbsoluteFileUrBuilderTest extends UnitTestCase
 {
-
     /** @var AbsoluteFileUrBuilder */
     private $subject;
 
@@ -19,7 +19,6 @@ class AbsoluteFileUrBuilderTest extends UnitTestCase
         $this->subject = new AbsoluteFileUrBuilder();
 
         GeneralUtility::setIndpEnv('TYPO3_SITE_URL', 'http:://www.typo3.test/');
-
     }
 
     /**
@@ -30,7 +29,6 @@ class AbsoluteFileUrBuilderTest extends UnitTestCase
         $result = $this->subject->getAbsoluteUrl('fileadmin/user_upload.jpg');
 
         self::assertEquals('http:://www.typo3.test/fileadmin/user_upload.jpg', $result);
-
     }
 
     /**

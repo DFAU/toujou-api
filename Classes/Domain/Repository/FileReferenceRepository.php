@@ -10,11 +10,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FileReferenceRepository extends AbstractDatabaseResourceRepository
 {
-    const TABLE_NAME = 'sys_file_reference';
+    public const TABLE_NAME = 'sys_file_reference';
 
-    /**
-     * @var FileRepository
-     */
+    /** @var FileRepository */
     protected $coreFileRepository;
 
     public function __construct(string $tableName = self::TABLE_NAME)
@@ -27,8 +25,10 @@ class FileReferenceRepository extends AbstractDatabaseResourceRepository
     {
         $fileReferences = $this->coreFileRepository->findByRelation($foreignTableName, $foreignField, $foreignIdentifier);
 
-        $fileReferences = array_map(function (FileReference $fileReference) { return $fileReference->getReferenceProperties(); }, $fileReferences);
+        $fileReferences = \array_map(function (FileReference $fileReference) {
+            return $fileReference->getReferenceProperties();
+        }, $fileReferences);
 
-        return array_map($this->createMetaMapper(), $fileReferences);
+        return \array_map($this->createMetaMapper(), $fileReferences);
     }
 }

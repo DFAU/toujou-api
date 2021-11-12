@@ -9,14 +9,14 @@ use DFAU\ToujouApi\Command\UnitOfWorkCommand;
 
 class UnitOfWorkTcaResourceCommand implements UnitOfWorkCommand
 {
-    /**
-     * @var TcaRecordReferencingCommand[]
-     */
+    /** @var TcaRecordReferencingCommand[] */
     protected $unitOfWorkCommands;
 
     public function __construct(array $unitOfWorkCommands)
     {
-        $this->unitOfWorkCommands = array_map(function (TcaRecordReferencingCommand $command) { return $command; }, $unitOfWorkCommands);
+        $this->unitOfWorkCommands = \array_map(function (TcaRecordReferencingCommand $command) {
+            return $command;
+        }, $unitOfWorkCommands);
     }
 
     public function getUnitOfWorkCommands(): array
@@ -27,7 +27,9 @@ class UnitOfWorkTcaResourceCommand implements UnitOfWorkCommand
     public function withUnitOfWorkCommands(array $unitOfWorkCommands): UnitOfWorkCommand
     {
         $target = clone $this;
-        $target->unitOfWorkCommands = array_map(function (TcaRecordReferencingCommand $command) { return $command; }, $unitOfWorkCommands);
+        $target->unitOfWorkCommands = \array_map(function (TcaRecordReferencingCommand $command) {
+            return $command;
+        }, $unitOfWorkCommands);
         return $target;
     }
 }

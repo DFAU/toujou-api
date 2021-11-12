@@ -9,20 +9,16 @@ use DFAU\Convergence\Schema\ReferenceList;
 
 class JsonApiResourceRelationReferenceList implements ReferenceList
 {
-    const PREDICATE_DELIMITER = ':';
+    public const PREDICATE_DELIMITER = ':';
 
-    const PREDICATE_CARDINALITY_ITEM = 'item';
+    public const PREDICATE_CARDINALITY_ITEM = 'item';
 
-    const PREDICATE_CARDINALITY_COLLECTION = 'collection';
+    public const PREDICATE_CARDINALITY_COLLECTION = 'collection';
 
-    /**
-     * @var Identifier
-     */
+    /** @var Identifier */
     protected $resourceIdentifier;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $identifierToRelationMap;
 
     public function __construct(Identifier $resourceIdentifier)
@@ -38,14 +34,14 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
         }
         $predicates = [];
         foreach ($resource['relationships'] as $predicate => $data) {
-            $predicates[] = ($data['data'] === null || isset($data['data']['id']) ? static::PREDICATE_CARDINALITY_ITEM : static::PREDICATE_CARDINALITY_COLLECTION) . ':' . $predicate;
+            $predicates[] = (null === $data['data'] || isset($data['data']['id']) ? static::PREDICATE_CARDINALITY_ITEM : static::PREDICATE_CARDINALITY_COLLECTION) . ':' . $predicate;
         }
         return $predicates;
     }
 
     public function getReferencesFromResource(array $resource, string $predicate = self::DEFAULT_REFERENCE_PREDICATE): array
     {
-        [$cardinality, $predicate] = explode(static::PREDICATE_DELIMITER, $predicate, 2);
+        [$cardinality, $predicate] = \explode(static::PREDICATE_DELIMITER, $predicate, 2);
 
         if (empty($resource['relationships'][$predicate]['data'])) {
             return [];
@@ -57,11 +53,11 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
                 $this->identifierToRelationMap[$identifier] = $resource['relationships'][$predicate]['data'];
                 return [$identifier];
             case static::PREDICATE_CARDINALITY_COLLECTION:
-        return array_map(function ($relationship) use ($predicate) {
-            $identifier = $this->resourceIdentifier->determineIdentity($relationship, $predicate);
-            $this->identifierToRelationMap[$identifier] = $relationship;
-            return $identifier;
-        }, $resource['relationships'][$predicate]['data']);
+                return \array_map(function ($relationship) use ($predicate) {
+                    $identifier = $this->resourceIdentifier->determineIdentity($relationship, $predicate);
+                    $this->identifierToRelationMap[$identifier] = $relationship;
+                    return $identifier;
+                }, $resource['relationships'][$predicate]['data']);
             default:
                 throw new \InvalidArgumentException('Unknown cardinality "' . $cardinality . '" has been given. Only constants PREDICATE_CARDINALITY_ITEM and PREDICATE_CARDINALITY_COLLECTION are allowed.', 1567686753);
         }
@@ -72,7 +68,7 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
         if (!isset($resource['relationships'])) {
             $resource['relationships'] = [];
         }
-        [$cardinality, $predicate] = explode(static::PREDICATE_DELIMITER, $predicate, 2);
+        [$cardinality, $predicate] = \explode(static::PREDICATE_DELIMITER, $predicate, 2);
 
         if (!isset($resource['relationships'][$predicate]['data'])) {
             $resource['relationships'][$predicate]['data'] = [];
@@ -80,12 +76,12 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
 
         switch ($cardinality) {
             case static::PREDICATE_CARDINALITY_ITEM:
-                if ($firstIdentifier = key($references)) {
+                if ($firstIdentifier = \key($references)) {
                     $resource['relationships'][$predicate]['data'] = [$this->mapResourceRelation($firstIdentifier)];
                 }
                 break;
             case static::PREDICATE_CARDINALITY_COLLECTION:
-                $resource['relationships'][$predicate]['data'] = array_map([$this, 'mapResourceRelation'], array_keys($references));
+                $resource['relationships'][$predicate]['data'] = \array_map([$this, 'mapResourceRelation'], \array_keys($references));
                 break;
             default:
                 throw new \InvalidArgumentException('Unknown cardinality "' . $cardinality . '" has been given. Only constants PREDICATE_CARDINALITY_ITEM and PREDICATE_CARDINALITY_COLLECTION are allowed.', 1567687598);

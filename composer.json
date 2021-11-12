@@ -1,38 +1,55 @@
 {
-    "name": "dfau/toujou-api",
-    "description": "TYPO3 REST API Framework",
-    "type": "typo3-cms-extension",
-    "license": "GPL-3.0-or-later",
-    "require": {
-        "php": ">=7.2 <7.5",
-        "ext-json": "*",
-        "dfau/convergence": "^0.4.0",
-        "typo3/cms-core": "^9.5 | ^10.4| ^11.3",
-        "league/fractal": "~0.18",
-        "league/tactician": "^2.0-rc1",
-        "nikic/fast-route": "^1.3.0",
-        "nikolaposa/cascader": "^1.2.0",
-        "middlewares/error-handler": "^2.0.0",
-        "middlewares/payload": "^2.1.1"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "typo3/testing-framework": "^6.4.0"
-    },
-    "authors": [
-        {
-            "name": "Thomas Maroschik",
-            "email": "tmaroschik@dfau.de"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "DFAU\\ToujouApi\\": "Classes"
-        }
-    },
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "toujou_api"
-        }
+  "name": "dfau/toujou-api",
+  "description": "TYPO3 REST API Framework",
+  "type": "typo3-cms-extension",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": ">=7.2 <7.5",
+    "ext-json": "*",
+    "dfau/convergence": "^0.4.0",
+    "typo3/cms-core": "^9.5 | ^10.4 | ^11.3",
+    "league/fractal": "~0.18",
+    "league/tactician": "^2.0-rc1",
+    "nikic/fast-route": "^1.3.0",
+    "nikolaposa/cascader": "^1.2.0",
+    "middlewares/error-handler": "^2.0.0",
+    "middlewares/payload": "^2.1.1"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "dfau/coding-standard": "1.0.0",
+    "typo3/testing-framework": "^6.4.0"
+  },
+  "authors": [
+    {
+      "name": "Thomas Maroschik",
+      "email": "tmaroschik@dfau.de"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DFAU\\ToujouApi\\": "Classes"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DFAU\\ToujouApi\\Tests\\": "Tests"
+    }
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web",
+      "extension-key": "toujou_api"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ]
+  }
 }

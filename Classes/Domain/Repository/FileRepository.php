@@ -11,13 +11,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FileRepository extends AbstractDatabaseResourceRepository
 {
-    const DEFAULT_IDENTIFIER = 'id';
+    public const DEFAULT_IDENTIFIER = 'id';
 
-    const TABLE_NAME = 'sys_file';
+    public const TABLE_NAME = 'sys_file';
 
-    /**
-     * @var CoreFileRepository
-     */
+    /** @var CoreFileRepository */
     protected $coreFileRepository;
 
     public function __construct(string $tableName = self::TABLE_NAME)
@@ -26,7 +24,7 @@ class FileRepository extends AbstractDatabaseResourceRepository
         $this->coreFileRepository = GeneralUtility::makeInstance(CoreFileRepository::class);
     }
 
-    public function findOneByIdentifier($identifier): ?array
+    public function findOneByIdentifier($identifier, $context = null): ?array
     {
         /** @var File $file */
         $file = $this->coreFileRepository->findByIdentifier($identifier);

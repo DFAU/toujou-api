@@ -9,10 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CommandHandlerContainer implements ContainerInterface
 {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $commandHandlers = [];
 
     public function get($id)
@@ -28,6 +25,6 @@ class CommandHandlerContainer implements ContainerInterface
 
     public function has($id)
     {
-        return (bool)$this->commandHandlers[$id];
+        return (bool) $this->commandHandlers[$id];
     }
 }

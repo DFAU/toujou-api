@@ -6,15 +6,10 @@ namespace DFAU\ToujouApi\Command\Traits;
 
 trait TcaRecordReferencingCommandTrait
 {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $uid;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $tableName;
 
     public function getUid(): string

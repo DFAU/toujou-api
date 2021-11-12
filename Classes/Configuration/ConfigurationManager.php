@@ -13,9 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager
 {
-    /**
-     * @var mixed
-     */
     protected $cache;
 
     protected const CONFIGURATION_TYPE_COMMAND_BUS = 'CommandBus';
@@ -32,23 +29,23 @@ class ConfigurationManager
     protected function getConfigurationFromPackages(string $configType): array
     {
         $t3Version = GeneralUtility::makeInstance(Typo3Version::class);
-        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . sha1($t3Version->getVersion() . Environment::getProjectPath());
+        $cacheIdentifier = 'ToujouApi' . $configType . 'FromPackages_' . \sha1($t3Version->getVersion() . Environment::getProjectPath());
 
         if ($this->cache->has($cacheIdentifier)) {
-            $configFromPackages = unserialize(substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
+            $configFromPackages = \unserialize(\substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
         } else {
             $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             $packages = $packageManager->getActivePackages();
 
-            $configFromPackages = array_replace_recursive(...array_map(function (PackageInterface $package) use ($configType) {
+            $configFromPackages = \array_replace_recursive(...\array_map(function (PackageInterface $package) use ($configType) {
                 $resourcesFileNameForPackage = $package->getPackagePath() . 'Configuration/ToujouApi/' . $configType . '.php';
-                if (file_exists($resourcesFileNameForPackage)) {
+                if (\file_exists($resourcesFileNameForPackage)) {
                     return require $resourcesFileNameForPackage;
                 }
                 return [];
-            }, array_values($packages)));
+            }, \array_values($packages)));
 
-            $this->cache->set($cacheIdentifier, serialize($configFromPackages));
+            $this->cache->set($cacheIdentifier, \serialize($configFromPackages));
         }
 
         return $configFromPackages;
@@ -58,7 +55,7 @@ class ConfigurationManager
     {
         static $configuration;
 
-        if ($configuration === null) {
+        if (null === $configuration) {
             $configuration = (new static())->getConfigurationFromPackages(static::CONFIGURATION_TYPE_COMMAND_BUS);
         }
 
@@ -69,7 +66,7 @@ class ConfigurationManager
     {
         static $configuration;
 
-        if ($configuration === null) {
+        if (null === $configuration) {
             $configuration = (new static())->getConfigurationFromPackages(static::CONFIGURATION_TYPE_RESOURCES);
         }
 
@@ -80,7 +77,7 @@ class ConfigurationManager
     {
         static $configuration;
 
-        if ($configuration === null) {
+        if (null === $configuration) {
             $configuration = (new static())->getConfigurationFromPackages(static::CONFIGURATION_TYPE_ROUTES);
         }
 

@@ -12,7 +12,7 @@ class FileTransformer extends TransformerAbstract
     public function transform(array $file): array
     {
         return [
-            'id' => (string)$file[FileRepository::DEFAULT_IDENTIFIER],
+            'id' => (string) $file[FileRepository::DEFAULT_IDENTIFIER],
             'meta' => $file[FileRepository::META_ATTRIBUTE],
             'file_type' => $file['type'],
             'size' => $file['size'],

@@ -12,44 +12,43 @@ use League\Fractal\TransformerAbstract;
 
 class ComposableTransformer extends TransformerAbstract implements ResourceTransformerInterface
 {
-
-    /**
-     * @var \Closure
-     */
+    /** @var \Closure */
     protected $availableIncludesStack;
 
-    /**
-     * @var \Closure
-     */
+    /** @var \Closure */
     protected $defaultIncludesStack;
 
-    /**
-     * @var \Closure
-     */
+    /** @var \Closure */
     protected $transformHandlerStack;
 
-    /**
-     * @var \Closure
-     */
+    /** @var \Closure */
     protected $includeHandlerStack;
 
     public function __construct(array $transformHandlers, array $includeHandlers = [])
     {
-        $this->transformHandlerStack = array_reduce($transformHandlers, function ($next, TransformHandler $transformHandler) {
+        $this->transformHandlerStack = \array_reduce($transformHandlers, function ($next, TransformHandler $transformHandler) {
             return $this->wrapTransformHandler($transformHandler, $next);
-        }, function ($data, array $transformedData) { return $transformedData; });
+        }, function ($data, array $transformedData) {
+            return $transformedData;
+        });
 
-        $this->availableIncludesStack = array_reduce($includeHandlers, function ($next, IncludeHandler $includeHandler) {
+        $this->availableIncludesStack = \array_reduce($includeHandlers, function ($next, IncludeHandler $includeHandler) {
             return $this->wrapAvailableIncludesHandler($includeHandler, $next);
-        }, function ($currentIncludes) { return array_unique(array_merge($currentIncludes, parent::getAvailableIncludes())); });
+        }, function ($currentIncludes) {
+            return \array_unique(\array_merge($currentIncludes, parent::getAvailableIncludes()));
+        });
 
-        $this->defaultIncludesStack = array_reduce($includeHandlers, function ($next, IncludeHandler $includeHandler) {
+        $this->defaultIncludesStack = \array_reduce($includeHandlers, function ($next, IncludeHandler $includeHandler) {
             return $this->wrapDefaultIncludesHandler($includeHandler, $next);
-        }, function ($currentIncludes) { return array_unique(array_merge($currentIncludes, parent::getDefaultIncludes())); });
+        }, function ($currentIncludes) {
+            return \array_unique(\array_merge($currentIncludes, parent::getDefaultIncludes()));
+        });
 
-        $this->includeHandlerStack = array_reduce($includeHandlers, function ($next, IncludeHandler $includeHandler) {
+        $this->includeHandlerStack = \array_reduce($includeHandlers, function ($next, IncludeHandler $includeHandler) {
             return $this->wrapIncludeHandler($includeHandler, $next);
-        }, function (Scope $scope, $includeName, $data) { return parent::callIncludeMethod($scope, $includeName, $data); });
+        }, function (Scope $scope, $includeName, $data) {
+            return parent::callIncludeMethod($scope, $includeName, $data);
+        });
     }
 
     public function getAvailableIncludes()

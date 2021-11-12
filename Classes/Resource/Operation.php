@@ -11,17 +11,18 @@ class Operation extends Enumeration
     /**
      * This override is necessary as the ValidatorResolver evaluates "mixed" into null which is causing a type Exception,
      * private/typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php:153
+     *
      * @var string
      */
     protected $value;
 
-    const READ = 'read';
+    public const READ = 'read';
 
-    const CREATE = 'create';
+    public const CREATE = 'create';
 
-    const REPLACE = 'replace';
+    public const REPLACE = 'replace';
 
-    const UPDATE = 'update';
+    public const UPDATE = 'update';
 
-    const DELETE = 'delete';
+    public const DELETE = 'delete';
 }

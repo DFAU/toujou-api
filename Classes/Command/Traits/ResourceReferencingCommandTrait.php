@@ -6,15 +6,10 @@ namespace DFAU\ToujouApi\Command\Traits;
 
 trait ResourceReferencingCommandTrait
 {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $resourceType;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $resourceIdentifier;
 
     public function getResourceType(): string

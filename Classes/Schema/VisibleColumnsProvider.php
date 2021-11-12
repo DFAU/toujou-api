@@ -14,10 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class VisibleColumnsProvider
 {
-
-    /**
-     * @var FormDataCompiler
-     */
+    /** @var FormDataCompiler */
     protected $formDataCompiler;
 
     public function __construct()
@@ -27,7 +24,7 @@ class VisibleColumnsProvider
             InitializeProcessedTca::class,
             DatabaseRecordTypeValue::class,
             TcaColumnsProcessShowitem::class,
-            TcaTypesShowitem::class
+            TcaTypesShowitem::class,
         ]);
         $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
     }
@@ -38,8 +35,8 @@ class VisibleColumnsProvider
             'tableName' => $tableName,
             'databaseRow' => $resource,
         ]);
-        return array_filter($result['columnsToProcess'], function ($columnName) {
-            return $columnName[0] !== '-';
+        return \array_filter($result['columnsToProcess'], function ($columnName) {
+            return '-' !== $columnName[0];
         });
     }
 }

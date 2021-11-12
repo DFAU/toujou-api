@@ -10,7 +10,7 @@ class MetaTransformHandler implements TransformHandler
 {
     public function handleTransform($data, array $transformedData, callable $next): array
     {
-        return $next($data, array_merge($transformedData, [
+        return $next($data, \array_merge($transformedData, [
             'meta' => $data[AbstractDatabaseResourceRepository::META_ATTRIBUTE],
         ]));
     }
