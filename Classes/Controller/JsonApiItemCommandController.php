@@ -55,6 +55,10 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
         $data = $this->fetchAndTransformData($request->getAttribute('variables')['id'], $request->getAttributes()['context']);
 
+        if (null === $data) {
+            return new JsonResponse($data, 404, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
+        }
+
         return new JsonResponse($data, 200, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
     }
 
