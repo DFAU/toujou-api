@@ -60,7 +60,7 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
     protected function fetchAndTransformData(string $resourceIdentifier, ?Context $context = null): ?array
     {
-        $resource = $this->repository->findOneByIdentifier($resourceIdentifier, $context);
+        $resource = $this->repository->findOneByIdentifier(\urldecode($resourceIdentifier), $context);
 
         if (null === $resource) {
             return null;
