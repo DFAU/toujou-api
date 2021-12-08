@@ -6,6 +6,7 @@ namespace DFAU\ToujouApi\IncludeHandler;
 
 use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
+use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceInterface;
@@ -82,7 +83,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
             $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
 
-            /** @var ResourceInterface $transformer */
+            /** @var ResourceTransformerInterface $transformer */
             $transformer = $cascader->create($resourceDefinition['transformer'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
             if (Item::class === $resourceType) {

@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FileReferenceTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = [];
 
     /** @var string */
     protected $identifier;
