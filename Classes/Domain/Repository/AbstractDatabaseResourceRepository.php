@@ -11,7 +11,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use function Clue\StreamFilter\fun;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository
 {
@@ -180,7 +179,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     protected function createOverlayMapper(?Context $context): \Closure
     {
-        return function(array $resource) use ($context): array {
+        return function (array $resource) use ($context): array {
             if (null !== $context && $resource) {
                 $pageRepository = GeneralUtility::makeInstance(
                     \TYPO3\CMS\Core\Domain\Repository\PageRepository::class,
