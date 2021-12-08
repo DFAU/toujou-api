@@ -11,6 +11,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use function Clue\StreamFilter\fun;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository
 {
@@ -19,6 +20,8 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     public const DEFAULT_PARENT_PAGE_IDENTIFIER = 'pid';
 
     public const ALLOWED_FILTER_OPERATORS = ['eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'in'];
+
+    private const DUPLICATE_IDENTIFIER_SEPARATOR = '#';
 
     /** @var string */
     protected $identifier = self::DEFAULT_IDENTIFIER;
@@ -87,7 +90,8 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         $result = $query->execute()->fetchAllAssociative();
 
-        $result = $this->resolveOverlay($context, $result);
+        $result = \array_map($this->createDeduplicator(), $result);
+        $result = \array_map($this->createOverlayMapper($context), $result);
 
         $nextCursor = !empty($result) ? \end($result)[$this->identifier] : null;
 
@@ -103,7 +107,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         $result = $query->execute()->fetchAssociative() ?: [];
 
-        $result = $this->resolveOverlay($context, $result);
+        $result = $this->createOverlayMapper($context)($result);
 
         if ($result) {
             return $this->createMetaMapper()($result);
@@ -119,7 +123,9 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         $result = $query->execute()->fetchAllAssociative();
 
-        $result = $this->resolveOverlay($context, $result);
+        $result = \array_map($this->createDeduplicator(), $result);
+
+        $result = \array_map($this->createOverlayMapper($context), $result);
 
         return \array_map($this->createMetaMapper(), $result);
     }
@@ -133,7 +139,24 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         // TODO: add overlay?
 
+        $result = \array_map($this->createDeduplicator(), $result);
+
         return \array_map($this->createMetaMapper(), $result);
+    }
+
+    protected function createDeduplicator(): \Closure
+    {
+        $countPerId = [];
+        return function (array $resource) use (&$countPerId): array {
+            $identifier = $resource[$this->identifier];
+            $countPerId[$identifier] = isset($countPerId[$identifier]) ? $countPerId[$identifier] + 1 : 0;
+
+            if ($countPerId[$identifier] > 0) {
+                $resource[$this->identifier] = $identifier . self::DUPLICATE_IDENTIFIER_SEPARATOR . $countPerId[$identifier];
+            }
+
+            return $resource;
+        };
     }
 
     protected function createMetaMapper(): \Closure
@@ -155,15 +178,17 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         };
     }
 
-    protected function resolveOverlay(?Context $context, array $result): array
+    protected function createOverlayMapper(?Context $context): \Closure
     {
-        if (null !== $context && $result) {
-            $pageRepository = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Domain\Repository\PageRepository::class,
-                $context
-            );
-            $overlayResult = $pageRepository->getLanguageOverlay($this->tableName, $result);
-        }
-        return $overlayResult ?? $result;
+        return function(array $resource) use ($context): array {
+            if (null !== $context && $resource) {
+                $pageRepository = GeneralUtility::makeInstance(
+                    \TYPO3\CMS\Core\Domain\Repository\PageRepository::class,
+                    $context
+                );
+                $overlayResult = $pageRepository->getLanguageOverlay($this->tableName, $resource);
+            }
+            return $overlayResult ?? $resource;
+        };
     }
 }
