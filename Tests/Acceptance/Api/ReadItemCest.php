@@ -21,4 +21,11 @@ class ReadItemCest
             ],
         ]);
     }
+
+    public function testReadNotDefinedItem(ApiTester $I): void
+    {
+        $I->wantToBeBearerAuthenticated();
+        $I->sendGET('pages/1000');
+        $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
+    }
 }
