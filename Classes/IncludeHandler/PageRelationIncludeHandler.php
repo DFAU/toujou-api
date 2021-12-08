@@ -8,6 +8,7 @@ use Cascader\Cascader;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use DFAU\ToujouApi\Domain\Repository\PageRelationRepository;
 use DFAU\ToujouApi\Domain\Repository\PageRepository;
+use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;
@@ -53,7 +54,7 @@ class PageRelationIncludeHandler implements IncludeHandler
             throw new \InvalidArgumentException('The given repository "' . \get_class($repository) . '" has to implement the "' . \DFAU\ToujouApi\Domain\Repository\PageRelationRepository::class . '".', 1563210118);
         }
 
-        /** @var ResourceInterface $transformer */
+        /** @var ResourceTransformerInterface $transformer */
         $transformer = $cascader->create($resourceDefinition['transformer'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
         return new Collection(
