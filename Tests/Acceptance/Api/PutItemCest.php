@@ -16,7 +16,7 @@ class PutItemCest
         $I->wantToBeBearerAuthenticated();
         $I->haveHttpHeader('Content-Type', 'application/vnd.api+json');
         $I->sendPut('pages/1', $data);
-        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseCodeIs(HttpCode::ACCEPTED);
     }
 
     public function testTryingToCreateInvalidItemThrowsInternalServerError(ApiTester $I): void

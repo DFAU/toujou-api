@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Command;
 
+/**
+ * @deprecated
+ */
 interface IncludedResourcesDataCommand
 {
     public function getIncludedResourcesData(): array;

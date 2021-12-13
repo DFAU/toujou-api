@@ -6,6 +6,9 @@ namespace DFAU\ToujouApi\Command\Traits;
 
 use DFAU\ToujouApi\Command\ResourceRelationsCommand;
 
+/**
+ * @deprecated
+ */
 trait ResourceRelationsCommandTrait
 {
     /** @var array */
