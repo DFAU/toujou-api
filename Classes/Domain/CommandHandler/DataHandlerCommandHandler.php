@@ -9,6 +9,7 @@ use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UnitOfWorkTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UpdateTcaResourceCommand;
+use DFAU\ToujouApi\Domain\Exception\DataHandlerCommandException;
 use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,8 +62,6 @@ class DataHandlerCommandHandler
     {
         switch ($command) {
             case $command instanceof CreateTcaResourceCommand:
-                $datamap[$command->getTableName()][$command->getUid()] = $command->getRecordData();
-                break;
             case $command instanceof UpdateTcaResourceCommand:
                 $datamap[$command->getTableName()][$command->getUid()] = $command->getRecordData();
                 break;
@@ -71,7 +70,6 @@ class DataHandlerCommandHandler
                 break;
             default:
                 throw new \BadMethodCallException('The given command "' . \get_class($command) . '" is not supported yet', 1564476754);
-                break;
         }
     }
 
@@ -87,6 +85,9 @@ class DataHandlerCommandHandler
         $this->dataHandler->process_datamap();
         $this->dataHandler->process_cmdmap();
 
+        if (!empty($this->dataHandler->errorLog)) {
+            throw new DataHandlerCommandException($this->dataHandler->errorLog);
+        }
         return $this->dataHandler->substNEWwithIDs;
     }
 }
