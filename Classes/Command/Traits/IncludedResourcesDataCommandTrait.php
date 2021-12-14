@@ -6,6 +6,9 @@ namespace DFAU\ToujouApi\Command\Traits;
 
 use DFAU\ToujouApi\Command\IncludedResourcesDataCommand;
 
+/**
+ * @deprecated
+ */
 trait IncludedResourcesDataCommandTrait
 {
     /** @var array */

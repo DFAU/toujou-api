@@ -68,7 +68,6 @@ class ConvergenceCommandHandler
                     break;
                 default:
                     throw new \BadMethodCallException('The given operation "' . \get_class($operation) . '" is not supported yet', 1564062825);
-                    break;
             }
 
             $commandArguments['resourceIdentifier'] = $resource['id'];
