@@ -51,7 +51,9 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
         $this->parseIncludes($queryParams);
         $this->parseFieldsets($queryParams);
 
-        $data = $this->fetchAndTransformData($request->getAttribute('variables')['id'], $request->getAttributes()['context']);
+        $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?: '');
+
+        $data = $this->fetchAndTransformData($resourceIdentifier, $request->getAttributes()['context']);
 
         if (null === $data) {
             return new JsonResponse($data, 404, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
@@ -62,7 +64,7 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
     protected function fetchAndTransformData(string $resourceIdentifier, ?Context $context = null): ?array
     {
-        $resource = $this->repository->findOneByIdentifier(\urldecode($resourceIdentifier), $context);
+        $resource = $this->repository->findOneByIdentifier($resourceIdentifier, $context);
 
         if (null === $resource) {
             return null;
@@ -75,7 +77,7 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
     protected function fillInCommandArguments(ServerRequestInterface $request, string $commandName, array $commandArguments, array $commandInterfaces): array
     {
-        $resourceIdentifier = $request->getAttribute('variables')['id'] ?: '';
+        $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?: '');
         $commandArguments['resourceIdentifier'] = $resourceIdentifier;
         $commandArguments['resourceType'] = $this->resourceType;
 
