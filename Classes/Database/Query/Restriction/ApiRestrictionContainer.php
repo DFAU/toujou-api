@@ -17,6 +17,7 @@ class ApiRestrictionContainer extends AbstractRestrictionContainer
      */
     protected $defaultRestrictionTypes = [
         DeletedRestriction::class,
+        LanguageRestriction::class,
     ];
 
     /**

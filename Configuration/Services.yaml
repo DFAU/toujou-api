@@ -9,3 +9,6 @@ services:
 
   DFAU\ToujouApi\Utility\AbsoluteFileUrBuilder:
     public: true
+
+  DFAU\ToujouApi\Database\Query\Restriction\LanguageRestriction:
+    public: true

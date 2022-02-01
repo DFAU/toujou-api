@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tt_content>
+        <pid>1</pid>
+        <uid>1</uid>
+        <header>Default Language Content</header>
+        <sys_language_uid>0</sys_language_uid>
+        <l10n_source>0</l10n_source>
+        <l18n_parent>0</l18n_parent>
+    </tt_content>
+    <tt_content>
+        <pid>1</pid>
+        <uid>2</uid>
+        <header>Free mode translated content</header>
+        <sys_language_uid>1000001</sys_language_uid>
+        <l10n_source>0</l10n_source>
+        <l18n_parent>0</l18n_parent>
+    </tt_content>
+</dataset>

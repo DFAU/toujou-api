@@ -38,15 +38,15 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
     protected function createQuery(): QueryBuilder
     {
-        // @todo check for following:
-        // getLanguageRestriction (ContentObjectRenderer)
-        // $languageField = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        /** @var ApiRestrictionContainer $apiRestrictionContainer */
+        $apiRestrictionContainer = GeneralUtility::makeInstance(ApiRestrictionContainer::class);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->select('*')
             ->from($this->tableName);
-        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(ApiRestrictionContainer::class));
+
+        $queryBuilder->setRestrictions($apiRestrictionContainer);
 
         return $queryBuilder;
     }
