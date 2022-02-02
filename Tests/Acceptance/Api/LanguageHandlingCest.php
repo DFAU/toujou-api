@@ -37,4 +37,43 @@ class LanguageHandlingCest
             ],
         ]);
     }
+
+    public function testDefaultLanguageForTranslatedRecords(ApiTester $I): void
+    {
+        $I->wantToBeBearerAuthenticated();
+        $I->sendGET('pages/1?include=content-elements');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseContainsJson([
+            'data' => [
+                'relationships' => [
+                    'content-elements' => [
+                        'data' => [
+                            'type' => 'content-elements',
+                            'id' => 1,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function testAlternativeLanguageForTranslatedRecords(ApiTester $I): void
+    {
+        $I->wantToBeBearerAuthenticated();
+        $I->haveHttpHeader('Accept-Language', 'de_B2B');
+        $I->sendGET('pages/1?include=content-elements');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseContainsJson([
+            'data' => [
+                'relationships' => [
+                    'content-elements' => [
+                        'data' => [
+                            'type' => 'content-elements',
+                            'id' => 2,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
 }

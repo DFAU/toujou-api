@@ -16,15 +16,26 @@ class FileReferenceTransformer extends TransformerAbstract
     /** @var string */
     protected $identifier;
 
+    /** @var FileRepository */
+    private $fileRepository;
+
+    /** @var AbsoluteFileUrBuilder */
+    private $absoluteFileUrlBuilder;
+
     public function __construct(string $identifier = FileReferenceRepository::DEFAULT_IDENTIFIER)
     {
         $this->identifier = $identifier;
+        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $this->absoluteFileUrlBuilder = GeneralUtility::makeInstance(AbsoluteFileUrBuilder::class);
     }
 
     public function transform(array $fileReference): array
     {
-        /** @var array $file */
-        $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);
+        try {
+            $file = $this->fileRepository->findOneByIdentifier($fileReference['uid_local']);
+        } catch (\InvalidArgumentException $exception) {
+            $file = null;
+        }
         return [
             'id' => (string) $fileReference[$this->identifier],
             'meta' => $fileReference[FileReferenceRepository::META_ATTRIBUTE],
@@ -43,7 +54,7 @@ class FileReferenceTransformer extends TransformerAbstract
     protected function includeFile(array $fileReference): ResourceAbstract
     {
         try {
-            $file = GeneralUtility::makeInstance(FileRepository::class)->findOneByIdentifier($fileReference['uid_local']);
+            $file = $this->fileRepository->findOneByIdentifier($fileReference['uid_local']);
         } catch (\InvalidArgumentException $exception) {
             return $this->null();
         } catch (\RuntimeException $exception) {
@@ -61,9 +72,6 @@ class FileReferenceTransformer extends TransformerAbstract
             return null;
         }
 
-        /** @var AbsoluteFileUrBuilder $absoluteFileUrlBuilder */
-        $absoluteFileUrlBuilder = GeneralUtility::makeInstance(AbsoluteFileUrBuilder::class);
-
-        return $absoluteFileUrlBuilder->getAbsoluteUrl($url);
+        return $this->absoluteFileUrlBuilder->getAbsoluteUrl($url);
     }
 }

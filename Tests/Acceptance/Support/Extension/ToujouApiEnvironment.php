@@ -28,6 +28,7 @@ class ToujouApiEnvironment extends BackendEnvironment
             'typo3conf/ext/toujou_api/Tests/Acceptance/Fixtures/be_users.xml',
             'typo3conf/ext/toujou_api/Tests/Acceptance/Fixtures/tx_toujou_oauth2_server_client.xml',
             'typo3conf/ext/toujou_api/Tests/Acceptance/Fixtures/pages.xml',
+            'typo3conf/ext/toujou_api/Tests/Acceptance/Fixtures/tt_content.xml',
         ],
         'pathsToLinkInTestInstance' => [
             'typo3conf/ext/toujou_api/Tests/Acceptance/_data/sites' => 'typo3conf/sites',
