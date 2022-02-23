@@ -12,6 +12,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 
 class LanguageRestriction implements QueryRestrictionInterface
 {
+    /** @var string[] */
+    private $excludedTables = [
+        'pages',
+        'sys_file_reference',
+    ];
+
     /** @var Context */
     private $context;
 
@@ -46,7 +52,7 @@ class LanguageRestriction implements QueryRestrictionInterface
         if (null === $languageField) {
             return null;
         }
-        if ('pages' === $tableName) {
+        if (\in_array($tableName, $this->excludedTables)) {
             return null;
         }
 
