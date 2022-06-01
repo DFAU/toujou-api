@@ -81,7 +81,7 @@ return [
             '__class__' => Repository\FileRepository::class,
         ],
         'transformer' => [
-            '__class__' => Transformer\FileReferenceTransformer::class,
+            '__class__' => Transformer\FileTransformer::class,
         ],
         'operationToCommandMap' => [
             Operation::CREATE => ['__class__' => Command\CreateTcaResourceCommand::class, 'tableName' => 'sys_file'],
