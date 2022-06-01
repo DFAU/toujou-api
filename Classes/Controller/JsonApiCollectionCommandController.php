@@ -20,7 +20,7 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
     {
         parent::__construct($resourceType, $repository, $transformer);
         $this->fractal->setSerializer(new class() extends JsonApiSerializer {
-            public function getMandatoryFields()
+            public function getMandatoryFields(): array
             {
                 return ['id', 'meta'];
             }
