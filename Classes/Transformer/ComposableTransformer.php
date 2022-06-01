@@ -51,12 +51,12 @@ class ComposableTransformer extends TransformerAbstract implements ResourceTrans
         });
     }
 
-    public function getAvailableIncludes()
+    public function getAvailableIncludes(): array
     {
         return ($this->availableIncludesStack)([]);
     }
 
-    public function getDefaultIncludes()
+    public function getDefaultIncludes(): array
     {
         return ($this->defaultIncludesStack)([]);
     }
