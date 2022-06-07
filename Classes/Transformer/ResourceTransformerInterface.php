@@ -12,11 +12,11 @@ use League\Fractal\Scope;
  */
 interface ResourceTransformerInterface
 {
-    public function getAvailableIncludes(): array;
+    public function getAvailableIncludes();
 
-    public function getDefaultIncludes(): array;
+    public function getDefaultIncludes();
 
-    public function getCurrentScope(): ?Scope;
+    public function getCurrentScope();
 
     public function transform($data): array;
 
@@ -26,5 +26,5 @@ interface ResourceTransformerInterface
 
     public function setDefaultIncludes(array $defaultIncludes);
 
-    public function setCurrentScope(Scope $currentScope);
+    public function setCurrentScope($currentScope);
 }
