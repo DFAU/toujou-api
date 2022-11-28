@@ -12,3 +12,6 @@ services:
 
   DFAU\ToujouApi\Database\Query\Restriction\LanguageRestriction:
     public: true
+
+  DFAU\ToujouApi\Database\Query\Restriction\SiteRestriction:
+    public: true
