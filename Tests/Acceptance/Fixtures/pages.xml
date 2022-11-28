@@ -25,4 +25,11 @@
         <l10n_source>2</l10n_source>
         <l10n_parent>2</l10n_parent>
     </pages>
+    <pages>
+        <uid>4</uid>
+        <pid>0</pid>
+        <title>Second Page Root</title>
+        <doktype>1</doktype>
+        <is_siteroot>1</is_siteroot>
+    </pages>
 </dataset>
