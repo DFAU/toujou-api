@@ -42,6 +42,9 @@
         }
     },
     "config": {
+        "platform": {
+            "php": "7.3.27"
+        },
         "vendor-dir": ".Build/vendor",
         "bin-dir": ".Build/bin",
         "allow-plugins": {
