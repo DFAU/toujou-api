@@ -7,6 +7,7 @@ namespace DFAU\ToujouApi\CommandBus;
 use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use League\Tactician\Handler\Mapping\CommandToHandlerMapping;
 use League\Tactician\Handler\Mapping\FailedToMapCommand;
+use League\Tactician\Handler\Mapping\MethodToCall;
 
 class MapByConfiguration implements CommandToHandlerMapping
 {
@@ -43,5 +44,12 @@ class MapByConfiguration implements CommandToHandlerMapping
         }
         $this->commandHandlerMap = ConfigurationManager::getCommandBusConfiguration()['commands'];
         $this->configurationLoaded = true;
+    }
+
+    public function findHandlerForCommand(string $commandFQCN): MethodToCall
+    {
+        // TODO: Implement findHandlerForCommand() method.
+
+        // v11change TODO : also fix "get" methods
     }
 }
