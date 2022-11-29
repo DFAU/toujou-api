@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use DFAU\ToujouApi\Middleware\LanguageResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -17,7 +18,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LanguageResolverTest extends UnitTestCase
 {
-    /** @var mixed|\PHPUnit\Framework\MockObject\MockObject|Context */
+    /** @var mixed|MockObject|Context */
     private $contextMock;
 
     /** @var LanguageResolver */

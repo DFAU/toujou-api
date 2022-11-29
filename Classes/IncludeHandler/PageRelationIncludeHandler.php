@@ -49,13 +49,13 @@ class PageRelationIncludeHandler implements IncludeHandler
         $resourceDefinition = $this->allowedPageIncludes[$includeName];
         $cascader = new Cascader();
 
-        $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
+        $repository = $cascader->create($resourceDefinition['repository'][Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
         if (!$repository instanceof PageRelationRepository) {
-            throw new \InvalidArgumentException('The given repository "' . \get_class($repository) . '" has to implement the "' . \DFAU\ToujouApi\Domain\Repository\PageRelationRepository::class . '".', 1563210118);
+            throw new \InvalidArgumentException('The given repository "' . \get_class($repository) . '" has to implement the "' . PageRelationRepository::class . '".', 1563210118);
         }
 
         /** @var ResourceTransformerInterface $transformer */
-        $transformer = $cascader->create($resourceDefinition['transformer'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
+        $transformer = $cascader->create($resourceDefinition['transformer'][Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
         return new Collection(
             $repository->findByPageIdentifier($data[PageRepository::DEFAULT_IDENTIFIER]),

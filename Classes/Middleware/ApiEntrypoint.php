@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Middleware;
 
+use Middlewares\ErrorFormatter\XmlFormatter;
+use Middlewares\ErrorFormatter\PlainFormatter;
 use DFAU\ToujouApi\ErrorFormatter\JsonApiFormatter;
 use DFAU\ToujouApi\Http\RequestHandler;
 use Middlewares\ErrorFormatter;
@@ -46,7 +48,7 @@ class ApiEntrypoint implements MiddlewareInterface
         $site = $request ? $request->getAttribute('site') : null;
         $apiPathPrefix = $site instanceof Site ? \ltrim($site->getAttribute('toujouApiPathPrefix') ?? '', '/ ') : null;
 
-        if (!empty($apiPathPrefix) && GeneralUtility::isFirstPartOfStr($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
+        if (!empty($apiPathPrefix) && \str_starts_with($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
             $request = $request->withUri($request->getUri()->withPath('/' . \substr($request->getUri()->getPath(), \strlen('/' . $apiPathPrefix))));
             $middlewareDispatcher = $this->createMiddlewareDispatcher();
             return $middlewareDispatcher->handle($request);
@@ -61,9 +63,9 @@ class ApiEntrypoint implements MiddlewareInterface
 
         $errorHandler = new ErrorHandler([
             new JsonApiFormatter(),
-            new ErrorFormatter\XmlFormatter(),
+            new XmlFormatter(),
         ]);
-        $errorHandler->defaultFormatter(new ErrorFormatter\PlainFormatter());
+        $errorHandler->defaultFormatter(new PlainFormatter());
 
         $middlewares[] = $errorHandler;
 

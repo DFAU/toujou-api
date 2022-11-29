@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Unit\Database\Query\Restriction;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use DFAU\ToujouApi\Database\Query\Restriction\LanguageRestriction;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -17,7 +18,7 @@ class LanguageRestrictionTest extends UnitTestCase
     /** @var LanguageRestriction */
     private $subject;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|LanguageAspect */
+    /** @var MockObject|LanguageAspect */
     private $languageAspect;
 
     protected function setUp(): void
