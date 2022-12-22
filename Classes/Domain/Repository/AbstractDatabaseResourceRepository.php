@@ -78,14 +78,14 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query = $this->createQuery()->setMaxResults($limit);
 
         if ($currentCursor) {
-            $query->where($query->expr()->gt($this->identifier, $currentCursor));
+            $query->where($query->expr()->gt($this->identifier, $query->createNamedParameter($currentCursor)));
         }
 
         if ([] !== $filters) {
             $query = $this->addFiltersToQuery($filters, $query);
         }
 
-        // TODO maybe: sort / orderBy
+        $query->orderBy($this->identifier, 'ASC');
 
         $result = $query->execute()->fetchAllAssociative();
 
