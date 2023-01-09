@@ -18,6 +18,8 @@ class LanguageRestriction implements QueryRestrictionInterface
     private $excludedTables = [
         'pages',
         'sys_file_reference',
+        'tx_toujou_accordion',
+        'tx_toujou_tripdescription_days',
     ];
 
     /** @var Context */
