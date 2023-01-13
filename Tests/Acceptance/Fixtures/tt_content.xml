@@ -11,9 +11,9 @@
     <tt_content>
         <pid>1</pid>
         <uid>2</uid>
-        <header>Free mode translated content</header>
+        <header>Connected mode translated content</header>
         <sys_language_uid>1000001</sys_language_uid>
         <l10n_source>0</l10n_source>
-        <l18n_parent>0</l18n_parent>
+        <l18n_parent>1</l18n_parent>
     </tt_content>
 </dataset>
