@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.2 <7.5",
         "ext-json": "*",
-        "dfau/convergence": "v11.x-dev",
+        "dfau/convergence": "dev-cms11",
         "typo3/cms-core": "^11.5",
         "league/fractal": "~0.18",
         "league/tactician": "^2.0-rc1",
@@ -14,7 +14,7 @@
         "nikolaposa/cascader": "^1.2.0",
         "middlewares/error-handler": "^2.0.0",
         "middlewares/payload": "^2.1.1",
-        "dfau/toujou-oauth2-server": "v11.x-dev"
+        "dfau/toujou-oauth2-server": "dev-cms11"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
