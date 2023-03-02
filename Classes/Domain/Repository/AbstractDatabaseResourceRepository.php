@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Repository;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use DFAU\ToujouApi\Database\Query\Restriction\ApiRestrictionContainer;
 use DFAU\ToujouApi\Domain\Value\ZuluDate;
 use League\Fractal\Pagination\Cursor;
@@ -182,7 +183,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         return function (array $resource) use ($context): array {
             if (null !== $context && $resource) {
                 $pageRepository = GeneralUtility::makeInstance(
-                    \TYPO3\CMS\Core\Domain\Repository\PageRepository::class,
+                    PageRepository::class,
                     $context
                 );
                 $overlayResult = $pageRepository->getLanguageOverlay($this->tableName, $resource);

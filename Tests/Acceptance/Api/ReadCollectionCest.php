@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Acceptance\Api;
 
+use Codeception\Example;
 use Codeception\Util\HttpCode;
 use DFAU\ToujouApi\Tests\Acceptance\Support\ApiTester;
 
@@ -27,7 +28,7 @@ class ReadCollectionCest
     /**
      * @dataProvider provideCollectionFilter
      */
-    public function testFilterCollection(ApiTester $I, \Codeception\Example $example): void
+    public function testFilterCollection(ApiTester $I, Example $example): void
     {
         $I->wantToBeBearerAuthenticated();
         $I->sendGET('pages/' . $example['filter']);

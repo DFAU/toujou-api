@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Middleware;
 
+use TYPO3\CMS\Core\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -23,7 +24,7 @@ class CheckBeUserAuthorization implements MiddlewareInterface
     {
         $tsfe = $this->getTyposcriptFrontendController();
         if (!$tsfe->isBackendUserLoggedIn()) {
-            return new \TYPO3\CMS\Core\Http\Response('php://temp', '401');
+            return new Response('php://temp', '401');
         }
         return $handler->handle($request);
     }

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractResourceCommandController
 {
-    /** @var \DFAU\ToujouApi\Transformer\ResourceTransformerInterface */
+    /** @var ResourceTransformerInterface */
     protected $transformer;
 
     /** @var Cascader */

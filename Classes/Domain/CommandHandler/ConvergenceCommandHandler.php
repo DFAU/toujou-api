@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\CommandHandler;
 
+use League\Tactician\CommandBus;
 use Cascader\Cascader;
 use DFAU\Convergence\Operations\AbstractResourceOperation;
 use DFAU\Convergence\Operations\AddResource;
@@ -21,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConvergenceCommandHandler
 {
-    /** @var \League\Tactician\CommandBus */
+    /** @var CommandBus */
     protected $commandBus;
 
     /** @var ResourceOperationToCommandMap */

@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware;
+use DFAU\ToujouApi\Middleware\CheckBeUserAuthorization;
 
 use DFAU\ToujouApi\Middleware\ApiEntrypoint;
 use DFAU\ToujouApi\Middleware\JsonApiPayload;
@@ -19,7 +21,7 @@ return [
     ],
     'toujou_api' => [
         'dfau/toujou-api/resource-server' => [
-            'target' => \DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware::class,
+            'target' => ResourceServerMiddleware::class,
         ],
         'dfau/toujou-api/language-resolve' => [
             'target' => LanguageResolver::class,
@@ -31,7 +33,7 @@ return [
         ],
 
         'dfau/toujou-api/check-be-user-authorization' => [
-            'target' => \DFAU\ToujouApi\Middleware\CheckBeUserAuthorization::class,
+            'target' => CheckBeUserAuthorization::class,
             'after' => ['dfau/toujou-api/tsfe'],
         ],
         'dfau/toujou-api/parsed-body-reset' => [

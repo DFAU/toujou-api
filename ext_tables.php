@@ -1,6 +1,6 @@
 <?php
 
-\defined('TYPO3_MODE') or die();
+\defined('TYPO3') or die();
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['toujouApiTcaResource'] = [
     \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class],

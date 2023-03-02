@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use DFAU\ToujouApi\CommandBus\CommandHandlerContainer;
+use DFAU\ToujouApi\CommandBus\MapByConfiguration;
 
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
@@ -23,8 +25,8 @@ return [
         'dfau/toujou-api/command-handler' => [
             'target' => [
                 '__class__' => CommandHandlerMiddleware::class,
-                'container' => ['__class__' => \DFAU\ToujouApi\CommandBus\CommandHandlerContainer::class],
-                'mapping' => ['__class__' => \DFAU\ToujouApi\CommandBus\MapByConfiguration::class],
+                'container' => ['__class__' => CommandHandlerContainer::class],
+                'mapping' => ['__class__' => MapByConfiguration::class],
             ],
         ],
     ],

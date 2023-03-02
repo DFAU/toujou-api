@@ -23,7 +23,7 @@ class ConfigurationManager
 
     public function __construct(FrontendInterface $cache = null)
     {
-        $this->cache = $cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        $this->cache = $cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
     }
 
     protected function getConfigurationFromPackages(string $configType): array

@@ -81,10 +81,10 @@ class TcaResourceIncludeHandler implements IncludeHandler
                 $resourceDefinition['repository']['orderBy'] = $columnConfig['foreign_sortby'];
             }
 
-            $repository = $cascader->create($resourceDefinition['repository'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
+            $repository = $cascader->create($resourceDefinition['repository'][Cascader::ARGUMENT_CLASS], $resourceDefinition['repository']);
 
             /** @var ResourceTransformerInterface $transformer */
-            $transformer = $cascader->create($resourceDefinition['transformer'][\Cascader\Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
+            $transformer = $cascader->create($resourceDefinition['transformer'][Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
             if (Item::class === $resourceType) {
                 if ($data = $repository->findOneByIdentifier(\reset($result)['id'])) {

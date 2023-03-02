@@ -26,5 +26,5 @@ interface ResourceTransformerInterface
 
     public function setDefaultIncludes(array $defaultIncludes);
 
-    public function setCurrentScope($currentScope);
+    public function setCurrentScope(Scope $currentScope);
 }

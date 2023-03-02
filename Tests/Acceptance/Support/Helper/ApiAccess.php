@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Acceptance\Support\Helper;
 
-class ApiAccess extends \Codeception\Module
+use Codeception\Module;
+use Codeception\Module\REST;
+class ApiAccess extends Module
 {
     protected $requiredFields = ['grant_type', 'client_id', 'client_secret'];
 
@@ -15,7 +17,7 @@ class ApiAccess extends \Codeception\Module
 
     public function wantToBeBearerAuthenticated(): void
     {
-        /** @var Codeception\Module\REST $restModule */
+        /** @var REST $restModule */
         $rest = $this->getModule('REST');
         $rest->sendPOST('token', $this->grabValidCredentials());
         $result = \json_decode($rest->grabResponse(), true, 512, JSON_THROW_ON_ERROR);

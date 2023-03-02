@@ -11,7 +11,7 @@ class JsonApiFormatter extends AbstractFormatter
 {
     protected $contentTypes = ['application/json', 'application/vnd.api+json'];
 
-    protected function format(Throwable $error): string
+    protected function format(Throwable $error, string $contentType): string
     {
         return (string) \json_encode($this->serializeError($error));
     }
