@@ -62,10 +62,10 @@ class ApiEntrypoint implements MiddlewareInterface
         $middlewares = $this->middlewareStackResolver->resolve('toujou_api');
 
         $errorHandler = new ErrorHandler([
+            new PlainFormatter(),
             new JsonApiFormatter(),
             new XmlFormatter(),
         ]);
-        $errorHandler->defaultFormatter(new PlainFormatter());
 
         $middlewares[] = $errorHandler;
 
