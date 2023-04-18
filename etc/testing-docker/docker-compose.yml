@@ -69,6 +69,7 @@ services:
         done;
         echo Database is up;
         php -v | grep '^PHP';
+        ln -sfn ${ROOT_DIR} Web/typo3conf/ext/toujou_api
         mkdir -p Web/typo3temp/var/tests/
         COMMAND=\"vendor/codeception/codeception/codecept run Api -d -c Web/typo3conf/ext/toujou_api/Tests/codeception.yml ${TEST_FILE}\"
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
