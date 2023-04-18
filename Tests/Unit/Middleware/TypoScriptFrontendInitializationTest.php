@@ -52,7 +52,7 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
 
         $requestMock
             ->method('getAttribute')
-            ->withConsecutive(['site'], ['routing'], ['language'])
+            ->withConsecutive(['site'], ['language'])
             ->willReturnOnConsecutiveCalls($siteMock, $pageArgumentsMock, $siteLanguageMock);
 
         $this->subject->process($requestMock, $requestHandlerMock);
