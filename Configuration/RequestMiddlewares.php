@@ -23,15 +23,14 @@ return [
         'dfau/toujou-api/resource-server' => [
             'target' => ResourceServerMiddleware::class,
         ],
-        'dfau/toujou-api/language-resolve' => [
-            'target' => LanguageResolver::class,
-            'after' => ['dfau/toujou-api/resource-server'],
-        ],
         'dfau/toujou-api/tsfe' => [
             'target' => TypoScriptFrontendInitialization::class,
-            'after' => ['dfau/toujou-api/language-resolve'],
+            'after' => ['dfau/toujou-api/resource-server'],
         ],
-
+        'dfau/toujou-api/language-resolve' => [
+            'target' => LanguageResolver::class,
+            'after' => ['dfau/toujou-api/tsfe'],
+        ],
         'dfau/toujou-api/check-be-user-authorization' => [
             'target' => CheckBeUserAuthorization::class,
             'after' => ['dfau/toujou-api/tsfe'],
