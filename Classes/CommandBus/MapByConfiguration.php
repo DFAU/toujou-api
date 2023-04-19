@@ -48,8 +48,11 @@ class MapByConfiguration implements CommandToHandlerMapping
 
     public function findHandlerForCommand(string $commandFQCN): MethodToCall
     {
-        // TODO: Implement findHandlerForCommand() method.
+        $this->loadConfiguration();
+        if (!\array_key_exists($commandFQCN, $this->commandHandlerMap)) {
+            throw FailedToMapCommand::className($commandFQCN);
+        }
 
-        // v11change TODO : also fix "get" methods
+        return new MethodToCall($this->commandHandlerMap[$commandFQCN][0], $this->commandHandlerMap[$commandFQCN][1]);
     }
 }

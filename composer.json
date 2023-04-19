@@ -9,7 +9,7 @@
         "dfau/convergence": "dev-master",
         "typo3/cms-core": "^11.5",
         "league/fractal": "~0.18",
-        "league/tactician": "^2.0-rc1",
+        "league/tactician": "dev-master",
         "nikic/fast-route": "^1.3.0",
         "nikolaposa/cascader": "^1.2.0",
         "middlewares/error-handler": "^3.0.0",
@@ -57,10 +57,5 @@
             "web-dir": ".Build/Web",
             "extension-key": "toujou_api"
         }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
-        ]
     }
 }

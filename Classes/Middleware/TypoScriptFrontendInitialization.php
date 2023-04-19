@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
@@ -32,12 +33,12 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    protected function getTyposcriptFrontendController($request): ?TypoScriptFrontendController
+    protected function getTypoScriptFrontendController($request): ?TypoScriptFrontendController
     {
         $GLOBALS['TYPO3_REQUEST'] = $request;
         /** @var Site $site */
         $site = $request->getAttribute('site', null);
-        $pageArguments = $request->getAttribute('routing', null);
+        $pageArguments = new PageArguments(0, '0', []);
         $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
 
         /** @var TypoScriptFrontendController $controller */

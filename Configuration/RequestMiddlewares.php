@@ -1,15 +1,14 @@
 <?php
 
 declare(strict_types=1);
-use DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware;
-use DFAU\ToujouApi\Middleware\CheckBeUserAuthorization;
-
 use DFAU\ToujouApi\Middleware\ApiEntrypoint;
+use DFAU\ToujouApi\Middleware\CheckBeUserAuthorization;
 use DFAU\ToujouApi\Middleware\JsonApiPayload;
 use DFAU\ToujouApi\Middleware\LanguageResolver;
 use DFAU\ToujouApi\Middleware\ParsedBodyReset;
 use DFAU\ToujouApi\Middleware\Router;
 use DFAU\ToujouApi\Middleware\TypoScriptFrontendInitialization;
+use DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware;
 
 return [
     'frontend' => [
@@ -23,15 +22,14 @@ return [
         'dfau/toujou-api/resource-server' => [
             'target' => ResourceServerMiddleware::class,
         ],
-        'dfau/toujou-api/language-resolve' => [
-            'target' => LanguageResolver::class,
-            'after' => ['dfau/toujou-api/resource-server'],
-        ],
         'dfau/toujou-api/tsfe' => [
             'target' => TypoScriptFrontendInitialization::class,
-            'after' => ['dfau/toujou-api/language-resolve'],
+            'after' => ['dfau/toujou-api/resource-server'],
         ],
-
+        'dfau/toujou-api/language-resolve' => [
+            'target' => LanguageResolver::class,
+            'after' => ['dfau/toujou-api/tsfe'],
+        ],
         'dfau/toujou-api/check-be-user-authorization' => [
             'target' => CheckBeUserAuthorization::class,
             'after' => ['dfau/toujou-api/tsfe'],

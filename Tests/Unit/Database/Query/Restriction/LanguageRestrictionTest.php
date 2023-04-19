@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Unit\Database\Query\Restriction;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use DFAU\ToujouApi\Database\Query\Restriction\LanguageRestriction;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
