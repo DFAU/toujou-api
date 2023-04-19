@@ -1,28 +1,22 @@
 <?php
 
 declare(strict_types=1);
-use DFAU\ToujouApi\Domain\Repository\TcaResourceRepository;
-use DFAU\ToujouApi\TransformHandler\MetaTransformHandler;
-use DFAU\ToujouApi\TransformHandler\TcaResourceTransformHandler;
-use DFAU\ToujouApi\IncludeHandler\PageRelationIncludeHandler;
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
-use DFAU\ToujouApi\Domain\Command\UpdateTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\ReplaceTcaResourceCommand;
-use DFAU\ToujouApi\Schema\PagesJsonApiSchema;
-use DFAU\ToujouApi\IncludeHandler\TcaResourceIncludeHandler;
+use DFAU\ToujouApi\Domain\Command\UpdateTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Repository\FileReferenceRepository;
-use DFAU\ToujouApi\Domain\Transformer\FileReferenceTransformer;
 use DFAU\ToujouApi\Domain\Repository\FileRepository;
+use DFAU\ToujouApi\Domain\Repository\TcaResourceRepository;
+use DFAU\ToujouApi\Domain\Transformer\FileReferenceTransformer;
 use DFAU\ToujouApi\Domain\Transformer\FileTransformer;
-
-use DFAU\ToujouApi\Domain\Command;
-use DFAU\ToujouApi\Domain\Repository;
-use DFAU\ToujouApi\Domain\Transformer;
-use DFAU\ToujouApi\IncludeHandler;
+use DFAU\ToujouApi\IncludeHandler\PageRelationIncludeHandler;
+use DFAU\ToujouApi\IncludeHandler\TcaResourceIncludeHandler;
 use DFAU\ToujouApi\Resource\Operation;
+use DFAU\ToujouApi\Schema\PagesJsonApiSchema;
 use DFAU\ToujouApi\Transformer as GenericTransformer;
-use DFAU\ToujouApi\TransformHandler;
+use DFAU\ToujouApi\TransformHandler\MetaTransformHandler;
+use DFAU\ToujouApi\TransformHandler\TcaResourceTransformHandler;
 
 return [
     'pages' => [

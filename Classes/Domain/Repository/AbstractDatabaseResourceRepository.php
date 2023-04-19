@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\Repository;
 
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use DFAU\ToujouApi\Database\Query\Restriction\ApiRestrictionContainer;
 use DFAU\ToujouApi\Domain\Value\ZuluDate;
 use League\Fractal\Pagination\Cursor;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractDatabaseResourceRepository implements ApiResourceRepository, DatabaseResourceRepository, PageRelationRepository

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Middleware;
 
-use TYPO3\CMS\Core\Http\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class CheckBeUserAuthorization implements MiddlewareInterface

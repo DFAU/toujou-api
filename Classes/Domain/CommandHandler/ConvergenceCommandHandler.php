@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Domain\CommandHandler;
 
-use League\Tactician\CommandBus;
 use Cascader\Cascader;
 use DFAU\Convergence\Operations\AbstractResourceOperation;
 use DFAU\Convergence\Operations\AddResource;
@@ -18,6 +17,7 @@ use DFAU\ToujouApi\Domain\Command\ReplaceTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\UnitOfWorkTcaResourceCommand;
 use DFAU\ToujouApi\Resource\Operation;
 use DFAU\ToujouApi\Resource\ResourceOperationToCommandMap;
+use League\Tactician\CommandBus;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConvergenceCommandHandler

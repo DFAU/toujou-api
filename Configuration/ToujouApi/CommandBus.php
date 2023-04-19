@@ -3,7 +3,6 @@
 declare(strict_types=1);
 use DFAU\ToujouApi\CommandBus\CommandHandlerContainer;
 use DFAU\ToujouApi\CommandBus\MapByConfiguration;
-
 use DFAU\ToujouApi\Domain\Command\CreateTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\DeleteTcaResourceCommand;
 use DFAU\ToujouApi\Domain\Command\ReplaceTcaResourceCommand;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Tests\Unit\Middleware;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use DFAU\ToujouApi\Middleware\LanguageResolver;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;

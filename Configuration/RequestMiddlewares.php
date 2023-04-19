@@ -1,15 +1,14 @@
 <?php
 
 declare(strict_types=1);
-use DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware;
-use DFAU\ToujouApi\Middleware\CheckBeUserAuthorization;
-
 use DFAU\ToujouApi\Middleware\ApiEntrypoint;
+use DFAU\ToujouApi\Middleware\CheckBeUserAuthorization;
 use DFAU\ToujouApi\Middleware\JsonApiPayload;
 use DFAU\ToujouApi\Middleware\LanguageResolver;
 use DFAU\ToujouApi\Middleware\ParsedBodyReset;
 use DFAU\ToujouApi\Middleware\Router;
 use DFAU\ToujouApi\Middleware\TypoScriptFrontendInitialization;
+use DFAU\ToujouOauth2Server\Middleware\ResourceServerMiddleware;
 
 return [
     'frontend' => [

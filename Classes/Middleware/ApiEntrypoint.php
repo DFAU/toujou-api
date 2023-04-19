@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Middleware;
 
-use Middlewares\ErrorFormatter\XmlFormatter;
-use Middlewares\ErrorFormatter\PlainFormatter;
 use DFAU\ToujouApi\ErrorFormatter\JsonApiFormatter;
 use DFAU\ToujouApi\Http\RequestHandler;
-use Middlewares\ErrorFormatter;
+use Middlewares\ErrorFormatter\PlainFormatter;
+use Middlewares\ErrorFormatter\XmlFormatter;
 use Middlewares\ErrorHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,7 +16,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ApiEntrypoint implements MiddlewareInterface
 {

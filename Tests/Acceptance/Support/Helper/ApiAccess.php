@@ -6,6 +6,7 @@ namespace DFAU\ToujouApi\Tests\Acceptance\Support\Helper;
 
 use Codeception\Module;
 use Codeception\Module\REST;
+
 class ApiAccess extends Module
 {
     protected $requiredFields = ['grant_type', 'client_id', 'client_secret'];

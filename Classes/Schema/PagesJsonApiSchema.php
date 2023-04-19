@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Schema;
 
-use DFAU\Convergence\Schema\InterGraphResourceRelation;
-use DFAU\Convergence\Schema\ExpressionIdentifier;
-use DFAU\Convergence\Schema\IntraGraphResourceRelation;
-use DFAU\Convergence\Schema\ExpressionQualifier;
-use DFAU\Convergence\Schema\StringPropertyPathReferenceList;
-use DFAU\Convergence\Schema\ResourcePropertiesExtractor;
-use DFAU\Convergence\Schema\PropertyPathPropertyList;
 use DFAU\Convergence\Schema;
+use DFAU\Convergence\Schema\ExpressionIdentifier;
+use DFAU\Convergence\Schema\ExpressionQualifier;
+use DFAU\Convergence\Schema\InterGraphResourceRelation;
+use DFAU\Convergence\Schema\IntraGraphResourceRelation;
+use DFAU\Convergence\Schema\PropertyPathPropertyList;
+use DFAU\Convergence\Schema\ResourcePropertiesExtractor;
+use DFAU\Convergence\Schema\StringPropertyPathReferenceList;
 
 class PagesJsonApiSchema extends Schema
 {
