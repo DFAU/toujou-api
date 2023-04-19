@@ -358,6 +358,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
+        ln -sfn ${ROOT_DIR} Web/typo3conf/ext/toujou_api
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
           bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
