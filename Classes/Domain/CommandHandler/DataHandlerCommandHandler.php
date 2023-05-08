@@ -79,6 +79,18 @@ class DataHandlerCommandHandler
             return [];
         }
 
+        /*
+         * Temporary workaround to allow custom sorting of content elements via API.
+         * Otherwise, move commands would have to be executed here afterwards
+         */
+        if (isset($datamap['tt_content'])) {
+            $GLOBALS['TCA']['tt_content']['columns']['sorting'] = [
+                'config' => [
+                    'type' => 'passthrough',
+                ],
+            ];
+        }
+
         $this->dataHandler->isImporting = true;
         $this->dataHandler->dontProcessTransformations = true;
         $this->dataHandler->start($datamap, $commandmap);
