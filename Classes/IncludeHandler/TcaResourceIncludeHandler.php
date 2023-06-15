@@ -116,6 +116,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
                 switch ($columnConfig['type']) {
                     case 'select':
                     case 'inline':
+                    case 'category':
                         if (!empty($columnConfig['foreign_table'])) {
                             return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
                         }
