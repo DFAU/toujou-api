@@ -42,6 +42,9 @@ jobs:
       - name: Check coding standards
         run: ./etc/scripts/checkCodingStandards.sh
 
+      - name: Lint yaml
+        run: ./.Build/bin/yaml-lint Configuration --parse-tags
+
       - name: Run unit tests
         run: ./etc/scripts/runTests.sh -s unit -p ${{ matrix.php }}
 
