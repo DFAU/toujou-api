@@ -18,6 +18,7 @@ class PutItemCest
                 'attributes' => [
                     'title' => 'Hello World',
                 ],
+                'relationships' => [],
             ],
         ];
 
