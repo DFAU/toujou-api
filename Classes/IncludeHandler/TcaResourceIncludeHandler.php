@@ -125,7 +125,7 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
                         break;
                     case 'group':
-                        if ('db' === $columnConfig['internal_type'] && !empty($columnConfig['allowed']) && false === \strpos($columnConfig['allowed'], ',')) {
+                        if ('db' === ($columnConfig['internal_type'] ?? null) && !empty($columnConfig['allowed']) && false === \strpos($columnConfig['allowed'], ',')) {
                             return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => GeneralUtility::trimExplode(',', $columnConfig['allowed'], true)]);
                         }
 
