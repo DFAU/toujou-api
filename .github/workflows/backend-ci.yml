@@ -43,7 +43,7 @@ jobs:
         run: ./etc/scripts/checkCodingStandards.sh
 
       - name: Run unit tests
-        run: ./etc/scripts/runTests.sh -s unit
+        run: ./etc/scripts/runTests.sh -s unit -p ${{ matrix.php }}
 
       - name: Run acceptance tests
-        run: ./etc/scripts/runTests.sh -s acceptance
+        run: ./etc/scripts/runTests.sh -s acceptance -p ${{ matrix.php }}
