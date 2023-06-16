@@ -38,11 +38,11 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
     public function canHandleOperation(Operation $operation): bool
     {
-        return $operation->equals(Operation::READ)
-        || $operation->equals(Operation::CREATE)
-        || $operation->equals(Operation::REPLACE)
-        || $operation->equals(Operation::UPDATE)
-        || $operation->equals(Operation::DELETE);
+        return $operation->equals(Operation::READ) ||
+        $operation->equals(Operation::CREATE) ||
+        $operation->equals(Operation::REPLACE) ||
+        $operation->equals(Operation::UPDATE) ||
+        $operation->equals(Operation::DELETE);
     }
 
     public function read(ServerRequestInterface $request): ResponseInterface

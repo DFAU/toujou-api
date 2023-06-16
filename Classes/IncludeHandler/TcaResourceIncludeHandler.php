@@ -87,13 +87,15 @@ class TcaResourceIncludeHandler implements IncludeHandler
             $transformer = $cascader->create($resourceDefinition['transformer'][Cascader::ARGUMENT_CLASS], $resourceDefinition['transformer']);
 
             if (Item::class === $resourceType) {
-                if ($data = $repository->findOneByIdentifier(\reset($result)['id'])) {
+                $data = $repository->findOneByIdentifier(\reset($result)['id']);
+                if ($data) {
                     return new $resourceType(
                         $data,
                         $transformer,
                         $resourceDefinition['resourceType']
                     );
                 }
+
                 return null;
             }
 
@@ -120,11 +122,13 @@ class TcaResourceIncludeHandler implements IncludeHandler
                         if (!empty($columnConfig['foreign_table'])) {
                             return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
                         }
+
                         break;
                     case 'group':
                         if ('db' === $columnConfig['internal_type'] && !empty($columnConfig['allowed']) && false === \strpos($columnConfig['allowed'], ',')) {
                             return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => GeneralUtility::trimExplode(',', $columnConfig['allowed'], true)]);
                         }
+
                         break;
                 }
             }
@@ -136,12 +140,15 @@ class TcaResourceIncludeHandler implements IncludeHandler
     protected function buildResourceDefinitions(array $tableNameToResourceMap): array
     {
         $allResourceDefinitions = ConfigurationManager::getResourcesConfiguration();
+
         return \array_filter(\array_map(function (string $resourceType) use ($allResourceDefinitions): ?array {
             if (isset($allResourceDefinitions[$resourceType])) {
                 $resourceDefinition = $allResourceDefinitions[$resourceType];
                 $resourceDefinition['resourceType'] = $resourceType;
+
                 return $resourceDefinition;
             }
+
             return null;
         }, $tableNameToResourceMap));
     }

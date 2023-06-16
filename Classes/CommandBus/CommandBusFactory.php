@@ -23,6 +23,7 @@ class CommandBusFactory
                 if (\is_array($target) && isset($target['__class__'])) {
                     $constructorArgs = $target;
                     unset($constructorArgs['__class__']);
+
                     return (new Cascader())->create($target['__class__'], $constructorArgs);
                 }
 

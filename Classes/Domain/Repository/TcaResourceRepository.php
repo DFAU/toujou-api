@@ -26,9 +26,10 @@ final class TcaResourceRepository extends AbstractDatabaseResourceRepository
     {
         $queryBuilder = parent::createQuery();
         foreach ($this->orderBy as $orderPair) {
-            list($fieldName, $order) = $orderPair;
+            [$fieldName, $order] = $orderPair;
             $queryBuilder->addOrderBy($fieldName, $order);
         }
+
         return $queryBuilder;
     }
 }

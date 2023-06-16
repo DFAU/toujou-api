@@ -23,6 +23,7 @@ class ParsedBodyReset implements MiddlewareInterface
                 $request = $request->withParsedBody(null);
             }
         }
+
         return $handler->handle($request);
     }
 }

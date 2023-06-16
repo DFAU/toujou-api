@@ -58,6 +58,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         foreach ($filters as $key => $value) {
             if (!\is_array($value)) {
                 $constraints[] = $queryBuilder->expr()->in($key, $queryBuilder->createNamedParameter($value));
+
                 continue;
             }
 
@@ -71,6 +72,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         }
 
         $queryBuilder->andWhere(...$constraints);
+
         return $queryBuilder;
     }
 
@@ -147,6 +149,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     protected function createDeduplicator(): \Closure
     {
         $countPerId = [];
+
         return function (array $resource) use (&$countPerId): array {
             $identifier = $resource[$this->identifier];
             $countPerId[$identifier] = isset($countPerId[$identifier]) ? $countPerId[$identifier] + 1 : 0;
@@ -162,6 +165,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     protected function createMetaMapper(): \Closure
     {
         $tableName = $this->tableName;
+
         return function (array $resource) use ($tableName): array {
             $resource[static::META_ATTRIBUTE] = [
                 static::META_UID => $resource[static::DEFAULT_IDENTIFIER],
@@ -188,6 +192,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
                 );
                 $overlayResult = $pageRepository->getLanguageOverlay($this->tableName, $resource);
             }
+
             return $overlayResult ?? $resource;
         };
     }

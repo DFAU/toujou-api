@@ -64,9 +64,11 @@ class DataHandlerCommandHandler
             case $command instanceof CreateTcaResourceCommand:
             case $command instanceof UpdateTcaResourceCommand:
                 $datamap[$command->getTableName()][$command->getUid()] = $command->getRecordData();
+
                 break;
             case $command instanceof DeleteTcaResourceCommand:
                 $commandmap[$command->getTableName()][$command->getUid()]['delete'] = 1;
+
                 break;
             default:
                 throw new \BadMethodCallException('The given command "' . \get_class($command) . '" is not supported yet', 1564476754);
@@ -100,6 +102,7 @@ class DataHandlerCommandHandler
         if (!empty($this->dataHandler->errorLog)) {
             throw new DataHandlerCommandException($this->dataHandler->errorLog);
         }
+
         return $this->dataHandler->substNEWwithIDs;
     }
 }

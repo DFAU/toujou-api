@@ -36,6 +36,7 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
         foreach ($resource['relationships'] as $predicate => $data) {
             $predicates[] = (null === $data['data'] || isset($data['data']['id']) ? static::PREDICATE_CARDINALITY_ITEM : static::PREDICATE_CARDINALITY_COLLECTION) . ':' . $predicate;
         }
+
         return $predicates;
     }
 
@@ -51,11 +52,13 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
             case static::PREDICATE_CARDINALITY_ITEM:
                 $identifier = $this->resourceIdentifier->determineIdentity($resource['relationships'][$predicate]['data'], $predicate);
                 $this->identifierToRelationMap[$identifier] = $resource['relationships'][$predicate]['data'];
+
                 return [$identifier];
             case static::PREDICATE_CARDINALITY_COLLECTION:
                 return \array_map(function ($relationship) use ($predicate) {
                     $identifier = $this->resourceIdentifier->determineIdentity($relationship, $predicate);
                     $this->identifierToRelationMap[$identifier] = $relationship;
+
                     return $identifier;
                 }, $resource['relationships'][$predicate]['data']);
             default:
@@ -76,12 +79,15 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
 
         switch ($cardinality) {
             case static::PREDICATE_CARDINALITY_ITEM:
-                if ($firstIdentifier = \key($references)) {
+                $firstIdentifier = \key($references);
+                if ($firstIdentifier) {
                     $resource['relationships'][$predicate]['data'] = [$this->mapResourceRelation($firstIdentifier)];
                 }
+
                 break;
             case static::PREDICATE_CARDINALITY_COLLECTION:
                 $resource['relationships'][$predicate]['data'] = \array_map([$this, 'mapResourceRelation'], \array_keys($references));
+
                 break;
             default:
                 throw new \InvalidArgumentException('Unknown cardinality "' . $cardinality . '" has been given. Only constants PREDICATE_CARDINALITY_ITEM and PREDICATE_CARDINALITY_COLLECTION are allowed.', 1567687598);

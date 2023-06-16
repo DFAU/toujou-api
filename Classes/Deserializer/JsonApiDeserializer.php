@@ -15,6 +15,7 @@ class JsonApiDeserializer implements Deserializer
                 return $this->item(['data' => $data], $options);
             }, $data['data']));
         }
+
         return [];
     }
 

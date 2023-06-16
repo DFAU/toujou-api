@@ -19,6 +19,7 @@ class RequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $handler = $this->getCallableFromHandler($request->getAttribute('handler'));
+
         return \call_user_func_array($handler, [$request]);
     }
 
@@ -48,13 +49,15 @@ class RequestHandler implements RequestHandlerInterface
             if (!\method_exists($targetObject, '__invoke')) {
                 throw new \InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
             }
+
             return $targetObject;
         }
 
         // Check if the target is a concatenated string of "className::actionMethod"
         if (\is_string($target) && false !== \strpos($target, '::')) {
-            list($className, $methodName) = \explode('::', $target, 2);
+            [$className, $methodName] = \explode('::', $target, 2);
             $targetObject = GeneralUtility::makeInstance($className);
+
             return [$targetObject, $methodName];
         }
 

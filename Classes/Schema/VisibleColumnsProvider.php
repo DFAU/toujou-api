@@ -35,6 +35,7 @@ class VisibleColumnsProvider
             'tableName' => $tableName,
             'databaseRow' => $resource,
         ]);
+
         return \array_filter($result['columnsToProcess'], function ($columnName) {
             return '-' !== $columnName[0];
         });

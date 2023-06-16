@@ -20,6 +20,7 @@ trait AsIsResourceDataCommandTrait
     {
         $target = clone $this;
         $target->asIsResourceData = $asIsResourceData;
+
         return $target;
     }
 }

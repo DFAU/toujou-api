@@ -23,11 +23,11 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
         $dateTimeFormats = QueryHelper::getDateTimeFormats();
 
         foreach ($result['processedTca']['columns'] as $column => $columnConfig) {
-            if (isset($columnConfig['config']['dbType'])
-                && \in_array($columnConfig['config']['dbType'], $dateTimeTypes, true)
+            if (isset($columnConfig['config']['dbType']) &&
+                \in_array($columnConfig['config']['dbType'], $dateTimeTypes, true)
             ) {
-                if (!empty($result['databaseRow'][$column])
-                    && $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
+                if (!empty($result['databaseRow'][$column]) &&
+                    $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
                 ) {
                     $result['databaseRow'][$column] = \date($dateTimeFormats[$columnConfig['config']['dbType']]['format'], \strtotime($result['databaseRow'][$column] . ' UTC'));
                 } else {
@@ -35,6 +35,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
                 }
             }
         }
+
         return $result;
     }
 }

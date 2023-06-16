@@ -49,6 +49,7 @@ class ApiEntrypoint implements MiddlewareInterface
         if (!empty($apiPathPrefix) && \str_starts_with($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
             $request = $request->withUri($request->getUri()->withPath('/' . \substr($request->getUri()->getPath(), \strlen('/' . $apiPathPrefix))));
             $middlewareDispatcher = $this->createMiddlewareDispatcher();
+
             return $middlewareDispatcher->handle($request);
         }
 

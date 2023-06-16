@@ -30,6 +30,7 @@ class UnitOfWorkTcaResourceCommand implements UnitOfWorkCommand
         $target->unitOfWorkCommands = \array_map(function (TcaRecordReferencingCommand $command) {
             return $command;
         }, $unitOfWorkCommands);
+
         return $target;
     }
 }

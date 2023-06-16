@@ -16,7 +16,7 @@ class SiteRestriction implements QueryRestrictionInterface
     /** @var QueryGenerator */
     private $queryGenerator;
 
-    /** @var null|int[] */
+    /** @var int[]|null */
     private $cachedSitePids;
 
     public function __construct(QueryGenerator $queryGenerator)
