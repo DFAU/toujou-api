@@ -25,6 +25,7 @@ class LanguageResolver implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $request = $this->getLanguageAwareRequest($request);
+
         return $handler->handle($request);
     }
 
@@ -49,6 +50,7 @@ class LanguageResolver implements MiddlewareInterface
 
             if (\in_array($acceptLanguage, $languageKeys, true)) {
                 $usedSiteLanguage = $language;
+
                 break;
             }
         }

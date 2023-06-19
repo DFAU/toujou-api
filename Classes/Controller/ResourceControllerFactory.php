@@ -41,9 +41,11 @@ class ResourceControllerFactory
         switch ($routeDefinition['numerus']) {
             case Numerus::ITEM:
                 $controllerName = JsonApiItemCommandController::class;
+
                 break;
             case Numerus::COLLECTION:
                 $controllerName = JsonApiCollectionCommandController::class;
+
                 break;
             default:
                 throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does contain an invalid "numerus" definition "' . $routeDefinition['numerus'] . '" of type "' . Numerus::class . '".', 1562676282);
@@ -57,6 +59,7 @@ class ResourceControllerFactory
 
         /** @var AbstractResourceCommandController $controller */
         $controller = (new Cascader())->create($controllerName, $controllerOptions);
+
         return $controller;
     }
 }

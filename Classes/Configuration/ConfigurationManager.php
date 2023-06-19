@@ -42,6 +42,7 @@ class ConfigurationManager
                 if (\file_exists($resourcesFileNameForPackage)) {
                     return require $resourcesFileNameForPackage;
                 }
+
                 return [];
             }, \array_values($packages)));
 

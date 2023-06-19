@@ -20,6 +20,7 @@ class CommandHandlerContainer implements ContainerInterface
         if (!$this->commandHandlers[$id]) {
             throw new CommandHandlerNotFoundException('The command handler "' . $id . '" could not be found.', 1564490855);
         }
+
         return $this->commandHandlers[$id];
     }
 

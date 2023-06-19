@@ -15,7 +15,10 @@ class PutItemCest
             'data' => [
                 'type' => 'pages',
                 'id' => '1',
-                'attributes' => ['title' => 'Hello World'],
+                'attributes' => [
+                    'title' => 'Hello World',
+                ],
+                'relationships' => [],
             ],
         ];
 

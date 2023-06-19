@@ -26,6 +26,7 @@ class CheckBeUserAuthorization implements MiddlewareInterface
         if (!$tsfe->isBackendUserLoggedIn()) {
             return new Response('php://temp', '401');
         }
+
         return $handler->handle($request);
     }
 

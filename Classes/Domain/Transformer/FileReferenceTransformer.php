@@ -36,6 +36,7 @@ class FileReferenceTransformer extends TransformerAbstract
         } catch (\InvalidArgumentException $exception) {
             $file = null;
         }
+
         return [
             'id' => (string) $fileReference[$this->identifier],
             'meta' => $fileReference[FileReferenceRepository::META_ATTRIBUTE],

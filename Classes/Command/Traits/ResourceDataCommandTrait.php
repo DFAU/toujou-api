@@ -20,6 +20,7 @@ trait ResourceDataCommandTrait
     {
         $target = clone $this;
         $target->resourceData = $resourceData;
+
         return $target;
     }
 }

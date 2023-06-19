@@ -31,6 +31,7 @@ class FileRepository extends AbstractDatabaseResourceRepository
 
         if ($file) {
             $fileProperties = $file->toArray();
+
             return $this->createMetaMapper()($fileProperties);
         }
 

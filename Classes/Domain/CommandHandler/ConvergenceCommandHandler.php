@@ -58,14 +58,17 @@ class ConvergenceCommandHandler
                 case $operation instanceof AddResource:
                     [$commandName, $commandArguments] = $this->resourceOperationToCommandMap->getCommandConfigForResourceTypeAndOperation($resource['type'], $convergenceOperationsToApiOperationsMap[AddResource::class]);
                     $commandArguments['resourceData'] = $resource['attributes'];
+
                     break;
                 case $operation instanceof UpdateResource:
                     [$commandName, $commandArguments] = $this->resourceOperationToCommandMap->getCommandConfigForResourceTypeAndOperation($resource['type'], $convergenceOperationsToApiOperationsMap[UpdateResource::class]);
                     $commandArguments['resourceData'] = $operation->getResourceUpdates()['attributes'];
+
                     break;
                 case $operation instanceof RemoveResource:
                     [$commandName, $commandArguments] = $this->resourceOperationToCommandMap->getCommandConfigForResourceTypeAndOperation($resource['type'], $convergenceOperationsToApiOperationsMap[RemoveResource::class]);
                     $commandArguments['resourceData'] = $resource['attributes'];
+
                     break;
                 default:
                     throw new \BadMethodCallException('The given operation "' . \get_class($operation) . '" is not supported yet', 1564062825);
@@ -96,6 +99,7 @@ class ConvergenceCommandHandler
 
         /** @var Schema $schema */
         $schema = $this->objectFactory->create($schemaClassName, $schemaArguments);
+
         return $schema;
     }
 }

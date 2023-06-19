@@ -22,6 +22,7 @@ trait TcaRecordDataCommandTrait
     {
         $target = clone $this;
         $target->recordData = $recordData;
+
         return $target;
     }
 }

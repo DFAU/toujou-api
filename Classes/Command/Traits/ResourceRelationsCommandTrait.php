@@ -23,6 +23,7 @@ trait ResourceRelationsCommandTrait
     {
         $target = clone $this;
         $target->resourceRelations = $resourceRelations;
+
         return $target;
     }
 }

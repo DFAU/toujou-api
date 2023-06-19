@@ -18,10 +18,10 @@ class ApiAccess extends Module
 
     public function wantToBeBearerAuthenticated(): void
     {
-        /** @var REST $restModule */
+        /** @var REST $rest */
         $rest = $this->getModule('REST');
         $rest->sendPOST('token', $this->grabValidCredentials());
-        $result = \json_decode($rest->grabResponse(), true, 512, JSON_THROW_ON_ERROR);
+        $result = \json_decode($rest->grabResponse(), true, 512, \JSON_THROW_ON_ERROR);
 
         $rest->amBearerAuthenticated($result['access_token']);
     }

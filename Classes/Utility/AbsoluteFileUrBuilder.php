@@ -14,6 +14,6 @@ class AbsoluteFileUrBuilder
             return $url;
         }
 
-        return  GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+        return GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
     }
 }

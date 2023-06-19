@@ -24,8 +24,10 @@ class PageRelationIncludeHandler implements IncludeHandler
             if (isset($allResourceDefinitions[$resourceType])) {
                 $resourceDefinition = $allResourceDefinitions[$resourceType];
                 $resourceDefinition['resourceType'] = $resourceType;
+
                 return $resourceDefinition;
             }
+
             return null;
         }, $includeToResourceMap));
     }

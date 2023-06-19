@@ -31,7 +31,7 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
     {
         return $operation->equals(Operation::READ);
         // TODO implement creation on collection without given identifier
-         //   || $operation->equals(Operation::CREATE);
+        //   || $operation->equals(Operation::CREATE);
     }
 
     public function read(ServerRequestInterface $request): ResponseInterface
@@ -41,9 +41,9 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
         $this->parseFieldsets($queryParams);
 
         $pageParams = $queryParams['page'] ?? [];
-        $currentCursor = $pageParams['cursor'];
-        $previousCursor = $pageParams['previous'];
-        $limit = $pageParams['limit'] ? (int) $pageParams['limit'] : 10;
+        $currentCursor = $pageParams['cursor'] ?? null;
+        $previousCursor = $pageParams['previous'] ?? null;
+        $limit = isset($pageParams['limit']) ? (int) $pageParams['limit'] : 10;
 
         $filters = isset($queryParams['filter']) && \is_array($queryParams['filter']) ? $queryParams['filter'] : [];
 

@@ -23,6 +23,7 @@ trait IncludedResourcesDataCommandTrait
     {
         $target = clone $this;
         $target->includedResourcesData = $includedResourceData;
+
         return $target;
     }
 }

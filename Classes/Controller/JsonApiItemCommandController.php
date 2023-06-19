@@ -38,11 +38,11 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
     public function canHandleOperation(Operation $operation): bool
     {
-        return $operation->equals(Operation::READ)
-        || $operation->equals(Operation::CREATE)
-        || $operation->equals(Operation::REPLACE)
-        || $operation->equals(Operation::UPDATE)
-        || $operation->equals(Operation::DELETE);
+        return $operation->equals(Operation::READ) ||
+        $operation->equals(Operation::CREATE) ||
+        $operation->equals(Operation::REPLACE) ||
+        $operation->equals(Operation::UPDATE) ||
+        $operation->equals(Operation::DELETE);
     }
 
     public function read(ServerRequestInterface $request): ResponseInterface
@@ -53,7 +53,8 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
         $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?: '');
 
-        $data = $this->fetchAndTransformData($resourceIdentifier, $request->getAttributes()['context']);
+        $context = $request->getAttributes()['context'] ?? null;
+        $data = $this->fetchAndTransformData($resourceIdentifier, $context);
 
         if (null === $data) {
             return new JsonResponse($data, 404, ['Content-Type' => 'application/vnd.api+json; charset=utf-8']);
