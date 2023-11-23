@@ -57,7 +57,7 @@ class TcaResourceTransformHandler implements TransformHandler
         });
 
         return \array_combine($visibleColumns, \array_map(function ($columnName) use ($result) {
-            return $result['databaseRow'][$columnName];
+            return $result['databaseRow'][$columnName] ?? null;
         }, $visibleColumns));
     }
 }
