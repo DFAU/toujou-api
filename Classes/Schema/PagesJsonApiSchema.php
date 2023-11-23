@@ -26,7 +26,7 @@ class PagesJsonApiSchema extends Schema
                     new ExpressionIdentifier('resource["type"] == "pages" ? resource["id"] : ""')
                 ),
                 new IntraGraphResourceRelation(
-                    new ExpressionQualifier('resource["relationships"]'),
+                    new ExpressionQualifier('traverse(resource, "relationships")'),
                     new JsonApiResourceRelationReferenceList(new ExpressionIdentifier('resource["type"]~"_"~resource["id"]')),
                     new ExpressionIdentifier('resource["type"]~"_"~resource["id"]')
                 ),
