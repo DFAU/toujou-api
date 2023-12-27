@@ -51,7 +51,7 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
         $this->parseIncludes($queryParams);
         $this->parseFieldsets($queryParams);
 
-        $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?: '');
+        $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?? '');
 
         $context = $request->getAttributes()['context'] ?? null;
         $data = $this->fetchAndTransformData($resourceIdentifier, $context);
@@ -78,7 +78,7 @@ final class JsonApiItemCommandController extends AbstractResourceCommandControll
 
     protected function fillInCommandArguments(ServerRequestInterface $request, string $commandName, array $commandArguments, array $commandInterfaces): array
     {
-        $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?: '');
+        $resourceIdentifier = \urldecode($request->getAttribute('variables')['id'] ?? '');
         $commandArguments['resourceIdentifier'] = $resourceIdentifier;
         $commandArguments['resourceType'] = $this->resourceType;
 
