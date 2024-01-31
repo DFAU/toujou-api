@@ -47,7 +47,7 @@ class FileReferenceTransformer extends TransformerAbstract
             'link' => $fileReference['link'],
             'crop' => $fileReference['crop'] ? \json_decode($fileReference['crop'], true) : null,
             'autoplay' => (bool) $fileReference['autoplay'],
-            'file' => [] !== $file ? $file['id'] : null,
+            'file' => !empty($file) ? $file['id'] : null,
             'url' => $this->getAbsoluteFileUrl($file),
         ];
     }
