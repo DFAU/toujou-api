@@ -30,15 +30,11 @@ class Router implements MiddlewareInterface
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
                 return GeneralUtility::makeInstance(Response::class)->withStatus(404);
-
-                break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
                 $response = GeneralUtility::makeInstance(Response::class)->withStatus(405);
 
                 return $response->withStatus(405, $response->getReasonPhrase() . '. Allowed Methods: ' . \implode(',', $allowedMethods));
-
-                break;
             case Dispatcher::FOUND:
                 $request = $request->withAttribute('handler', $routeInfo[1])->withAttribute('variables', $routeInfo[2]);
 

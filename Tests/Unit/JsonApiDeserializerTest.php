@@ -9,11 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class JsonApiDeserializerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /**
      * @dataProvider provideTestCases
      */

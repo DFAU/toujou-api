@@ -43,7 +43,7 @@ class CommandBusFactory
         $orderedMiddlewares = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($commandBusMiddlewares);
 
         $sanitizedMiddlewares = [];
-        foreach ($orderedMiddlewares as $name => $middleware) {
+        foreach ($orderedMiddlewares as $middleware) {
             if (isset($middleware['disabled']) && true === $middleware['disabled']) {
                 // Skip this middleware if disabled by configuration
                 continue;

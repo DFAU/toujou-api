@@ -6,7 +6,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'template',
     'version' => '0.0.1',
     'state' => 'stable',
-    'clearCacheOnLoad' => true,
     'author' => 'DFAU',
     'author_email' => 'dev@dfau.de',
     'author_company' => 'DFAU',

@@ -12,7 +12,7 @@ class CommandHandlerContainer implements ContainerInterface
     /** @var array */
     protected $commandHandlers = [];
 
-    public function get($id)
+    public function get(string $id)
     {
         if (!isset($this->commandHandlers[$id])) {
             $this->commandHandlers[$id] = GeneralUtility::makeInstance($id);
@@ -24,7 +24,7 @@ class CommandHandlerContainer implements ContainerInterface
         return $this->commandHandlers[$id];
     }
 
-    public function has($id)
+    public function has(string $id): bool
     {
         return (bool) $this->commandHandlers[$id];
     }

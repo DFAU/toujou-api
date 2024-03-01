@@ -7,19 +7,19 @@
         "php": "^7.4 | ^8",
         "ext-json": "*",
         "dfau/convergence": "dev-master",
-        "typo3/cms-core": "^11.5",
+        "typo3/cms-core": "^11.5 | ^12.4",
         "league/fractal": "~0.18",
         "league/tactician": "dev-master",
         "nikic/fast-route": "^1.3.0",
         "nikolaposa/cascader": "^1.2.0",
         "middlewares/error-handler": "^3.0.0",
         "middlewares/payload": "^3.0.1",
-        "dfau/toujou-oauth2-server": "dev-master"
+        "dfau/toujou-oauth2-server": "v12.x-dev as dev-master"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
         "dfau/coding-standard": "^2.0",
-        "typo3/testing-framework": "^6.4.0",
+        "typo3/testing-framework": "^7.0.4",
         "codeception/codeception": "^4.1",
         "codeception/module-rest": "^1.3",
         "codeception/module-asserts": "^1.3",

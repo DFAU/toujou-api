@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Configuration;
 
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
@@ -34,7 +35,7 @@ class ConfigurationManager
         if ($this->cache->has($cacheIdentifier)) {
             $configFromPackages = \unserialize(\substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
         } else {
-            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
             $packages = $packageManager->getActivePackages();
 
             $configFromPackages = \array_replace_recursive(...\array_map(function (PackageInterface $package) use ($configType) {

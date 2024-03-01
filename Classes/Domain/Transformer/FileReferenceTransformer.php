@@ -47,7 +47,7 @@ class FileReferenceTransformer extends TransformerAbstract
             'link' => $fileReference['link'],
             'crop' => $fileReference['crop'] ? \json_decode($fileReference['crop'], true) : null,
             'autoplay' => (bool) $fileReference['autoplay'],
-            'file' => !empty($file) ? $file['id'] : null,
+            'file' => empty($file) ? null : $file['id'],
             'url' => $this->getAbsoluteFileUrl($file),
         ];
     }
@@ -56,9 +56,7 @@ class FileReferenceTransformer extends TransformerAbstract
     {
         try {
             $file = $this->fileRepository->findOneByIdentifier($fileReference['uid_local']);
-        } catch (\InvalidArgumentException $exception) {
-            return $this->null();
-        } catch (\RuntimeException $exception) {
+        } catch (\InvalidArgumentException|\RuntimeException $exception) {
             return $this->null();
         }
 

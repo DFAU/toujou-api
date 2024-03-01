@@ -26,7 +26,7 @@ class JsonApiFormatter extends AbstractFormatter
 
         $previous = $error->getPrevious();
 
-        if (null !== $previous) {
+        if ($previous instanceof \Throwable) {
             $data['previous'] = $this->serializeError($previous);
         }
 

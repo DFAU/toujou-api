@@ -90,12 +90,12 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
 
         $query->orderBy($this->identifier, 'ASC');
 
-        $result = $query->execute()->fetchAllAssociative();
+        $result = $query->executeQuery()->fetchAllAssociative();
 
         $result = \array_map($this->createDeduplicator(), $result);
         $result = \array_map($this->createOverlayMapper($context), $result);
 
-        $nextCursor = !empty($result) ? \end($result)[$this->identifier] : null;
+        $nextCursor = $result === [] ? null : \end($result)[$this->identifier];
 
         $result = \array_map($this->createMetaMapper(), $result);
 
@@ -107,7 +107,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query = $this->createQuery()->setMaxResults(1);
         $query->where($query->expr()->eq($this->identifier, $query->quote($identifier)));
 
-        $result = $query->execute()->fetchAssociative() ?: [];
+        $result = $query->executeQuery()->fetchAssociative() ?: [];
 
         $result = $this->createOverlayMapper($context)($result);
 
@@ -123,7 +123,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query = $this->createQuery();
         $query->where($query->expr()->in($this->identifier, \array_map([$query, 'quote'], $identifiers)));
 
-        $result = $query->execute()->fetchAllAssociative();
+        $result = $query->executeQuery()->fetchAllAssociative();
 
         $result = \array_map($this->createDeduplicator(), $result);
 
@@ -137,7 +137,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $query = $this->createQuery();
         $query->where($query->expr()->eq($this->parentPageIdentifier, $query->quote($pageIdentifier)));
 
-        $result = $query->execute()->fetchAllAssociative();
+        $result = $query->executeQuery()->fetchAllAssociative();
 
         // TODO: add overlay?
 
@@ -185,7 +185,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     protected function createOverlayMapper(?Context $context): \Closure
     {
         return function (array $resource) use ($context): array {
-            if (null !== $context && $resource) {
+            if ($context instanceof Context && $resource) {
                 $pageRepository = GeneralUtility::makeInstance(
                     PageRepository::class,
                     $context

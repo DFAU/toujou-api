@@ -23,7 +23,7 @@ class CheckBeUserAuthorization implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        if (!$tsfe->isBackendUserLoggedIn()) {
+        if (!$tsfe->getContext()->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
             return new Response('php://temp', '401');
         }
 
