@@ -17,7 +17,6 @@ class ToujouApiEnvironment extends BackendEnvironment
             'backend',
             'install',
             'frontend',
-            'recordlist',
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/toujou_api',

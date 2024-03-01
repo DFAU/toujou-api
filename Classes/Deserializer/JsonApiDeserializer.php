@@ -11,9 +11,7 @@ class JsonApiDeserializer implements Deserializer
     public function collection(array $data, int $options = 0): array
     {
         if (isset($data['data']) && \is_array($data['data'])) {
-            return \array_merge(...\array_map(function ($data) use ($options) {
-                return $this->item(['data' => $data], $options);
-            }, $data['data']));
+            return \array_merge(...\array_map(fn($data) => $this->item(['data' => $data], $options), $data['data']));
         }
 
         return [];

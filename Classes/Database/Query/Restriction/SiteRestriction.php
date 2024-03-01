@@ -9,20 +9,16 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 
 class SiteRestriction implements QueryRestrictionInterface
 {
-    /** @var QueryGenerator */
-    private $queryGenerator;
-
     /** @var int[]|null */
     private $cachedSitePids;
 
-    public function __construct(QueryGenerator $queryGenerator)
-    {
-        $this->queryGenerator = $queryGenerator;
-    }
+    public function __construct(private readonly PageRepository $pageRepository)
+    {}
 
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
@@ -31,21 +27,18 @@ class SiteRestriction implements QueryRestrictionInterface
         $sitePids = $this->getSitePids();
 
         if ([] === $sitePids) {
-            return $expressionBuilder->andX();
+            return $expressionBuilder->and();
         }
 
         foreach ($queriedTables as $tableAlias => $tableName) {
             if ('pages' === $tableName) {
-                $constraints[] = $expressionBuilder->orX(
-                    $expressionBuilder->in($tableAlias . '.uid', $sitePids),
-                    $expressionBuilder->in($tableAlias . '.pid', $sitePids)
-                );
+                $constraints[] = $expressionBuilder->or($expressionBuilder->in($tableAlias . '.uid', $sitePids), $expressionBuilder->in($tableAlias . '.pid', $sitePids));
             } else {
                 $constraints[] = $expressionBuilder->in($tableAlias . '.pid', $sitePids);
             }
         }
 
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 
     private function getSitePids(): array
@@ -68,7 +61,7 @@ class SiteRestriction implements QueryRestrictionInterface
             return [];
         }
 
-        $this->cachedSitePids = \explode(',', $this->queryGenerator->getTreeList($site->getRootPageId(), 999));
+        $this->cachedSitePids = $this->pageRepository->getPageIdsRecursive($site->getRootPageId(), 999);
 
         return $this->cachedSitePids;
     }
