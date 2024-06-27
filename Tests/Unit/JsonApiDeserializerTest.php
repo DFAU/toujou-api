@@ -19,7 +19,7 @@ final class JsonApiDeserializerTest extends TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function provideTestCases(): array
+    public static function provideTestCases(): array
     {
         return [
             'age-groups test' => [

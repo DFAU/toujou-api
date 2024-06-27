@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DFAU\ToujouApi\Configuration;
 
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager

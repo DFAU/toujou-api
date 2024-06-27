@@ -62,11 +62,11 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->start($fieldValue, $allowedTableName, $mmTableName, $uid, $this->tableName, $columnConfig);
-        $result = \array_filter($relationHandler->itemArray, fn($item) => $item['table'] === $allowedTableName);
+        $result = \array_filter($relationHandler->itemArray, fn ($item) => $item['table'] === $allowedTableName);
 
         $resourceType = (isset($columnConfig['maxitems']) && 1 == $columnConfig['maxitems']) || (isset($columnConfig['renderType']) && 'selectSingle' === $columnConfig['renderType']) ? Item::class : Collection::class;
 
-        if ($result !== []) {
+        if ([] !== $result) {
             $resourceDefinition = $this->resourceDefinitionsByTableName[$allowedTableName];
 
             // Override any custom Identifier here for our database record identifier

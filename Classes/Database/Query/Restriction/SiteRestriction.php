@@ -8,7 +8,6 @@ use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 
@@ -17,8 +16,10 @@ class SiteRestriction implements QueryRestrictionInterface
     /** @var int[]|null */
     private $cachedSitePids;
 
-    public function __construct(private readonly PageRepository $pageRepository)
-    {}
+    public function __construct(
+        private readonly PageRepository $pageRepository
+    ) {
+    }
 
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {

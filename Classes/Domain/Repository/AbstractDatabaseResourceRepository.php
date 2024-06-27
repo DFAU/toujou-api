@@ -95,7 +95,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
         $result = \array_map($this->createDeduplicator(), $result);
         $result = \array_map($this->createOverlayMapper($context), $result);
 
-        $nextCursor = $result === [] ? null : \end($result)[$this->identifier];
+        $nextCursor = [] === $result ? null : \end($result)[$this->identifier];
 
         $result = \array_map($this->createMetaMapper(), $result);
 

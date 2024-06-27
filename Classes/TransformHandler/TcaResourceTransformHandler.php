@@ -52,8 +52,8 @@ class TcaResourceTransformHandler implements TransformHandler
             'databaseRow' => $resource,
         ]);
 
-        $visibleColumns = \array_filter($result['columnsToProcess'], fn($columnName) => !isset($this->excludedColumns[$columnName]) && '-' !== $columnName[0]);
+        $visibleColumns = \array_filter($result['columnsToProcess'], fn ($columnName) => !isset($this->excludedColumns[$columnName]) && '-' !== $columnName[0]);
 
-        return \array_combine($visibleColumns, \array_map(fn($columnName) => $result['databaseRow'][$columnName] ?? null, $visibleColumns));
+        return \array_combine($visibleColumns, \array_map(fn ($columnName) => $result['databaseRow'][$columnName] ?? null, $visibleColumns));
     }
 }

@@ -26,13 +26,13 @@ class ComposableTransformer extends TransformerAbstract implements ResourceTrans
 
     public function __construct(array $transformHandlers, array $includeHandlers = [])
     {
-        $this->transformHandlerStack = \array_reduce($transformHandlers, fn($next, TransformHandler $transformHandler) => $this->wrapTransformHandler($transformHandler, $next), fn($data, array $transformedData) => $transformedData);
+        $this->transformHandlerStack = \array_reduce($transformHandlers, fn ($next, TransformHandler $transformHandler) => $this->wrapTransformHandler($transformHandler, $next), fn ($data, array $transformedData) => $transformedData);
 
-        $this->availableIncludesStack = \array_reduce($includeHandlers, fn($next, IncludeHandler $includeHandler) => $this->wrapAvailableIncludesHandler($includeHandler, $next), fn($currentIncludes) => \array_unique(\array_merge($currentIncludes, parent::getAvailableIncludes())));
+        $this->availableIncludesStack = \array_reduce($includeHandlers, fn ($next, IncludeHandler $includeHandler) => $this->wrapAvailableIncludesHandler($includeHandler, $next), fn ($currentIncludes) => \array_unique(\array_merge($currentIncludes, parent::getAvailableIncludes())));
 
-        $this->defaultIncludesStack = \array_reduce($includeHandlers, fn($next, IncludeHandler $includeHandler) => $this->wrapDefaultIncludesHandler($includeHandler, $next), fn($currentIncludes) => \array_unique(\array_merge($currentIncludes, parent::getDefaultIncludes())));
+        $this->defaultIncludesStack = \array_reduce($includeHandlers, fn ($next, IncludeHandler $includeHandler) => $this->wrapDefaultIncludesHandler($includeHandler, $next), fn ($currentIncludes) => \array_unique(\array_merge($currentIncludes, parent::getDefaultIncludes())));
 
-        $this->includeHandlerStack = \array_reduce($includeHandlers, fn($next, IncludeHandler $includeHandler) => $this->wrapIncludeHandler($includeHandler, $next), fn(Scope $scope, $includeName, $data) => parent::callIncludeMethod($scope, $includeName, $data));
+        $this->includeHandlerStack = \array_reduce($includeHandlers, fn ($next, IncludeHandler $includeHandler) => $this->wrapIncludeHandler($includeHandler, $next), fn (Scope $scope, $includeName, $data) => parent::callIncludeMethod($scope, $includeName, $data));
     }
 
     public function getAvailableIncludes(): array
@@ -57,21 +57,21 @@ class ComposableTransformer extends TransformerAbstract implements ResourceTrans
 
     protected function wrapTransformHandler(TransformHandler $handler, callable $next): \Closure
     {
-        return fn($data, array $transformedData): array => $handler->handleTransform($data, $transformedData, $next);
+        return fn ($data, array $transformedData): array => $handler->handleTransform($data, $transformedData, $next);
     }
 
     protected function wrapAvailableIncludesHandler(IncludeHandler $handler, callable $next): \Closure
     {
-        return fn(array $currentIncludes): array => $handler->getAvailableIncludes($currentIncludes, $next);
+        return fn (array $currentIncludes): array => $handler->getAvailableIncludes($currentIncludes, $next);
     }
 
     protected function wrapDefaultIncludesHandler(IncludeHandler $handler, callable $next): \Closure
     {
-        return fn(array $currentIncludes): array => $handler->getDefaultIncludes($currentIncludes, $next);
+        return fn (array $currentIncludes): array => $handler->getDefaultIncludes($currentIncludes, $next);
     }
 
     protected function wrapIncludeHandler(IncludeHandler $handler, callable $next): \Closure
     {
-        return fn($scope, $includeName, $data): ?ResourceInterface => $handler->handleInclude($scope, $includeName, $data, $next);
+        return fn ($scope, $includeName, $data): ?ResourceInterface => $handler->handleInclude($scope, $includeName, $data, $next);
     }
 }

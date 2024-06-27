@@ -14,7 +14,7 @@ class UnitOfWorkTcaResourceCommand implements UnitOfWorkCommand
 
     public function __construct(array $unitOfWorkCommands)
     {
-        $this->unitOfWorkCommands = \array_map(fn(TcaRecordReferencingCommand $command) => $command, $unitOfWorkCommands);
+        $this->unitOfWorkCommands = \array_map(fn (TcaRecordReferencingCommand $command) => $command, $unitOfWorkCommands);
     }
 
     public function getUnitOfWorkCommands(): array
@@ -25,7 +25,7 @@ class UnitOfWorkTcaResourceCommand implements UnitOfWorkCommand
     public function withUnitOfWorkCommands(array $unitOfWorkCommands): UnitOfWorkCommand
     {
         $target = clone $this;
-        $target->unitOfWorkCommands = \array_map(fn(TcaRecordReferencingCommand $command) => $command, $unitOfWorkCommands);
+        $target->unitOfWorkCommands = \array_map(fn (TcaRecordReferencingCommand $command) => $command, $unitOfWorkCommands);
 
         return $target;
     }
