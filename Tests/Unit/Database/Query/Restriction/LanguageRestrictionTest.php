@@ -89,7 +89,7 @@ class LanguageRestrictionTest extends UnitTestCase
             ->method('in');
 
         $expressionBuilderMock->expects(self::once())
-            ->method('andX')
+            ->method('and')
             ->with()
             ->willReturn($compositeExpression);
 

@@ -14,6 +14,7 @@ class ToujouApiEnvironment extends BackendEnvironment
             'core',
             'extbase',
             'fluid',
+            'recordlist',
             'backend',
             'install',
             'frontend',

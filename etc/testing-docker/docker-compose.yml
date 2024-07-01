@@ -186,3 +186,60 @@ services:
           .Build/bin/phpunit -c etc/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         fi
       "
+  web:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    stop_grace_period: 1s
+    volumes:
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    environment:
+      TYPO3_PATH_ROOT: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance
+      TYPO3_PATH_APP: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance
+      TYPO3_OAUTH2_PRIVATE_KEY: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance/typo3conf/ext/toujou_api/Tests/Acceptance/_data/private.key
+      TYPO3_OAUTH2_PUBLIC_KEY: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance/typo3conf/ext/toujou_api/Tests/Acceptance/_data/public.key
+      TYPO3_OAUTH2_ENCRYPTION_KEY: def000003cde1910c7bdd30ad21d949a2d7e2c9d330b4cfcabd43d146c22fb2c4d5e66dd9d1ca33b06c3c101dce34de019c21fe48ec3f5a924f27e05717bddd5f6c6cdf5
+    command: php -dxdebug.mode=off -S web:8000 -t ${ROOT_DIR}/.Build/Web
+
+  acceptance_backend_mariadb10:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    links:
+      - mariadb10
+      - web
+    environment:
+      typo3DatabaseName: func_test
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: funcp
+      typo3DatabaseHost: mariadb10
+    volumes:
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${ROOT_DIR}/.Build
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        echo Waiting for database start...;
+        while ! nc -z mariadb10 3306; do
+          sleep 1;
+        done;
+        echo Database is up;
+        php -v | grep '^PHP';
+        ln -sfn ${ROOT_DIR} Web/typo3conf/ext/toujou_api
+        mkdir -p Web/typo3temp/var/tests/
+        COMMAND=\"vendor/codeception/codeception/codecept run Api -d -c Web/typo3conf/ext/toujou_api/Tests/codeception.yml ${TEST_FILE}\"
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" \
+          $${COMMAND};
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          $${COMMAND};
+        fi
+      "

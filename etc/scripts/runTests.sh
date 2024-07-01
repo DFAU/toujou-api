@@ -200,6 +200,13 @@ fi
 
 # Suite execution
 case ${TEST_SUITE} in
+    acceptance)
+        setUpDockerComposeDotEnv
+        docker-compose run acceptance_backend_mariadb10
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+
     clean)
         rm -rf ../../composer.lock ../../.Build/ ../../composer.json.testing
         ;;
