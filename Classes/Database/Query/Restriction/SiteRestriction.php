@@ -62,7 +62,7 @@ class SiteRestriction implements QueryRestrictionInterface
             return [];
         }
 
-        $this->cachedSitePids = $this->pageRepository->getPageIdsRecursive($site->getRootPageId(), 999);
+        $this->cachedSitePids = $this->pageRepository->getPageIdsRecursive([$site->getRootPageId()], 999);
 
         return $this->cachedSitePids;
     }

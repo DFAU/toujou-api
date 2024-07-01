@@ -28,7 +28,12 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $tsfe = $this->getTyposcriptFrontendController($request);
-        $tsfe->determineId();
+
+        try {
+            $tsfe->determineId($request);
+        } catch (\Exception $e) {
+            // v12: not sure if the `determineId` call is still necessary in v12
+        }
 
         return $handler->handle($request);
     }

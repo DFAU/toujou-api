@@ -50,9 +50,16 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         GeneralUtility::addInstance(TypoScriptFrontendController::class, $frontendControllerMock);
 
-        $requestMock
+        $matcher = self::exactly(3);
+
+        $requestMock->expects($matcher)
             ->method('getAttribute')
-            ->withConsecutive(['site'], ['language'])
+            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguageMock) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals('site', $value),
+                    2 => $this->assertEquals('language', $value),
+                };
+            })
             ->willReturnOnConsecutiveCalls($siteMock, $pageArgumentsMock, $siteLanguageMock);
 
         $this->subject->process($requestMock, $requestHandlerMock);
