@@ -25,6 +25,7 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
     {
         parent::setUp();
         $contextMock = $this->createMock(Context::class);
+        $this->resetSingletonInstances = true;
         $this->subject = new TypoScriptFrontendInitialization($contextMock);
     }
 
