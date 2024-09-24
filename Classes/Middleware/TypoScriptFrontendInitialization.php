@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,13 +28,7 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $tsfe = $this->getTyposcriptFrontendController($request);
-
-        try {
-            $tsfe->determineId($request);
-        } catch (\Exception $e) {
-            // v12: not sure if the `determineId` call is still necessary in v12
-        }
+        $this->getTyposcriptFrontendController($request);
 
         return $handler->handle($request);
     }
@@ -55,6 +50,8 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
             $pageArguments,
             $request->getAttribute('frontend.user', null)
         );
+
+        $controller->sys_page = GeneralUtility::makeInstance(PageRepository::class);
 
         return $GLOBALS['TSFE'] = $controller;
     }
