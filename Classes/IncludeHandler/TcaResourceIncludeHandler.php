@@ -114,17 +114,19 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
             if (isset($columnConfig['type'])) {
                 switch ($columnConfig['type']) {
-                    case 'select':
-                    case 'inline':
-                    case 'category':
-                        if (!empty($columnConfig['foreign_table'])) {
-                            return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
-                        }
-
-                        break;
                     case 'group':
                         if ('db' === ($columnConfig['internal_type'] ?? null) && !empty($columnConfig['allowed']) && false === \strpos($columnConfig['allowed'], ',')) {
                             return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => GeneralUtility::trimExplode(',', $columnConfig['allowed'], true)]);
+                        }
+
+                        break;
+                    case 'select':
+                    case 'inline':
+                    case 'category':
+                    case 'file':
+                    default:
+                        if (!empty($columnConfig['foreign_table'])) {
+                            return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
                         }
 
                         break;
