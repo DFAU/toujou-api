@@ -62,13 +62,11 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->start($fieldValue, $allowedTableName, $mmTableName, $uid, $this->tableName, $columnConfig);
-        $result = \array_filter($relationHandler->itemArray, function ($item) use ($allowedTableName) {
-            return $item['table'] === $allowedTableName;
-        });
+        $result = \array_filter($relationHandler->itemArray, fn ($item) => $item['table'] === $allowedTableName);
 
         $resourceType = (isset($columnConfig['maxitems']) && 1 == $columnConfig['maxitems']) || (isset($columnConfig['renderType']) && 'selectSingle' === $columnConfig['renderType']) ? Item::class : Collection::class;
 
-        if (!empty($result)) {
+        if ([] !== $result) {
             $resourceDefinition = $this->resourceDefinitionsByTableName[$allowedTableName];
 
             // Override any custom Identifier here for our database record identifier
@@ -116,17 +114,19 @@ class TcaResourceIncludeHandler implements IncludeHandler
 
             if (isset($columnConfig['type'])) {
                 switch ($columnConfig['type']) {
-                    case 'select':
-                    case 'inline':
-                    case 'category':
-                        if (!empty($columnConfig['foreign_table'])) {
-                            return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
-                        }
-
-                        break;
                     case 'group':
                         if ('db' === ($columnConfig['internal_type'] ?? null) && !empty($columnConfig['allowed']) && false === \strpos($columnConfig['allowed'], ',')) {
                             return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => GeneralUtility::trimExplode(',', $columnConfig['allowed'], true)]);
+                        }
+
+                        break;
+                    case 'select':
+                    case 'inline':
+                    case 'category':
+                    case 'file':
+                    default:
+                        if (!empty($columnConfig['foreign_table'])) {
+                            return \array_merge($columnConfig, [static::REFERENCE_TABLE_NAME => [$columnConfig['foreign_table']]]);
                         }
 
                         break;

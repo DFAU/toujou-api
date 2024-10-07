@@ -41,7 +41,7 @@ class LanguageRestriction implements QueryRestrictionInterface
             }
         }
 
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 
     private function getTableLanguageExpression(
@@ -98,23 +98,17 @@ class LanguageRestriction implements QueryRestrictionInterface
             ->select($defLangTableAlias . '.uid')
             ->from($tableName, $defLangTableAlias)
             ->where(
-                $defaultLanguageRecordsSubSelect->expr()->andX(
-                    $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $transOrigPointerField, 0),
-                    $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, 0)
-                )
+                $defaultLanguageRecordsSubSelect->expr()->and($defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $transOrigPointerField, 0), $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, 0))
             );
 
         $andConditions = [];
         // records in language 'all'
         $andConditions[] = $expressionBuilder->eq($tableAlias . '.' . $languageField, -1);
         // translated records where a default language exists
-        $andConditions[] = $expressionBuilder->andX(
-            $expressionBuilder->eq($tableAlias . '.' . $languageField, (int) $languageAspect->getContentId()),
-            $expressionBuilder->in(
-                $tableAlias . '.' . $transOrigPointerField,
-                $defaultLanguageRecordsSubSelect->getSQL()
-            )
-        );
+        $andConditions[] = $expressionBuilder->and($expressionBuilder->eq($tableAlias . '.' . $languageField, (int) $languageAspect->getContentId()), $expressionBuilder->in(
+            $tableAlias . '.' . $transOrigPointerField,
+            $defaultLanguageRecordsSubSelect->getSQL()
+        ));
         if ('hideNonTranslated' !== $mode) {
             // $mode = TRUE
             // returns records from current language which have default language
@@ -125,21 +119,15 @@ class LanguageRestriction implements QueryRestrictionInterface
                 ->select($translatedOnlyTableAlias . '.' . $transOrigPointerField)
                 ->from($tableName, $translatedOnlyTableAlias)
                 ->where(
-                    $queryBuilderForSubselect->expr()->andX(
-                        $queryBuilderForSubselect->expr()->gt($translatedOnlyTableAlias . '.' . $transOrigPointerField, 0),
-                        $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, (int) $languageAspect->getContentId())
-                    )
+                    $queryBuilderForSubselect->expr()->and($queryBuilderForSubselect->expr()->gt($translatedOnlyTableAlias . '.' . $transOrigPointerField, 0), $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, (int) $languageAspect->getContentId()))
                 );
             // records in default language, which do not have a translation
-            $andConditions[] = $expressionBuilder->andX(
-                $expressionBuilder->eq($tableAlias . '.' . $languageField, 0),
-                $expressionBuilder->notIn(
-                    $tableAlias . '.uid',
-                    $queryBuilderForSubselect->getSQL()
-                )
-            );
+            $andConditions[] = $expressionBuilder->and($expressionBuilder->eq($tableAlias . '.' . $languageField, 0), $expressionBuilder->notIn(
+                $tableAlias . '.uid',
+                $queryBuilderForSubselect->getSQL()
+            ));
         }
 
-        return (string) $expressionBuilder->orX(...$andConditions);
+        return (string) $expressionBuilder->or(...$andConditions);
     }
 }

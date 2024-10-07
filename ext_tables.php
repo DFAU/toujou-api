@@ -1,16 +1,25 @@
 <?php
 
-\defined('TYPO3') or die();
+use DFAU\ToujouApi\Form\DatabaseRowDateTimeFields;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
+use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
+use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem;
+
+\defined('TYPO3') || die();
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['toujouApiTcaResource'] = [
-    \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class],
-    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class],
-    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class],
-    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class],
-    \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class],
-    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class],
-    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class],
-    \DFAU\ToujouApi\Form\DatabaseRowDateTimeFields::class => [
-        'depends' => [\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class],
+    InitializeProcessedTca::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][InitializeProcessedTca::class],
+    DatabaseRecordTypeValue::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][DatabaseRecordTypeValue::class],
+    TcaFlexPrepare::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TcaFlexPrepare::class],
+    TcaFlexProcess::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TcaFlexProcess::class],
+    EvaluateDisplayConditions::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][EvaluateDisplayConditions::class],
+    TcaColumnsProcessShowitem::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TcaColumnsProcessShowitem::class],
+    TcaTypesShowitem::class => $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][TcaTypesShowitem::class],
+    DatabaseRowDateTimeFields::class => [
+        'depends' => [InitializeProcessedTca::class],
     ],
 ];

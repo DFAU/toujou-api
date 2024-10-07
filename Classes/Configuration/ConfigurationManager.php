@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationManager
@@ -34,7 +35,7 @@ class ConfigurationManager
         if ($this->cache->has($cacheIdentifier)) {
             $configFromPackages = \unserialize(\substr($this->cache->get($cacheIdentifier), 6, -2), ['allowed_classes' => false]);
         } else {
-            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
             $packages = $packageManager->getActivePackages();
 
             $configFromPackages = \array_replace_recursive(...\array_map(function (PackageInterface $package) use ($configType) {

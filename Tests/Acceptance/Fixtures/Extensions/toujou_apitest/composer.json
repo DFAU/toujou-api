@@ -1,12 +1,13 @@
 {
-  "name": "toujou/apitest",
+  "name": "dfau/toujou-apitest",
+  "description": "TYPO3 REST API Framework",
   "type": "typo3-cms-extension",
-  "description": "",
-  "license": "GPLv3",
-  "require": {},
+  "license": "GPL-3.0-or-later",
   "extra": {
     "typo3/cms": {
-      "extension-key": "apitest"
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web",
+      "extension-key": "toujou_apitest"
     }
   }
 }

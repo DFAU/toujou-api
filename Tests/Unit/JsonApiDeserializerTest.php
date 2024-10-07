@@ -9,11 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class JsonApiDeserializerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /**
      * @dataProvider provideTestCases
      */
@@ -24,7 +19,7 @@ final class JsonApiDeserializerTest extends TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function provideTestCases(): array
+    public static function provideTestCases(): array
     {
         return [
             'age-groups test' => [

@@ -4,13 +4,14 @@ on: [ push, pull_request ]
 
 jobs:
   build:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4', '8.1' ]
+        php: [ '8.1', '8.2' ]
         include:
-          - php: '7.4'
+          - php: '8.1'
 
     steps:
       - name: Checkout Code

@@ -19,12 +19,11 @@ class JsonApiResourceRelationReferenceList implements ReferenceList
     protected $resourceIdentifier;
 
     /** @var array */
-    protected $identifierToRelationMap;
+    protected $identifierToRelationMap = [];
 
     public function __construct(Identifier $resourceIdentifier)
     {
         $this->resourceIdentifier = $resourceIdentifier;
-        $this->identifierToRelationMap = [];
     }
 
     public function getAvailablePredicates(array $resource): array

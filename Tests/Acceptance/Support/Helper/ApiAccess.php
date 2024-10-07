@@ -9,7 +9,7 @@ use Codeception\Module\REST;
 
 class ApiAccess extends Module
 {
-    protected $requiredFields = ['grant_type', 'client_id', 'client_secret'];
+    protected array $requiredFields = ['grant_type', 'client_id', 'client_secret'];
 
     public function grabValidCredentials(): array
     {

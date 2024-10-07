@@ -77,7 +77,7 @@ class DataHandlerCommandHandler
 
     protected function process(array $datamap = [], array $commandmap = []): array
     {
-        if (empty($datamap) && empty($commandmap)) {
+        if ([] === $datamap && [] === $commandmap) {
             return [];
         }
 

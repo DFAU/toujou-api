@@ -47,8 +47,6 @@ final class ResourceOperationToCommandMap
             return;
         }
         $resourcesConfiguration = ConfigurationManager::getResourcesConfiguration();
-        $this->commandsByResourceTypeAndOperation = \array_filter(\array_map(function ($resourceConfiguration) {
-            return $resourceConfiguration['operationToCommandMap'] ?? null;
-        }, $resourcesConfiguration));
+        $this->commandsByResourceTypeAndOperation = \array_filter(\array_map(fn ($resourceConfiguration) => $resourceConfiguration['operationToCommandMap'] ?? null, $resourcesConfiguration));
     }
 }

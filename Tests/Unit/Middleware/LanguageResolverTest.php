@@ -158,9 +158,16 @@ class LanguageResolverTest extends UnitTestCase
             ->method('setAspect')
             ->with('language', self::isInstanceOf(LanguageAspect::class));
 
-        $requestMock->expects(self::exactly(2))
+        $matcher = self::exactly(2);
+
+        $requestMock->expects($matcher)
             ->method('withAttribute')
-            ->withConsecutive(['context', $this->contextMock], ['language', $siteLanguageMock])
+            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguageMock) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals(['context', $this->contextMock], [$key, $value]),
+                    2 => $this->assertEquals(['language', $siteLanguageMock], [$key, $value]),
+                };
+            })
             ->willReturn($requestMock);
 
         $this->subject->process($requestMock, $requestHandlerMock);
@@ -208,9 +215,16 @@ class LanguageResolverTest extends UnitTestCase
             ->method('setAspect')
             ->with('language', self::isInstanceOf(LanguageAspect::class));
 
-        $requestMock->expects(self::exactly(2))
+        $matcher = self::exactly(2);
+
+        $requestMock->expects($matcher)
             ->method('withAttribute')
-            ->withConsecutive(['context', $this->contextMock], ['language', $siteLanguageMock])
+            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguageMock) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals(['context', $this->contextMock], [$key, $value]),
+                    2 => $this->assertEquals(['language', $siteLanguageMock], [$key, $value]),
+                };
+            })
             ->willReturn($requestMock);
 
         $this->subject->process($requestMock, $requestHandlerMock);
