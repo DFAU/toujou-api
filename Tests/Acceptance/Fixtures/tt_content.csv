@@ -1,0 +1,4 @@
+tt_content,,,,,,,
+,pid,uid,header,sys_language_uid,l10n_source,l18n_parent
+,1,1,"Default Language Content",0,0,0
+,1,2,"Connected mode translated content",1000001,0,1
