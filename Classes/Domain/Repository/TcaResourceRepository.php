@@ -12,7 +12,7 @@ final class TcaResourceRepository extends AbstractDatabaseResourceRepository
     /** @var string */
     protected $orderBy;
 
-    public function __construct(string $tableName, string $identifier = self::DEFAULT_IDENTIFIER, string $orderBy = null)
+    public function __construct(string $tableName, string $identifier = self::DEFAULT_IDENTIFIER, ?string $orderBy = null)
     {
         $this->tableName = $tableName;
         $this->identifier = $identifier;
