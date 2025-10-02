@@ -7,6 +7,7 @@ namespace DFAU\ToujouApi\Tests\Unit\Middleware;
 use DFAU\ToujouApi\Middleware\LanguageResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -83,21 +84,14 @@ class LanguageResolverTest extends UnitTestCase
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $siteMock = $this->createMock(Site::class);
-        $siteLanguageMock = $this->createMock(SiteLanguage::class);
 
-        $siteLanguageMock
-            ->expects(self::once())
-            ->method('getHreflang')
-            ->willReturn('de_DE');
-
-        $siteLanguageMock
-            ->expects(self::once())
-            ->method('getTwoLetterIsoCode')
-            ->willReturn('de');
+        $siteLanguage = new SiteLanguage(1, 'de', $this->createMock(UriInterface::class), [
+            'hreflang' => 'de_DE',
+        ]);
 
         $siteMock->expects(self::once())
             ->method('getAllLanguages')
-            ->willReturn([$siteLanguageMock]);
+            ->willReturn([$siteLanguage]);
 
         $requestMock->expects(self::once())
             ->method('getAttribute')
@@ -124,21 +118,14 @@ class LanguageResolverTest extends UnitTestCase
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $siteMock = $this->createMock(Site::class);
-        $siteLanguageMock = $this->createMock(SiteLanguage::class);
 
-        $siteLanguageMock
-            ->expects(self::once())
-            ->method('getHreflang')
-            ->willReturn('de_B2B');
-
-        $siteLanguageMock
-            ->expects(self::once())
-            ->method('getTwoLetterIsoCode')
-            ->willReturn('');
+        $siteLanguage = new SiteLanguage(1, 'de', $this->createMock(UriInterface::class), [
+            'hreflang' => 'de_B2B',
+        ]);
 
         $siteMock->expects(self::once())
             ->method('getAllLanguages')
-            ->willReturn([$siteLanguageMock]);
+            ->willReturn([$siteLanguage]);
 
         $requestMock->expects(self::once())
             ->method('getAttribute')
@@ -162,10 +149,10 @@ class LanguageResolverTest extends UnitTestCase
 
         $requestMock->expects($matcher)
             ->method('withAttribute')
-            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguageMock) {
+            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguage) {
                 match ($matcher->numberOfInvocations()) {
                     1 => $this->assertEquals(['context', $this->contextMock], [$key, $value]),
-                    2 => $this->assertEquals(['language', $siteLanguageMock], [$key, $value]),
+                    2 => $this->assertEquals(['language', $siteLanguage], [$key, $value]),
                 };
             })
             ->willReturn($requestMock);
@@ -181,21 +168,14 @@ class LanguageResolverTest extends UnitTestCase
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $siteMock = $this->createMock(Site::class);
-        $siteLanguageMock = $this->createMock(SiteLanguage::class);
 
-        $siteLanguageMock
-            ->expects(self::once())
-            ->method('getHreflang')
-            ->willReturn('');
-
-        $siteLanguageMock
-            ->expects(self::once())
-            ->method('getTwoLetterIsoCode')
-            ->willReturn('de_B2B');
+        $siteLanguage = new SiteLanguage(1, 'de-B2B', $this->createMock(UriInterface::class), [
+            'hreflang' => '',
+        ]);
 
         $siteMock->expects(self::once())
             ->method('getAllLanguages')
-            ->willReturn([$siteLanguageMock]);
+            ->willReturn([$siteLanguage]);
 
         $requestMock->expects(self::once())
             ->method('getAttribute')
@@ -205,7 +185,7 @@ class LanguageResolverTest extends UnitTestCase
         $requestMock->expects(self::once())
             ->method('getHeader')
             ->with('Accept-Language')
-            ->willReturn(['de_B2B']);
+            ->willReturn(['de-B2B']);
 
         $requestHandlerMock->expects(self::once())
             ->method('handle')
@@ -219,10 +199,10 @@ class LanguageResolverTest extends UnitTestCase
 
         $requestMock->expects($matcher)
             ->method('withAttribute')
-            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguageMock) {
+            ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguage) {
                 match ($matcher->numberOfInvocations()) {
                     1 => $this->assertEquals(['context', $this->contextMock], [$key, $value]),
-                    2 => $this->assertEquals(['language', $siteLanguageMock], [$key, $value]),
+                    2 => $this->assertEquals(['language', $siteLanguage], [$key, $value]),
                 };
             })
             ->willReturn($requestMock);

@@ -46,7 +46,7 @@ class LanguageResolver implements MiddlewareInterface
         $acceptLanguage = \reset($acceptLanguage);
         $usedSiteLanguage = null;
         foreach ($site->getAllLanguages() as $language) {
-            $languageKeys = [$language->getHreflang(), $language->getTwoLetterIsoCode()];
+            $languageKeys = [$language->getHreflang(), $language->getLocale()->getLanguageCode()];
 
             if (\in_array($acceptLanguage, $languageKeys, true)) {
                 $usedSiteLanguage = $language;

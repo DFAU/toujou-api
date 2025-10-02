@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -24,8 +25,10 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $contextMock = $this->createMock(Context::class);
         $this->resetSingletonInstances = true;
+        $GLOBALS['EXEC_TIME'] = time();
+
+        $contextMock = $this->createMock(Context::class);
         $this->subject = new TypoScriptFrontendInitialization($contextMock);
     }
 
@@ -42,6 +45,7 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
      */
     public function it_will_init_typoscript_frontend_on_process(): void
     {
+        GeneralUtility::addInstance(PageRepository::class, $this->createMock(PageRepository::class));
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $siteMock = $this->createMock(Site::class);
@@ -51,7 +55,7 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         GeneralUtility::addInstance(TypoScriptFrontendController::class, $frontendControllerMock);
 
-        $matcher = self::exactly(3);
+        $matcher = $this->exactly(3);
 
         $requestMock->expects($matcher)
             ->method('getAttribute')

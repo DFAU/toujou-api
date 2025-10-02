@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DFAU\ToujouApi\Tests\Unit\Database\Query\Restriction;
 
 use DFAU\ToujouApi\Database\Query\Restriction\LanguageRestriction;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -18,14 +17,14 @@ class LanguageRestrictionTest extends UnitTestCase
     /** @var LanguageRestriction */
     private $subject;
 
-    /** @var MockObject|LanguageAspect */
+    /** @var LanguageAspect */
     private $languageAspect;
 
     protected function setUp(): void
     {
         parent::setUp();
         $contextMock = $this->createMock(Context::class);
-        $this->languageAspect = $this->createMock(LanguageAspect::class);
+        $this->languageAspect = new LanguageAspect(0, 13);
 
         $contextMock->method('getAspect')
             ->with('language')
@@ -51,9 +50,6 @@ class LanguageRestrictionTest extends UnitTestCase
 
         $GLOBALS['TCA']['tt_content']['ctrl']['languageField'] = 'sys_lang';
 
-        $this->languageAspect->method('getContentId')
-            ->willReturn(13);
-
         $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
 
         $compositeExpression = $this->createMock(CompositeExpression::class);
@@ -78,9 +74,6 @@ class LanguageRestrictionTest extends UnitTestCase
      */
     public function it_wont_return_language_restriction_for_tables_without_translation(): void
     {
-        $this->languageAspect->method('getContentId')
-            ->willReturn(13);
-
         $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);
 
         $compositeExpression = $this->createMock(CompositeExpression::class);
