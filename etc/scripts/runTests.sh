@@ -202,6 +202,7 @@ fi
 case ${TEST_SUITE} in
     acceptance)
         setUpDockerComposeDotEnv
+        chmod 600 ../../Tests/Acceptance/_data/*.key
         docker compose run acceptance_backend_mariadb10
         SUITE_EXIT_CODE=$?
         docker compose down
