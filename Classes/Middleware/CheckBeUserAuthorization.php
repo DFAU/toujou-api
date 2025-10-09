@@ -8,11 +8,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class CheckBeUserAuthorization implements MiddlewareInterface
 {
+    public function __construct(
+        private readonly Context $context
+    ) {
+    }
+
     /**
      * Process an incoming server request.
      *
@@ -22,16 +27,10 @@ class CheckBeUserAuthorization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (!$tsfe->getContext()->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
+        if (!$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
             return new Response('php://temp', 401);
         }
 
         return $handler->handle($request);
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 }
