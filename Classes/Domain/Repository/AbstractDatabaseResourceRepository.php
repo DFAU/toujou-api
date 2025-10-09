@@ -105,7 +105,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     public function findOneByIdentifier($identifier, $context = null): ?array
     {
         $query = $this->createQuery()->setMaxResults(1);
-        $query->where($query->expr()->eq($this->identifier, $query->quote($identifier)));
+        $query->where($query->expr()->eq($this->identifier, $query->quote((string) $identifier)));
 
         $result = $query->executeQuery()->fetchAssociative() ?: [];
 
@@ -135,7 +135,7 @@ abstract class AbstractDatabaseResourceRepository implements ApiResourceReposito
     public function findByPageIdentifier($pageIdentifier): array
     {
         $query = $this->createQuery();
-        $query->where($query->expr()->eq($this->parentPageIdentifier, $query->quote($pageIdentifier)));
+        $query->where($query->expr()->eq($this->parentPageIdentifier, $query->quote((string) $pageIdentifier)));
 
         $result = $query->executeQuery()->fetchAllAssociative();
 
