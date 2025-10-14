@@ -7,6 +7,7 @@ namespace DFAU\ToujouApi\TransformHandler;
 use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaResourceTransformHandler implements TransformHandler
@@ -48,9 +49,10 @@ class TcaResourceTransformHandler implements TransformHandler
     protected function getVisibleAttributesOfResource(array $resource): array
     {
         $result = $this->formDataCompiler->compile([
+            'request' => $GLOBALS['TYPO3_REQUEST'],
             'tableName' => $this->tableName,
             'databaseRow' => $resource,
-        ]);
+        ], GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $visibleColumns = \array_filter($result['columnsToProcess'], fn ($columnName) => !isset($this->excludedColumns[$columnName]) && '-' !== $columnName[0]);
 

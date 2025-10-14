@@ -63,7 +63,7 @@ class FileReferenceTransformer extends TransformerAbstract
         return $this->item($file, new FileTransformer(), 'files');
     }
 
-    private function getAbsoluteFileUrl(array $file = null): ?string
+    private function getAbsoluteFileUrl(?array $file = null): ?string
     {
         $url = $file['url'] ?? null;
 

@@ -6,6 +6,7 @@ namespace DFAU\ToujouApi\Tests\Acceptance\Api;
 
 use Codeception\Util\HttpCode;
 use DFAU\ToujouApi\Tests\Acceptance\Support\ApiTester;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 class PutItemCest
 {
@@ -56,10 +57,9 @@ class PutItemCest
         $I->seeResponseCodeIs(HttpCode::ACCEPTED);
     }
 
-    public function testTryingToCreateInvalidItemThrowsInternalServerError(ApiTester $I): void
+    public function testUpdateMissingItemFails(ApiTester $I): void
     {
         $I->wantToBeBearerAuthenticated();
-        // Missing pid: Should throw error
         $I->sendPut('pages/1000', [
             'data' => [
                 'type' => 'pages',
@@ -69,6 +69,16 @@ class PutItemCest
                 ],
             ],
         ]);
-        $I->seeResponseCodeIs(HttpCode::INTERNAL_SERVER_ERROR);
+
+        /**
+         * in typo3 12 the DataHandler throws an error: Attempt to modify record without permission or non-existing page
+         * in typo3 13 there is an early return in the DataHandler without any error Log message
+         */
+        if ((new Typo3Version())->getMajorVersion() < 13) {
+            $I->seeResponseCodeIs(HttpCode::INTERNAL_SERVER_ERROR);
+        } else {
+            $I->sendGet('pages/1000');
+            $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
+        }
     }
 }

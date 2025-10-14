@@ -1,0 +1,3 @@
+tx_toujou_oauth2_server_client,,,,,,,,,,,,,
+,uid,description,pid,tstamp,crdate,deleted,disable,starttime,endtime,identifier,user_uid,user_table,name,secret,redirect_uris
+,1,,0,1634887644,1634887603,0,0,0,0,12fc7d65-0177-48be-9c3c-e7d8b2a1,1,be_users,"Viator Toujou Integration","$argon2i$v=19$m=65536,t=16,p=1$MWM5WnJieXNtN0lDMUh2Rw$WpVBIyz0AwrYeJv9Lerkw9NyDmpjkwQBzPXTLgrUWEM",

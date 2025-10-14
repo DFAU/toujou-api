@@ -22,7 +22,7 @@ class ConfigurationManager
 
     protected const CONFIGURATION_TYPE_ROUTES = 'Routes';
 
-    public function __construct(FrontendInterface $cache = null)
+    public function __construct(?FrontendInterface $cache = null)
     {
         $this->cache = $cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
     }

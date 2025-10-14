@@ -1,0 +1,6 @@
+pages,,,,,,,,
+,uid,pid,title,doktype,is_siteroot,sys_language_uid,l10n_source,l10n_parent
+,1,0,Home,1,1,,,,
+,2,1,Page Title,1,,0,0,0
+,3,1,Translated Page Title,1,,1000001,2,2
+,4,0,Second Page Root,1,1,,,,

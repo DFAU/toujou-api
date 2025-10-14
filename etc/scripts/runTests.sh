@@ -120,7 +120,7 @@ ROOT_DIR=`realpath ${PWD}/../../`
 TEST_SUITE="unit"
 DBMS="mariadb"
 PHP_VERSION="8.1"
-TYPO3_VERSION="11"
+TYPO3_VERSION="12"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
@@ -202,6 +202,7 @@ fi
 case ${TEST_SUITE} in
     acceptance)
         setUpDockerComposeDotEnv
+        chmod 600 ../../Tests/Acceptance/_data/*.key
         docker compose run acceptance_backend_mariadb10
         SUITE_EXIT_CODE=$?
         docker compose down
