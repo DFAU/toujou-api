@@ -44,7 +44,12 @@ class ApiEntrypoint implements MiddlewareInterface
     {
         // Route request through own middleware chain to the api request handler
         $site = $request ? $request->getAttribute('site') : null;
-        $apiPathPrefix = $site instanceof Site ? \ltrim($site->getAttribute('toujouApiPathPrefix') ?? '', '/ ') : null;
+
+        try {
+            $apiPathPrefix = $site instanceof Site ? \ltrim($site->getAttribute('toujouApiPathPrefix') ?? '', '/ ') : null;
+        } catch (\InvalidArgumentException) {
+            $apiPathPrefix = null;
+        }
 
         if (!empty($apiPathPrefix) && \str_starts_with($request->getUri()->getPath(), '/' . $apiPathPrefix)) {
             $request = $request->withUri($request->getUri()->withPath('/' . \substr($request->getUri()->getPath(), \strlen('/' . $apiPathPrefix))));
