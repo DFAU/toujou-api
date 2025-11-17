@@ -7,7 +7,6 @@ namespace DFAU\ToujouApi\TransformHandler;
 use DFAU\ToujouApi\Domain\Repository\AbstractDatabaseResourceRepository;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaResourceTransformHandler implements TransformHandler
@@ -29,13 +28,7 @@ class TcaResourceTransformHandler implements TransformHandler
         $this->tableName = $tableName;
         $this->identifier = $identifier;
         $this->excludedColumns = \array_fill_keys($excludedColumns, true);
-
-        $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
-        $orderedProviderList->setProviderList(
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['toujouApiTcaResource']
-        );
-
-        $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $orderedProviderList);
+        $this->formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
     }
 
     public function handleTransform($data, array $transformedData, callable $next): array
@@ -48,11 +41,16 @@ class TcaResourceTransformHandler implements TransformHandler
 
     protected function getVisibleAttributesOfResource(array $resource): array
     {
+        $orderedProviderList = GeneralUtility::makeInstance(OrderedProviderList::class);
+        $orderedProviderList->setProviderList(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['toujouApiTcaResource']
+        );
+
         $result = $this->formDataCompiler->compile([
             'request' => $GLOBALS['TYPO3_REQUEST'],
             'tableName' => $this->tableName,
             'databaseRow' => $resource,
-        ], GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+        ], $orderedProviderList);
 
         $visibleColumns = \array_filter($result['columnsToProcess'], fn ($columnName) => !isset($this->excludedColumns[$columnName]) && '-' !== $columnName[0]);
 
