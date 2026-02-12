@@ -15,8 +15,7 @@ class FileRepository extends AbstractDatabaseResourceRepository
 
     public const TABLE_NAME = 'sys_file';
 
-    /** @var CoreFileRepository */
-    protected $coreFileRepository;
+    protected CoreFileRepository $coreFileRepository;
 
     public function __construct(string $tableName = self::TABLE_NAME)
     {
@@ -27,7 +26,7 @@ class FileRepository extends AbstractDatabaseResourceRepository
     public function findOneByIdentifier($identifier, $context = null): ?array
     {
         /** @var File $file */
-        $file = $this->coreFileRepository->findByIdentifier($identifier);
+        $file = $this->coreFileRepository->findByUid($identifier);
 
         if ($file) {
             $fileProperties = $file->toArray();
