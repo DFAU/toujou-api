@@ -38,10 +38,10 @@ return [
             ],
         ],
         'operationToCommandMap' => [
-            Operation::CREATE => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'pages'],
-            Operation::UPDATE => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'pages'],
-            Operation::DELETE => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'pages'],
-            Operation::REPLACE => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::CREATE->value => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::UPDATE->value => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::DELETE->value => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'pages'],
+            Operation::REPLACE->value => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'pages'],
         ],
         'convergenceSchema' => [
             '__class__' => PagesJsonApiSchema::class,
@@ -64,10 +64,10 @@ return [
             ],
         ],
         'operationToCommandMap' => [
-            Operation::CREATE => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'tt_content'],
-            Operation::UPDATE => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'tt_content'],
-            Operation::DELETE => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'tt_content'],
-            Operation::REPLACE => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::CREATE->value => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::UPDATE->value => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::DELETE->value => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'tt_content'],
+            Operation::REPLACE->value => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'tt_content'],
         ],
     ],
     'file-references' => [
@@ -78,10 +78,10 @@ return [
             '__class__' => FileReferenceTransformer::class,
         ],
         'operationToCommandMap' => [
-            Operation::CREATE => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
-            Operation::UPDATE => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
-            Operation::DELETE => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
-            Operation::REPLACE => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::CREATE->value => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::UPDATE->value => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::DELETE->value => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
+            Operation::REPLACE->value => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'sys_file_reference'],
         ],
     ],
     'files' => [
@@ -92,10 +92,10 @@ return [
             '__class__' => FileTransformer::class,
         ],
         'operationToCommandMap' => [
-            Operation::CREATE => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'sys_file'],
-            Operation::UPDATE => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'sys_file'],
-            Operation::DELETE => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'sys_file'],
-            Operation::REPLACE => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::CREATE->value => ['__class__' => CreateTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::UPDATE->value => ['__class__' => UpdateTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::DELETE->value => ['__class__' => DeleteTcaResourceCommand::class, 'tableName' => 'sys_file'],
+            Operation::REPLACE->value => ['__class__' => ReplaceTcaResourceCommand::class, 'tableName' => 'sys_file'],
         ],
     ],
 ];

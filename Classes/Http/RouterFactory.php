@@ -41,13 +41,13 @@ class RouterFactory
                     }
 
                     switch (\strtolower($resourceRouteDefinition['operation'])) {
-                        case Operation::READ:
+                        case Operation::READ->value:
                             return $controller->read($request);
-                        case Operation::REPLACE:
-                        case Operation::CREATE:
-                        case Operation::UPDATE:
-                        case Operation::DELETE:
-                            return $controller->issueCommandForOperation(new Operation($resourceRouteDefinition['operation']), $request);
+                        case Operation::REPLACE->value:
+                        case Operation::CREATE->value:
+                        case Operation::UPDATE->value:
+                        case Operation::DELETE->value:
+                            return $controller->issueCommandForOperation(Operation::tryFrom($resourceRouteDefinition['operation']), $request);
                         default:
                             throw new \InvalidArgumentException('The resource route "' . $routeIdentifier . '" does contain an invalid "operation" definition "' . $resourceRouteDefinition['operation'] . '" of type "' . Operation::class . '".', 1563782857);
                     }
