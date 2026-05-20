@@ -38,7 +38,7 @@ final class ResourceOperationToCommandMap
     {
         $this->loadOperationsToCommandMapFromResourcesConfiguration();
 
-        return $this->commandsByResourceTypeAndOperation[$resourceType][(string) $operation] ?? null;
+        return $this->commandsByResourceTypeAndOperation[$resourceType][$operation->value] ?? null;
     }
 
     private function loadOperationsToCommandMapFromResourcesConfiguration(): void

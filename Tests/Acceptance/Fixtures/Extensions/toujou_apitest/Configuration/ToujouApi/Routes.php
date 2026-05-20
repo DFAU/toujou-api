@@ -8,33 +8,33 @@ use DFAU\ToujouApi\Resource\Operation;
 return [
     //Example routes
     'GET:/pages/' => [
-        'numerus' => Numerus::COLLECTION,
-        'operation' => Operation::READ,
+        'numerus' => Numerus::COLLECTION->value,
+        'operation' => Operation::READ->value,
         'resourceType' => 'pages',
     ],
     'GET:/pages/{id:\d+}' => [
-        'numerus' => Numerus::ITEM,
-        'operation' => Operation::READ,
+        'numerus' => Numerus::ITEM->value,
+        'operation' => Operation::READ->value,
         'resourceType' => 'pages',
     ],
     'PATCH:/pages/{id:\d+}' => [
-        'numerus' => Numerus::ITEM,
-        'operation' => Operation::UPDATE,
+        'numerus' => Numerus::ITEM->value,
+        'operation' => Operation::UPDATE->value,
         'resourceType' => 'pages',
     ],
     'PUT:/pages/{id:\d+}' => [
-        'numerus' => Numerus::ITEM,
-        'operation' => Operation::REPLACE,
+        'numerus' => Numerus::ITEM->value,
+        'operation' => Operation::REPLACE->value,
         'resourceType' => 'pages',
     ],
     'GET:/content-elements/' => [
-        'numerus' => Numerus::COLLECTION,
-        'operation' => Operation::READ,
+        'numerus' => Numerus::COLLECTION->value,
+        'operation' => Operation::READ->value,
         'resourceType' => 'content-elements',
     ],
     'GET:/content-elements/{id:\d+}' => [
-        'numerus' => Numerus::ITEM,
-        'operation' => Operation::READ,
+        'numerus' => Numerus::ITEM->value,
+        'operation' => Operation::READ->value,
         'resourceType' => 'content-elements',
     ],
 ];

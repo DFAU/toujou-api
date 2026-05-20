@@ -47,9 +47,9 @@ class ConvergenceCommandHandler
         $operations = GeneralUtility::makeInstance(OperationsFactory::class)->buildFromSchemaAndResources($schema, $toBeResources, $asIsResources);
 
         $convergenceOperationsToApiOperationsMap = [
-            AddResource::class => new Operation(Operation::CREATE),
-            UpdateResource::class => new Operation(Operation::UPDATE),
-            RemoveResource::class => new Operation(Operation::DELETE),
+            AddResource::class => Operation::from(Operation::CREATE->value),
+            UpdateResource::class => Operation::from(Operation::UPDATE->value),
+            RemoveResource::class => Operation::from(Operation::DELETE->value),
         ];
 
         $unitOfWorkCommands = \array_map(function (AbstractResourceOperation $operation) use ($convergenceOperationsToApiOperationsMap) {

@@ -16,7 +16,7 @@ class JsonApiFormatter extends AbstractFormatter
         return (string) \json_encode($this->serializeError($error));
     }
 
-    protected function serializeError(Throwable $error)
+    protected function serializeError(Throwable $error): array
     {
         $data = [
             'type' => \get_class($error),
