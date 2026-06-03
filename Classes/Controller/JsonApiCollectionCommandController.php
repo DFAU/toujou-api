@@ -29,9 +29,9 @@ final class JsonApiCollectionCommandController extends AbstractResourceCommandCo
 
     public function canHandleOperation(Operation $operation): bool
     {
-        return Operation::READ === $operation;
+        return $operation->equals(Operation::READ);
         // TODO implement creation on collection without given identifier
-        //   || $operation->equals(Operation::CREATE->value);
+        //   || $operation->equals(Operation::CREATE);
     }
 
     public function read(ServerRequestInterface $request): ResponseInterface

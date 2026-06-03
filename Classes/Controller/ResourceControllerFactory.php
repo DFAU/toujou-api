@@ -39,11 +39,11 @@ class ResourceControllerFactory
 
         // TODO currently JSON API is the only supported controller type, but other serialization formats should be supported
         switch ($routeDefinition['numerus']) {
-            case Numerus::ITEM->value:
+            case Numerus::ITEM:
                 $controllerName = JsonApiItemCommandController::class;
 
                 break;
-            case Numerus::COLLECTION->value:
+            case Numerus::COLLECTION:
                 $controllerName = JsonApiCollectionCommandController::class;
 
                 break;
