@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DFAU\ToujouApi\Tests\Unit\Middleware;
 
 use DFAU\ToujouApi\Middleware\TypoScriptFrontendInitialization;
-use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -18,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class TypoScriptFrontendInitializationTest extends UnitTestCase
+class TypoScriptFrontendInitializationTest extends UnitTestCase
 {
     /** @var TypoScriptFrontendInitialization */
     private $subject;
@@ -28,26 +27,32 @@ final class TypoScriptFrontendInitializationTest extends UnitTestCase
         parent::setUp();
         $this->resetSingletonInstances = true;
         $GLOBALS['EXEC_TIME'] = time();
-        $this->subject = new TypoScriptFrontendInitialization($this->createStub(Context::class));
+
+        $contextMock = $this->createMock(Context::class);
+        $this->subject = new TypoScriptFrontendInitialization($contextMock);
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function it_implements_correct_interface(): void
     {
-        $this->assertInstanceOf(MiddlewareInterface::class, $this->subject);
+        self::assertInstanceOf(MiddlewareInterface::class, $this->subject);
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function it_will_init_typoscript_frontend_on_process(): void
     {
-        GeneralUtility::addInstance(PageRepository::class, $this->createStub(PageRepository::class));
+        GeneralUtility::addInstance(PageRepository::class, $this->createMock(PageRepository::class));
         $requestMock = $this->createMock(ServerRequestInterface::class);
-        $requestHandlerMock = $this->createStub(RequestHandlerInterface::class);
-        $siteMock = $this->createStub(Site::class);
-        $pageArgumentsMock = $this->createStub(PageArguments::class);
-        $siteLanguageMock = $this->createStub(SiteLanguage::class);
+        $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
+        $siteMock = $this->createMock(Site::class);
+        $pageArgumentsMock = $this->createMock(PageArguments::class);
+        $siteLanguageMock = $this->createMock(SiteLanguage::class);
 
-        $frontendControllerMock = $this->createStub(TypoScriptFrontendController::class);
+        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         GeneralUtility::addInstance(TypoScriptFrontendController::class, $frontendControllerMock);
 
         $matcher = $this->exactly(3);
@@ -56,15 +61,15 @@ final class TypoScriptFrontendInitializationTest extends UnitTestCase
             ->method('getAttribute')
             ->willReturnCallback(function (string $key, string $value) use ($matcher, $siteLanguageMock) {
                 match ($matcher->numberOfInvocations()) {
-                    1 => $this->assertSame('site', $value),
-                    2 => $this->assertSame('language', $value),
+                    1 => $this->assertEquals('site', $value),
+                    2 => $this->assertEquals('language', $value),
                 };
             })
             ->willReturnOnConsecutiveCalls($siteMock, $pageArgumentsMock, $siteLanguageMock);
 
         $this->subject->process($requestMock, $requestHandlerMock);
 
-        $this->assertEquals($GLOBALS['TSFE'], $frontendControllerMock);
-        $this->assertEquals($GLOBALS['TYPO3_REQUEST'], $requestMock);
+        self::assertEquals($GLOBALS['TSFE'], $frontendControllerMock);
+        self::assertEquals($GLOBALS['TYPO3_REQUEST'], $requestMock);
     }
 }
