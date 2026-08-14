@@ -9,6 +9,7 @@ use DFAU\ToujouApi\Configuration\ConfigurationManager;
 use DFAU\ToujouApi\Transformer\ResourceTransformerInterface;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use League\Fractal\Resource\NullResource;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -102,6 +103,10 @@ class TcaResourceIncludeHandler implements IncludeHandler
                 $transformer,
                 $resourceDefinition['resourceType']
             );
+        }
+
+        if (Item::class === $resourceType) {
+            return new NullResource();
         }
 
         return new $resourceType([]);
