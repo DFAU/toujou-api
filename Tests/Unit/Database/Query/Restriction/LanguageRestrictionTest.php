@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DFAU\ToujouApi\Tests\Unit\Database\Query\Restriction;
 
 use DFAU\ToujouApi\Database\Query\Restriction\LanguageRestriction;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -33,17 +34,13 @@ class LanguageRestrictionTest extends UnitTestCase
         $this->subject = new LanguageRestriction($contextMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_implements_correct_interface(): void
     {
         self::assertInstanceOf(QueryRestrictionInterface::class, $this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_return_language_restriction_for_tables_with_translation(): void
     {
         $this->markTestSkipped('Due to copy pasted \TYPO3\CMS\Core\Domain\Repository\PageRepository::getRecordOverlay sql this test is marked as skipped');
@@ -69,9 +66,7 @@ class LanguageRestrictionTest extends UnitTestCase
         self::assertEquals($compositeExpression, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_wont_return_language_restriction_for_tables_without_translation(): void
     {
         $expressionBuilderMock = $this->createMock(ExpressionBuilder::class);

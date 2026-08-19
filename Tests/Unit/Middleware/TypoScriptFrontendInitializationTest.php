@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DFAU\ToujouApi\Tests\Unit\Middleware;
 
 use DFAU\ToujouApi\Middleware\TypoScriptFrontendInitialization;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -32,17 +33,13 @@ class TypoScriptFrontendInitializationTest extends UnitTestCase
         $this->subject = new TypoScriptFrontendInitialization($contextMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_implements_correct_interface(): void
     {
         self::assertInstanceOf(MiddlewareInterface::class, $this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_init_typoscript_frontend_on_process(): void
     {
         GeneralUtility::addInstance(PageRepository::class, $this->createMock(PageRepository::class));
