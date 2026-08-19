@@ -15,7 +15,7 @@ services:
       - /var/lib/postgresql/data:rw,noexec,nosuid
 
   composer_update:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
@@ -47,7 +47,7 @@ services:
       "
 
   functional_mariadb10:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     links:
       - mariadb10
@@ -83,7 +83,7 @@ services:
       "
 
   functional_postgres10:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     links:
       - postgres10
@@ -120,7 +120,7 @@ services:
       "
 
   functional_sqlite:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
@@ -148,7 +148,7 @@ services:
       "
 
   lint:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
@@ -163,7 +163,7 @@ services:
       "
 
   unit:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
@@ -186,7 +186,7 @@ services:
         fi
       "
   web:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     stop_grace_period: 1s
     volumes:
@@ -202,7 +202,7 @@ services:
     command: php -dxdebug.mode=off -S web:8000 -t ${ROOT_DIR}/.Build/Web
 
   acceptance_backend_mariadb10:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    image: ghcr.io/typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     links:
       - mariadb10
