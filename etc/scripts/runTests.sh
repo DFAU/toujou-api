@@ -57,12 +57,11 @@ Options:
             - postgres: use postgres
             - sqlite: use sqlite
 
-    -p <7.4|8.0|8.1|8.2>
+    -p <8.2|8.3|8.4>
         Specifies the PHP minor version to be used
-            - 7.4: (default) use PHP 7.4
-            - 8.0: use PHP 8.0
-            - 8.1: use PHP 8.1
-            - 8.2: use PHP 8.2
+            - 8.2: (default) use PHP 8.2
+            - 8.3: use PHP 8.3
+            - 8.4: use PHP 8.4
 
     -t <11|12>
         Only with -s composerUpdate
@@ -119,7 +118,7 @@ cd ../testing-docker || exit 1
 ROOT_DIR=`realpath ${PWD}/../../`
 TEST_SUITE="unit"
 DBMS="mariadb"
-PHP_VERSION="8.1"
+PHP_VERSION="8.2"
 TYPO3_VERSION="12"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
@@ -265,9 +264,9 @@ case ${TEST_SUITE} in
         ;;
     update)
         # pull typo3/core-testing-*:latest versions of those ones that exist locally
-        docker images typo3/core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
+        docker images ghcr.io/typo3/core-testing-*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
         # remove "dangling" typo3/core-testing-* images (those tagged as <none>)
-        docker images typo3/core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
+        docker images ghcr.io/typo3/core-testing-* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
         ;;
     *)
         echo "Invalid -s option argument ${TEST_SUITE}" >&2

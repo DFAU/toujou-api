@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DFAU\ToujouApi\Tests\Unit\Middleware;
 
 use DFAU\ToujouApi\Middleware\LanguageResolver;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -32,17 +33,13 @@ class LanguageResolverTest extends UnitTestCase
         $this->subject = new LanguageResolver($this->contextMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_implements_correct_interface(): void
     {
         self::assertInstanceOf(MiddlewareInterface::class, $this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_handle_unmodified_request_on_missing_site(): void
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);
@@ -55,9 +52,7 @@ class LanguageResolverTest extends UnitTestCase
         $this->subject->process($requestMock, $requestHandlerMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_handle_unmodified_request_on_missing_language_header(): void
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);
@@ -76,9 +71,7 @@ class LanguageResolverTest extends UnitTestCase
         $this->subject->process($requestMock, $requestHandlerMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_handle_on_non_matching_language(): void
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);
@@ -110,9 +103,7 @@ class LanguageResolverTest extends UnitTestCase
         $this->subject->process($requestMock, $requestHandlerMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_set_language_by_href_lang(): void
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);
@@ -160,9 +151,7 @@ class LanguageResolverTest extends UnitTestCase
         $this->subject->process($requestMock, $requestHandlerMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_will_set_language_by_two_letter_iso_code(): void
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);

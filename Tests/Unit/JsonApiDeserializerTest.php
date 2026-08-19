@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace DFAU\ToujouApi\Tests\Unit;
 
 use DFAU\ToujouApi\Deserializer\JsonApiDeserializer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class JsonApiDeserializerTest extends TestCase
 {
-    /**
-     * @dataProvider provideTestCases
-     */
+    #[DataProvider('provideTestCases')]
     public function testJsonApiDeserializer(array $result, $expectedResult): void
     {
         $jsonApiDeserializer = new JsonApiDeserializer();
