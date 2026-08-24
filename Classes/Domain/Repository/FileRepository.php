@@ -25,8 +25,12 @@ class FileRepository extends AbstractDatabaseResourceRepository
 
     public function findOneByIdentifier($identifier, $context = null): ?array
     {
-        /** @var File $file */
-        $file = $this->coreFileRepository->findByUid($identifier);
+        try {
+            /** @var File $file */
+            $file = $this->coreFileRepository->findByUid((int) $identifier);
+        } catch (\RuntimeException | \InvalidArgumentException $exception) {
+            return null;
+        }
 
         if ($file) {
             $fileProperties = $file->toArray();

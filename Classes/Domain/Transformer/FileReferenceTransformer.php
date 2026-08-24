@@ -31,11 +31,7 @@ class FileReferenceTransformer extends TransformerAbstract
 
     public function transform(array $fileReference): array
     {
-        try {
-            $file = $this->fileRepository->findOneByIdentifier($fileReference['uid_local']);
-        } catch (\InvalidArgumentException $exception) {
-            $file = null;
-        }
+        $file = $this->getFile($fileReference['uid_local']);
 
         return [
             'id' => (string) $fileReference[$this->identifier],
@@ -54,13 +50,18 @@ class FileReferenceTransformer extends TransformerAbstract
 
     protected function includeFile(array $fileReference): ResourceAbstract
     {
-        try {
-            $file = $this->fileRepository->findOneByIdentifier($fileReference['uid_local']);
-        } catch (\InvalidArgumentException|\RuntimeException $exception) {
-            return $this->null();
+        $file = $this->getFile($fileReference['uid_local']);
+
+        return empty($file) ? $this->null() : $this->item($file, new FileTransformer(), 'files');
+    }
+
+    protected function getFile($identifier): ?array
+    {
+        if (empty($identifier)) {
+            return null;
         }
 
-        return $this->item($file, new FileTransformer(), 'files');
+        return $this->fileRepository->findOneByIdentifier($identifier);
     }
 
     private function getAbsoluteFileUrl(?array $file = null): ?string
